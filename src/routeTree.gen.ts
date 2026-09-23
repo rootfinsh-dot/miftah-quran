@@ -10,33 +10,73 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ComptageRouteImport } from './routes/comptage'
+import { Route as GematrieRouteImport } from './routes/gematrie'
+import { Route as MotifsRouteImport } from './routes/motifs'
+import { Route as StatistiquesRouteImport } from './routes/statistiques'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ComptageRoute = ComptageRouteImport.update({
+  id: '/comptage',
+  path: '/comptage',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GematrieRoute = GematrieRouteImport.update({
+  id: '/gematrie',
+  path: '/gematrie',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MotifsRoute = MotifsRouteImport.update({
+  id: '/motifs',
+  path: '/motifs',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StatistiquesRoute = StatistiquesRouteImport.update({
+  id: '/statistiques',
+  path: '/statistiques',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/comptage': typeof ComptageRoute
+  '/gematrie': typeof GematrieRoute
+  '/motifs': typeof MotifsRoute
+  '/statistiques': typeof StatistiquesRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/comptage': typeof ComptageRoute
+  '/gematrie': typeof GematrieRoute
+  '/motifs': typeof MotifsRoute
+  '/statistiques': typeof StatistiquesRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/comptage': typeof ComptageRoute
+  '/gematrie': typeof GematrieRoute
+  '/motifs': typeof MotifsRoute
+  '/statistiques': typeof StatistiquesRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/comptage' | '/gematrie' | '/motifs' | '/statistiques'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/comptage' | '/gematrie' | '/motifs' | '/statistiques'
+  id: '__root__' | '/' | '/comptage' | '/gematrie' | '/motifs' | '/statistiques'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ComptageRoute: typeof ComptageRoute
+  GematrieRoute: typeof GematrieRoute
+  MotifsRoute: typeof MotifsRoute
+  StatistiquesRoute: typeof StatistiquesRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +88,43 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/comptage': {
+      id: '/comptage'
+      path: '/comptage'
+      fullPath: '/comptage'
+      preLoaderRoute: typeof ComptageRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/gematrie': {
+      id: '/gematrie'
+      path: '/gematrie'
+      fullPath: '/gematrie'
+      preLoaderRoute: typeof GematrieRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/motifs': {
+      id: '/motifs'
+      path: '/motifs'
+      fullPath: '/motifs'
+      preLoaderRoute: typeof MotifsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/statistiques': {
+      id: '/statistiques'
+      path: '/statistiques'
+      fullPath: '/statistiques'
+      preLoaderRoute: typeof StatistiquesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ComptageRoute: ComptageRoute,
+  GematrieRoute: GematrieRoute,
+  MotifsRoute: MotifsRoute,
+  StatistiquesRoute: StatistiquesRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
