@@ -41,6 +41,11 @@ const CARDS = [
     title: "Gématrie (abjad)",
     text: "Calculez la valeur numérique d'un mot ou d'un verset, lettre par lettre, selon la table abjad classique.",
   },
+  {
+    to: "/fourchette" as const,
+    title: "Comptage par fourchette",
+    text: "Saisissez une sourate et un verset de début et de fin pour compter les versets, mots et lettres de la plage choisie.",
+  },
 ];
 
 function Index() {
