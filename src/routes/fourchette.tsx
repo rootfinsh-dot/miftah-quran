@@ -53,15 +53,15 @@ function RangeTool({ quran }: { quran: QuranEdition }) {
   const result = useMemo(() => {
     const fs = clamp(s1, 1, 114);
     const ts = clamp(s2, 1, 114);
-    const fa = clamp(a1, 1, quran.surahs[fs - 1].ayahs.length);
-    const ta = clamp(a2, 1, quran.surahs[ts - 1].ayahs.length);
+    const fa = clamp(a1, 1, quran.surahs[fs - 1]!.ayahs.length);
+    const ta = clamp(a2, 1, quran.surahs[ts - 1]!.ayahs.length);
     const start = fs * 1000 + fa;
     const end = ts * 1000 + ta;
     if (start > end) return { error: "La position de départ doit précéder la position d'arrivée." };
     const rows: { number: number; name: string; count: number }[] = [];
     let ayahs = 0, w = 0, l = 0;
     for (let s = fs; s <= ts; s++) {
-      const surah = quran.surahs[s - 1];
+      const surah = quran.surahs[s - 1]!;
       const from = s === fs ? fa : 1;
       const to = s === ts ? ta : surah.ayahs.length;
       const slice = surah.ayahs.slice(from - 1, to);
@@ -89,7 +89,7 @@ function RangeTool({ quran }: { quran: QuranEdition }) {
     </label>
   );
 
-  const maxA = (s: number) => quran.surahs[clamp(s, 1, 114) - 1].ayahs.length;
+  const maxA = (s: number) => quran.surahs[clamp(s, 1, 114) - 1]!.ayahs.length;
 
   return (
     <div className="mx-auto mt-8 max-w-6xl space-y-6 px-5">
