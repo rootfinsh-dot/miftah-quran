@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ComptageRouteImport } from './routes/comptage'
+import { Route as FourchetteRouteImport } from './routes/fourchette'
 import { Route as GematrieRouteImport } from './routes/gematrie'
 import { Route as MotifsRouteImport } from './routes/motifs'
 import { Route as StatistiquesRouteImport } from './routes/statistiques'
@@ -23,6 +24,11 @@ const IndexRoute = IndexRouteImport.update({
 const ComptageRoute = ComptageRouteImport.update({
   id: '/comptage',
   path: '/comptage',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FourchetteRoute = FourchetteRouteImport.update({
+  id: '/fourchette',
+  path: '/fourchette',
   getParentRoute: () => rootRouteImport,
 } as any)
 const GematrieRoute = GematrieRouteImport.update({
@@ -44,6 +50,7 @@ const StatistiquesRoute = StatistiquesRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/comptage': typeof ComptageRoute
+  '/fourchette': typeof FourchetteRoute
   '/gematrie': typeof GematrieRoute
   '/motifs': typeof MotifsRoute
   '/statistiques': typeof StatistiquesRoute
@@ -51,6 +58,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/comptage': typeof ComptageRoute
+  '/fourchette': typeof FourchetteRoute
   '/gematrie': typeof GematrieRoute
   '/motifs': typeof MotifsRoute
   '/statistiques': typeof StatistiquesRoute
@@ -59,21 +67,42 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/comptage': typeof ComptageRoute
+  '/fourchette': typeof FourchetteRoute
   '/gematrie': typeof GematrieRoute
   '/motifs': typeof MotifsRoute
   '/statistiques': typeof StatistiquesRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/comptage' | '/gematrie' | '/motifs' | '/statistiques'
+  fullPaths:
+    | '/'
+    | '/comptage'
+    | '/fourchette'
+    | '/gematrie'
+    | '/motifs'
+    | '/statistiques'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/comptage' | '/gematrie' | '/motifs' | '/statistiques'
-  id: '__root__' | '/' | '/comptage' | '/gematrie' | '/motifs' | '/statistiques'
+  to:
+    | '/'
+    | '/comptage'
+    | '/fourchette'
+    | '/gematrie'
+    | '/motifs'
+    | '/statistiques'
+  id:
+    | '__root__'
+    | '/'
+    | '/comptage'
+    | '/fourchette'
+    | '/gematrie'
+    | '/motifs'
+    | '/statistiques'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ComptageRoute: typeof ComptageRoute
+  FourchetteRoute: typeof FourchetteRoute
   GematrieRoute: typeof GematrieRoute
   MotifsRoute: typeof MotifsRoute
   StatistiquesRoute: typeof StatistiquesRoute
@@ -93,6 +122,13 @@ declare module '@tanstack/react-router' {
       path: '/comptage'
       fullPath: '/comptage'
       preLoaderRoute: typeof ComptageRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/fourchette': {
+      id: '/fourchette'
+      path: '/fourchette'
+      fullPath: '/fourchette'
+      preLoaderRoute: typeof FourchetteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/gematrie': {
@@ -122,6 +158,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ComptageRoute: ComptageRoute,
+  FourchetteRoute: FourchetteRoute,
   GematrieRoute: GematrieRoute,
   MotifsRoute: MotifsRoute,
   StatistiquesRoute: StatistiquesRoute,
