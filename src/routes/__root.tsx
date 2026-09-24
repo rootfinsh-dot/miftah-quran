@@ -119,6 +119,7 @@ const NAV = [
   { to: "/statistiques", label: "Statistiques" },
   { to: "/motifs", label: "Motifs numériques" },
   { to: "/gematrie", label: "Gématrie" },
+  { to: "/fourchette", label: "Fourchette" },
 ] as const;
 
 function SiteHeader() {
