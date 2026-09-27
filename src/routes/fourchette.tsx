@@ -6,9 +6,19 @@ import {
   PageHeader,
   StatCard,
   useArabicQuran,
-  useFrenchQuran,
 } from "@/components/quran-shell";
-import { formatNumber, letters, words, type QuranEdition } from "@/lib/quran";
+import { useQuery } from "@tanstack/react-query";
+import { useEffect } from "react";
+import {
+  formatNumber,
+  languageName,
+  letters,
+  translationQuery,
+  translationsListQuery,
+  words,
+  type QuranEdition,
+  type TranslationEdition,
+} from "@/lib/quran";
 
 export const Route = createFileRoute("/fourchette")({
   head: () => ({
@@ -33,7 +43,18 @@ export const Route = createFileRoute("/fourchette")({
 
 function FourchettePage() {
   const arabic = useArabicQuran();
-  const french = useFrenchQuran();
+  const [edition, setEdition] = useState("fr.hamidullah");
+  useEffect(() => {
+    const saved = localStorage.getItem("miftah-translation");
+    if (saved) setEdition(saved);
+  }, []);
+  const changeEdition = (id: string) => {
+    setEdition(id);
+    localStorage.setItem("miftah-translation", id);
+  };
+  const list = useQuery(translationsListQuery);
+  const french = useQuery(translationQuery(edition));
+  const current = list.data?.find((e) => e.identifier === edition);
   return (
     <div className="pb-10">
       <PageHeader
@@ -41,8 +62,37 @@ function FourchettePage() {
         title="Comptage par fourchette"
         description="Indiquez une position de départ et une position d'arrivée (sourate et verset) : l'outil compte les versets compris entre les deux, bornes incluses."
       />
+      <div className="mx-auto mt-6 max-w-6xl px-5">
+        <label className="surface-card flex flex-col gap-2 p-4 sm:flex-row sm:items-center">
+          <span className="text-sm font-medium text-primary-deep">Langue de la traduction</span>
+          <select
+            className="rounded-md border border-border bg-background px-3 py-2 text-sm sm:min-w-[22rem]"
+            value={edition}
+            onChange={(e) => changeEdition(e.target.value)}
+          >
+            {(list.data ?? [{ identifier: "fr.hamidullah", language: "fr", name: "Hamidullah", englishName: "Hamidullah", direction: "ltr" } as TranslationEdition])
+              .slice()
+              .sort((a, b) => languageName(a.language).localeCompare(languageName(b.language), "fr"))
+              .map((e) => (
+                <option key={e.identifier} value={e.identifier}>
+                  {languageName(e.language)} — {e.englishName}
+                </option>
+              ))}
+          </select>
+          {list.data ? (
+            <span className="text-xs text-muted-foreground">{list.data.length} traductions disponibles</span>
+          ) : null}
+        </label>
+      </div>
       <DataGate query={arabic}>
-        {(quran) => <RangeTool quran={quran} french={french.data} />}
+        {(quran) => (
+          <RangeTool
+            quran={quran}
+            french={french.data}
+            label={current ? `${languageName(current.language)} — ${current.englishName}` : "Français — Hamidullah"}
+            rtl={current?.direction === "rtl"}
+          />
+        )}
       </DataGate>
     </div>
   );
@@ -53,9 +103,9 @@ function clamp(n: number, min: number, max: number) {
   return Math.min(Math.max(n, min), max);
 }
 
-type RangeToolProps = { quran: QuranEdition; french: QuranEdition | undefined };
+type RangeToolProps = { quran: QuranEdition; french: QuranEdition | undefined; label: string; rtl: boolean };
 
-function RangeTool({ quran, french }: RangeToolProps) {
+function RangeTool({ quran, french, label, rtl }: RangeToolProps) {
   const [s1, setS1] = useState(1);
   const [a1, setA1] = useState(1);
   const [s2, setS2] = useState(2);
@@ -189,7 +239,7 @@ function RangeTool({ quran, french }: RangeToolProps) {
               Texte des versets ({formatNumber(result.verses!.length)})
             </h2>
             <p className="mt-1 text-sm text-muted-foreground">
-              Chaque verset est affiché en arabe suivi de sa traduction française (Hamidullah).
+              Chaque verset est affiché en arabe suivi de sa traduction ({label}).
             </p>
             <div className="mt-4 divide-y divide-border">
               {result.verses!.map((v) => (
@@ -201,7 +251,7 @@ function RangeTool({ quran, french }: RangeToolProps) {
                     {v.text}
                   </p>
                   {v.french ? (
-                    <p className="mt-2 text-sm text-muted-foreground">{v.french}</p>
+                    <p className="mt-2 text-sm text-muted-foreground" dir={rtl ? "rtl" : "ltr"}>{v.french}</p>
                   ) : (
                     <p className="mt-2 text-sm text-muted-foreground italic">
                       Traduction en cours de chargement…

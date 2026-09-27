@@ -241,3 +241,43 @@ export function digitSum(n: number): number {
 export function formatNumber(n: number): string {
   return new Intl.NumberFormat("fr-FR").format(n);
 }
+
+/* ---------- Traductions disponibles ---------- */
+
+export type TranslationEdition = {
+  identifier: string;
+  language: string;
+  name: string;
+  englishName: string;
+  direction: string | null;
+};
+
+export const translationsListQuery = {
+  queryKey: ["quran", "translations"] as const,
+  queryFn: async (): Promise<TranslationEdition[]> => {
+    const res = await fetch("https://api.alquran.cloud/v1/edition?format=text&type=translation");
+    if (!res.ok) throw new Error("Impossible de charger les langues");
+    const json = (await res.json()) as { data: TranslationEdition[] };
+    return json.data;
+  },
+  staleTime: Infinity,
+  gcTime: Infinity,
+};
+
+export function translationQuery(id: string) {
+  return {
+    queryKey: ["quran", "translation", id] as const,
+    queryFn: () => fetchEdition(id),
+    staleTime: Infinity,
+    gcTime: Infinity,
+  };
+}
+
+export function languageName(code: string): string {
+  try {
+    const n = new Intl.DisplayNames(["fr"], { type: "language" }).of(code);
+    return n ? n.charAt(0).toUpperCase() + n.slice(1) : code;
+  } catch {
+    return code;
+  }
+}
