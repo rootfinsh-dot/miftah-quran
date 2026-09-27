@@ -184,6 +184,33 @@ function RangeTool({ quran, french }: RangeToolProps) {
               </tbody>
             </table>
           </div>
+          <div className="surface-card p-5">
+            <h2 className="font-display text-xl font-semibold text-primary-deep">
+              Texte des versets ({formatNumber(result.verses!.length)})
+            </h2>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Chaque verset est affiché en arabe suivi de sa traduction française (Hamidullah).
+            </p>
+            <div className="mt-4 divide-y divide-border">
+              {result.verses!.map((v) => (
+                <div key={`${v.surah}:${v.numberInSurah}`} className="py-4">
+                  <p className="text-xs font-medium uppercase tracking-[0.15em] text-gold">
+                    {v.surah}:{v.numberInSurah} — {v.surahName}
+                  </p>
+                  <p className="mt-2 font-arabic text-2xl leading-loose" dir="rtl" lang="ar">
+                    {v.text}
+                  </p>
+                  {v.french ? (
+                    <p className="mt-2 text-sm text-muted-foreground">{v.french}</p>
+                  ) : (
+                    <p className="mt-2 text-sm text-muted-foreground italic">
+                      Traduction en cours de chargement…
+                    </p>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
         </>
       )}
     </div>
