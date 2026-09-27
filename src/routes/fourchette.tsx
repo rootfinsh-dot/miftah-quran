@@ -33,6 +33,7 @@ export const Route = createFileRoute("/fourchette")({
 
 function FourchettePage() {
   const arabic = useArabicQuran();
+  const french = useFrenchQuran();
   return (
     <div className="pb-10">
       <PageHeader
@@ -40,7 +41,9 @@ function FourchettePage() {
         title="Comptage par fourchette"
         description="Indiquez une position de départ et une position d'arrivée (sourate et verset) : l'outil compte les versets compris entre les deux, bornes incluses."
       />
-      <DataGate query={arabic}>{(quran) => <RangeTool quran={quran} />}</DataGate>
+      <DataGate query={arabic}>
+        {(quran) => <RangeTool quran={quran} french={french.data} />}
+      </DataGate>
     </div>
   );
 }
