@@ -136,7 +136,8 @@ function RangeTool({ quran }: { quran: QuranEdition }) {
       ) : (
         <>
           <p className="text-muted-foreground">
-            De {result.fs}:{result.fa} à {result.ts}:{result.ta} (bornes incluses)
+            De {quran.surahs[result.fs! - 1]!.name} ({result.fs}:{result.fa}) à{" "}
+            {quran.surahs[result.ts! - 1]!.name} ({result.ts}:{result.ta}) — bornes incluses
           </p>
           <div className="grid gap-4 sm:grid-cols-3">
             <StatCard label="Versets" value={formatNumber(result.ayahs!)} />
