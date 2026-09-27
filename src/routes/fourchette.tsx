@@ -1,7 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 
-import { DataGate, PageHeader, StatCard, useArabicQuran } from "@/components/quran-shell";
+import {
+  DataGate,
+  PageHeader,
+  StatCard,
+  useArabicQuran,
+  useFrenchQuran,
+} from "@/components/quran-shell";
 import { formatNumber, letters, words, type QuranEdition } from "@/lib/quran";
 
 export const Route = createFileRoute("/fourchette")({
