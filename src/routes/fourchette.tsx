@@ -53,7 +53,9 @@ function clamp(n: number, min: number, max: number) {
   return Math.min(Math.max(n, min), max);
 }
 
-function RangeTool({ quran }: { quran: QuranEdition }) {
+type RangeToolProps = { quran: QuranEdition; french: QuranEdition | undefined };
+
+function RangeTool({ quran, french }: RangeToolProps) {
   const [s1, setS1] = useState(1);
   const [a1, setA1] = useState(1);
   const [s2, setS2] = useState(2);
@@ -68,9 +70,11 @@ function RangeTool({ quran }: { quran: QuranEdition }) {
     const end = ts * 1000 + ta;
     if (start > end) return { error: "La position de départ doit précéder la position d'arrivée." };
     const rows: { number: number; name: string; count: number }[] = [];
+    const verses: { surah: number; surahName: string; numberInSurah: number; text: string; french: string | undefined }[] = [];
     let ayahs = 0, w = 0, l = 0;
     for (let s = fs; s <= ts; s++) {
       const surah = quran.surahs[s - 1]!;
+      const frenchSurah = french?.surahs[s - 1];
       const from = s === fs ? fa : 1;
       const to = s === ts ? ta : surah.ayahs.length;
       const slice = surah.ayahs.slice(from - 1, to);
@@ -78,11 +82,18 @@ function RangeTool({ quran }: { quran: QuranEdition }) {
       for (const a of slice) {
         w += words(a.text).length;
         l += letters(a.text).length;
+        verses.push({
+          surah: s,
+          surahName: surah.name,
+          numberInSurah: a.numberInSurah,
+          text: a.text,
+          french: frenchSurah?.ayahs[a.numberInSurah - 1]?.text,
+        });
       }
       rows.push({ number: s, name: surah.name, count: slice.length });
     }
-    return { fs, fa, ts, ta, ayahs, w, l, rows };
-  }, [quran, s1, a1, s2, a2]);
+    return { fs, fa, ts, ta, ayahs, w, l, rows, verses };
+  }, [quran, french, s1, a1, s2, a2]);
 
   const input = (label: string, value: number, set: (n: number) => void, max: number) => (
     <label className="flex flex-col gap-1 text-sm">
