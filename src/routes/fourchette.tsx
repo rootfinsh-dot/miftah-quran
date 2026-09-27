@@ -91,16 +91,42 @@ function RangeTool({ quran }: { quran: QuranEdition }) {
 
   const maxA = (s: number) => quran.surahs[clamp(s, 1, 114) - 1]!.ayahs.length;
 
+  const changeS1 = (n: number) => {
+    setS1(n);
+    setA1((a) => Math.min(a, maxA(n)));
+  };
+  const changeS2 = (n: number) => {
+    setS2(n);
+    setA2((a) => Math.min(a, maxA(n)));
+  };
+
+  const surahSelect = (label: string, value: number, set: (n: number) => void) => (
+    <label className="flex flex-col gap-1 text-sm">
+      <span className="text-muted-foreground">{label}</span>
+      <select
+        value={value}
+        onChange={(e) => set(parseInt(e.target.value, 10))}
+        className="max-w-56 rounded-md border border-border bg-background px-3 py-2"
+      >
+        {quran.surahs.map((s) => (
+          <option key={s.number} value={s.number}>
+            {s.number}. {s.name} ({s.englishNameTranslation})
+          </option>
+        ))}
+      </select>
+    </label>
+  );
+
   return (
     <div className="mx-auto mt-8 max-w-6xl space-y-6 px-5">
       <div className="surface-card flex flex-wrap items-end gap-6 p-6">
         <div className="flex gap-3">
-          {input("Sourate de début", s1, setS1, 114)}
+          {surahSelect("Sourate de départ", s1, changeS1)}
           {input(`Verset (max ${maxA(s1)})`, a1, setA1, maxA(s1))}
         </div>
         <span className="pb-2 text-2xl text-gold">→</span>
         <div className="flex gap-3">
-          {input("Sourate de fin", s2, setS2, 114)}
+          {surahSelect("Sourate d'arrivée", s2, changeS2)}
           {input(`Verset (max ${maxA(s2)})`, a2, setA2, maxA(s2))}
         </div>
       </div>
@@ -110,7 +136,8 @@ function RangeTool({ quran }: { quran: QuranEdition }) {
       ) : (
         <>
           <p className="text-muted-foreground">
-            De {result.fs}:{result.fa} à {result.ts}:{result.ta} (bornes incluses)
+            De {quran.surahs[result.fs! - 1]!.name} ({result.fs}:{result.fa}) à{" "}
+            {quran.surahs[result.ts! - 1]!.name} ({result.ts}:{result.ta}) — bornes incluses
           </p>
           <div className="grid gap-4 sm:grid-cols-3">
             <StatCard label="Versets" value={formatNumber(result.ayahs!)} />
