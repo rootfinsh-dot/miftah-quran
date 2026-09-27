@@ -6,7 +6,6 @@ import {
   PageHeader,
   StatCard,
   useArabicQuran,
-  useFrenchQuran,
 } from "@/components/quran-shell";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
