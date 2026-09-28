@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 
 import { DataGate, PageHeader, StatCard, useArabicQuran, useFrenchQuran } from "@/components/quran-shell";
+import { useT } from "@/lib/i18n";
 import {
   ABJAD,
   abjadBreakdown,
@@ -54,6 +55,7 @@ function Gematria({
   quran: QuranEdition;
   translation: QuranEdition | undefined;
 }) {
+  const t = useT();
   const [text, setText] = useState("بسم الله الرحمن الرحيم");
   const [surahNumber, setSurahNumber] = useState(1);
   const [ayahNumber, setAyahNumber] = useState(1);
@@ -76,7 +78,7 @@ function Gematria({
     <div className="mx-auto mt-10 max-w-6xl space-y-10 px-5">
       <div className="surface-card p-6">
         <label className="block text-sm">
-          <span className="mb-2 block font-medium">Texte arabe à évaluer</span>
+          <span className="mb-2 block font-medium">{t("Texte arabe à évaluer")}</span>
           <textarea
             value={text}
             onChange={(e) => setText(e.target.value)}
@@ -94,7 +96,7 @@ function Gematria({
 
       <div className="grid gap-6 lg:grid-cols-2">
         <div className="surface-card p-6">
-          <h2 className="text-xl font-semibold text-primary-deep">Détail lettre par lettre</h2>
+          <h2 className="text-xl font-semibold text-primary-deep">{t("Détail lettre par lettre")}</h2>
           <div className="mt-4 flex flex-wrap gap-2" dir="rtl">
             {breakdown.map((b, i) => (
               <span
@@ -109,7 +111,7 @@ function Gematria({
         </div>
 
         <div className="surface-card p-6">
-          <h2 className="text-xl font-semibold text-primary-deep">Valeur par mot</h2>
+          <h2 className="text-xl font-semibold text-primary-deep">{t("Valeur par mot")}</h2>
           <ul className="mt-4 space-y-2 text-sm">
             {perWord.map((w, i) => (
               <li
@@ -125,10 +127,10 @@ function Gematria({
       </div>
 
       <div className="surface-card p-6">
-        <h2 className="text-xl font-semibold text-primary-deep">Valeur d'un verset</h2>
+        <h2 className="text-xl font-semibold text-primary-deep">{t("Valeur d'un verset")}</h2>
         <div className="mt-4 flex flex-wrap items-end gap-4 text-sm">
           <label>
-            <span className="mb-2 block font-medium">Sourate</span>
+            <span className="mb-2 block font-medium">{t("Sourate")}</span>
             <select
               value={surahNumber}
               onChange={(e) => {
@@ -145,7 +147,7 @@ function Gematria({
             </select>
           </label>
           <label>
-            <span className="mb-2 block font-medium">Verset (1 – {ayahCount})</span>
+            <span className="mb-2 block font-medium">{t("Verset (1 – {n})", { n: ayahCount })}</span>
             <input
               type="number"
               min={1}
@@ -159,7 +161,7 @@ function Gematria({
             onClick={() => ayah && setText(ayah.text)}
             className="btn-emerald px-5 py-2.5 font-medium"
           >
-            Analyser ce verset ci-dessus
+            {t("Analyser ce verset ci-dessus")}
           </button>
         </div>
         {ayah ? (
@@ -167,14 +169,14 @@ function Gematria({
             <p className="arabic text-2xl">{ayah.text}</p>
             <p className="mt-3 text-sm text-muted-foreground">{ayahTranslation}</p>
             <p className="mt-4 font-display text-2xl text-primary-deep">
-              Valeur abjad : {formatNumber(ayahValue)}
+              {t("Valeur abjad : {n}", { n: formatNumber(ayahValue) })}
             </p>
           </div>
         ) : null}
       </div>
 
       <div className="surface-card p-6">
-        <h2 className="text-xl font-semibold text-primary-deep">Table abjad de référence</h2>
+        <h2 className="text-xl font-semibold text-primary-deep">{t("Table abjad de référence")}</h2>
         <div className="mt-4 grid grid-cols-3 gap-2 sm:grid-cols-6 lg:grid-cols-9">
           {Object.entries(ABJAD)
             .filter(([letter]) => letter !== "ء")

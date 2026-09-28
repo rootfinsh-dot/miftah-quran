@@ -1,3 +1,31 @@
 import type { Dict } from "@/lib/i18n";
 
-export const fourchette: Dict = {};
+export const fourchette: Dict = {
+  "Outil 5": { ar: "الأداة 5", en: "Tool 5", tr: "Araç 5", ur: "آلہ 5", id: "Alat 5", es: "Herramienta 5", de: "Werkzeug 5" },
+  "Comptage par fourchette": { ar: "العدّ حسب النطاق", en: "Range counting", tr: "Aralığa göre sayım", ur: "حد کے مطابق شمار", id: "Penghitungan berdasarkan rentang", es: "Recuento por rango", de: "Zählung nach Bereich" },
+  "Indiquez une position de départ et une position d'arrivée (sourate et verset) : l'outil compte les versets compris entre les deux, bornes incluses.": {
+    ar: "حدّد موضع بداية وموضع نهاية (السورة والآية): تحسب الأداة الآيات الواقعة بينهما، بما في ذلك الحدّين.",
+    en: "Specify a starting position and an ending position (surah and verse): the tool counts the verses between the two, inclusive.",
+    tr: "Bir başlangıç ve bir bitiş konumu (sure ve ayet) belirtin: araç, sınırlar dahil olmak üzere ikisi arasındaki ayetleri sayar.",
+    ur: "ایک ابتدائی اور ایک اختتامی مقام (سورہ اور آیت) بتائیں: یہ آلہ دونوں کے درمیان کی آیات شمار کرتا ہے، حدود سمیت۔",
+    id: "Tentukan posisi awal dan posisi akhir (surah dan ayat): alat ini menghitung ayat di antara keduanya, termasuk batasnya.",
+    es: "Indique una posición de inicio y una posición final (sura y versículo): la herramienta cuenta los versículos entre ambos, límites incluidos.",
+    de: "Geben Sie eine Start- und eine Endposition (Sure und Vers) an: Das Tool zählt die Verse zwischen beiden, Grenzen eingeschlossen.",
+  },
+  "Langue de la traduction": { ar: "لغة الترجمة", en: "Translation language", tr: "Çeviri dili", ur: "ترجمہ کی زبان", id: "Bahasa terjemahan", es: "Idioma de la traducción", de: "Übersetzungssprache" },
+  "{n} traductions disponibles": { ar: "{n} ترجمة متاحة", en: "{n} translations available", tr: "{n} çeviri mevcut", ur: "{n} تراجم دستیاب ہیں", id: "{n} terjemahan tersedia", es: "{n} traducciones disponibles", de: "{n} Übersetzungen verfügbar" },
+  "La position de départ doit précéder la position d'arrivée.": { ar: "يجب أن يسبق موضع البداية موضع النهاية.", en: "The starting position must come before the ending position.", tr: "Başlangıç konumu, bitiş konumundan önce olmalıdır.", ur: "ابتدائی مقام کو اختتامی مقام سے پہلے ہونا چاہیے۔", id: "Posisi awal harus mendahului posisi akhir.", es: "La posición de inicio debe preceder a la posición final.", de: "Die Startposition muss vor der Endposition liegen." },
+  "Sourate de départ": { ar: "سورة البداية", en: "Starting surah", tr: "Başlangıç suresi", ur: "ابتدائی سورہ", id: "Surah awal", es: "Sura de inicio", de: "Start-Sure" },
+  "Verset (max {n})": { ar: "الآية (الحد الأقصى {n})", en: "Verse (max {n})", tr: "Ayet (maks {n})", ur: "آیت (زیادہ سے زیادہ {n})", id: "Ayat (maks {n})", es: "Versículo (máx. {n})", de: "Vers (max. {n})" },
+  "Sourate d'arrivée": { ar: "سورة النهاية", en: "Ending surah", tr: "Bitiş suresi", ur: "اختتامی سورہ", id: "Surah akhir", es: "Sura final", de: "End-Sure" },
+  "De {a} ({fs}:{fa}) à {b} ({ts}:{ta}) — bornes incluses": { ar: "من {a} ({fs}:{fa}) إلى {b} ({ts}:{ta}) — شاملاً الحدّين", en: "From {a} ({fs}:{fa}) to {b} ({ts}:{ta}) — inclusive", tr: "{a} ({fs}:{fa}) konumundan {b} ({ts}:{ta}) konumuna — sınırlar dahil", ur: "{a} ({fs}:{fa}) سے {b} ({ts}:{ta}) تک — حدود سمیت", id: "Dari {a} ({fs}:{fa}) ke {b} ({ts}:{ta}) — termasuk batas", es: "De {a} ({fs}:{fa}) a {b} ({ts}:{ta}) — límites incluidos", de: "Von {a} ({fs}:{fa}) bis {b} ({ts}:{ta}) — Grenzen eingeschlossen" },
+  Versets: { ar: "الآيات", en: "Verses", tr: "Ayetler", ur: "آیات", id: "Ayat", es: "Versículos", de: "Verse" },
+  Mots: { ar: "الكلمات", en: "Words", tr: "Kelimeler", ur: "الفاظ", id: "Kata", es: "Palabras", de: "Wörter" },
+  Lettres: { ar: "الحروف", en: "Letters", tr: "Harfler", ur: "حروف", id: "Huruf", es: "Letras", de: "Buchstaben" },
+  "N°": { ar: "الرقم", en: "No.", tr: "No", ur: "نمبر", id: "No.", es: "N.º", de: "Nr." },
+  Sourate: { ar: "السورة", en: "Surah", tr: "Sure", ur: "سورہ", id: "Surah", es: "Sura", de: "Sure" },
+  "Versets comptés": { ar: "الآيات المعدودة", en: "Verses counted", tr: "Sayılan ayetler", ur: "شمار کردہ آیات", id: "Ayat dihitung", es: "Versículos contados", de: "Gezählte Verse" },
+  "Texte des versets ({n})": { ar: "نص الآيات ({n})", en: "Verse text ({n})", tr: "Ayet metni ({n})", ur: "آیات کا متن ({n})", id: "Teks ayat ({n})", es: "Texto de los versículos ({n})", de: "Verstext ({n})" },
+  "Chaque verset est affiché en arabe suivi de sa traduction ({label}).": { ar: "تُعرض كل آية بالعربية متبوعة بترجمتها ({label}).", en: "Each verse is shown in Arabic followed by its translation ({label}).", tr: "Her ayet Arapça olarak ve ardından çevirisiyle ({label}) gösterilir.", ur: "ہر آیت عربی میں دکھائی جاتی ہے جس کے بعد اس کا ترجمہ ({label}) ہوتا ہے۔", id: "Setiap ayat ditampilkan dalam bahasa Arab diikuti terjemahannya ({label}).", es: "Cada versículo se muestra en árabe seguido de su traducción ({label}).", de: "Jeder Vers wird auf Arabisch gefolgt von seiner Übersetzung ({label}) angezeigt." },
+  "Traduction en cours de chargement…": { ar: "الترجمة قيد التحميل…", en: "Translation loading…", tr: "Çeviri yükleniyor…", ur: "ترجمہ لوڈ ہو رہا ہے…", id: "Terjemahan sedang dimuat…", es: "Cargando traducción…", de: "Übersetzung wird geladen…" },
+};

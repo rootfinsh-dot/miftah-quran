@@ -1,3 +1,38 @@
 import type { Dict } from "@/lib/i18n";
 
-export const comptage: Dict = {};
+export const comptage: Dict = {
+  "Outil 1": { ar: "الأداة 1", en: "Tool 1", tr: "Araç 1", ur: "آلہ 1", id: "Alat 1", es: "Herramienta 1", de: "Werkzeug 1" },
+  "Comptage de mots et de lettres": { ar: "عدّ الكلمات والحروف", en: "Word and letter counting", tr: "Kelime ve harf sayımı", ur: "الفاظ اور حروف کی گنتی", id: "Penghitungan kata dan huruf", es: "Recuento de palabras y letras", de: "Zählung von Wörtern und Buchstaben" },
+  "Saisissez un mot arabe pour connaître son nombre d'occurrences dans l'ensemble du Coran et sa répartition par sourate. La fréquence de chaque lettre de l'alphabet est également calculée.": {
+    ar: "أدخل كلمة عربية لمعرفة عدد مرات ورودها في القرآن كله وتوزيعها حسب السور. تُحسب أيضًا تكرار كل حرف من الأبجدية.",
+    en: "Enter an Arabic word to find out how many times it occurs across the entire Quran and its distribution by surah. The frequency of each letter of the alphabet is also calculated.",
+    tr: "Bir Arapça kelime girerek Kur'an'ın tamamında kaç kez geçtiğini ve surelere göre dağılımını öğrenin. Alfabedeki her harfin sıklığı da hesaplanır.",
+    ur: "قرآن مجید بھر میں کسی عربی لفظ کے وقوع کی تعداد اور سورت وار تقسیم جاننے کے لیے وہ لفظ درج کریں۔ حروفِ تہجی کے ہر حرف کی تعدد بھی شمار کی جاتی ہے۔",
+    id: "Masukkan kata Arab untuk mengetahui berapa kali kemunculannya di seluruh Al-Qur'an dan distribusinya per surah. Frekuensi setiap huruf alfabet juga dihitung.",
+    es: "Introduzca una palabra árabe para conocer su número de apariciones en todo el Corán y su distribución por sura. También se calcula la frecuencia de cada letra del alfabeto.",
+    de: "Geben Sie ein arabisches Wort ein, um zu erfahren, wie oft es im gesamten Koran vorkommt und wie es sich auf die Suren verteilt. Auch die Häufigkeit jedes Buchstabens des Alphabets wird berechnet.",
+  },
+  "Mot ou lettre en arabe": { ar: "كلمة أو حرف بالعربية", en: "Word or letter in Arabic", tr: "Arapça kelime veya harf", ur: "عربی لفظ یا حرف", id: "Kata atau huruf dalam bahasa Arab", es: "Palabra o letra en árabe", de: "Wort oder Buchstabe auf Arabisch" },
+  "Mot entier uniquement": { ar: "الكلمة كاملة فقط", en: "Whole word only", tr: "Yalnızca tam kelime", ur: "صرف مکمل لفظ", id: "Hanya kata utuh", es: "Solo palabra completa", de: "Nur ganzes Wort" },
+  "Compter": { ar: "عدّ", en: "Count", tr: "Say", ur: "شمار کریں", id: "Hitung", es: "Contar", de: "Zählen" },
+  "Exemples :": { ar: "أمثلة:", en: "Examples:", tr: "Örnekler:", ur: "مثالیں:", id: "Contoh:", es: "Ejemplos:", de: "Beispiele:" },
+  "Occurrences totales": { ar: "مجموع الوقوعات", en: "Total occurrences", tr: "Toplam geçiş sayısı", ur: "کل وقوعات", id: "Total kemunculan", es: "Ocurrencias totales", de: "Gesamtvorkommen" },
+  "Versets concernés": { ar: "الآيات المعنية", en: "Verses concerned", tr: "İlgili ayetler", ur: "متعلقہ آیات", id: "Ayat terkait", es: "Versículos afectados", de: "Betroffene Verse" },
+  "Sourates concernées": { ar: "السور المعنية", en: "Surahs concerned", tr: "İlgili sureler", ur: "متعلقہ سورتیں", id: "Surah terkait", es: "Suras afectadas", de: "Betroffene Suren" },
+  "Aucune occurrence trouvée pour ce terme.": { ar: "لم يُعثر على أي وقوع لهذا المصطلح.", en: "No occurrence found for this term.", tr: "Bu terim için hiçbir geçiş bulunamadı.", ur: "اس اصطلاح کے لیے کوئی وقوع نہیں ملا۔", id: "Tidak ditemukan kemunculan untuk istilah ini.", es: "No se encontró ninguna aparición para este término.", de: "Für diesen Begriff wurde kein Vorkommen gefunden." },
+  "Répartition par sourate": { ar: "التوزيع حسب السورة", en: "Distribution by surah", tr: "Surelere göre dağılım", ur: "سورت وار تقسیم", id: "Distribusi per surah", es: "Distribución por sura", de: "Verteilung nach Sure" },
+  "Versets contenant le terme": { ar: "الآيات المحتوية على المصطلح", en: "Verses containing the term", tr: "Terimi içeren ayetler", ur: "اصطلاح پر مشتمل آیات", id: "Ayat yang mengandung istilah", es: "Versículos que contienen el término", de: "Verse, die den Begriff enthalten" },
+  "(300 premiers)": { ar: "(أول 300)", en: "(first 300)", tr: "(ilk 300)", ur: "(پہلے 300)", id: "(300 pertama)", es: "(primeros 300)", de: "(erste 300)" },
+  "Sourate {surah}, verset {ayah} · {count} occurrence": { ar: "السورة {surah}، الآية {ayah} · {count} وقوع", en: "Surah {surah}, verse {ayah} · {count} occurrence", tr: "Sure {surah}, ayet {ayah} · {count} geçiş", ur: "سورہ {surah}، آیت {ayah} · {count} وقوع", id: "Surah {surah}, ayat {ayah} · {count} kemunculan", es: "Sura {surah}, versículo {ayah} · {count} ocurrencia", de: "Sure {surah}, Vers {ayah} · {count} Vorkommen" },
+  "Sourate {surah}, verset {ayah} · {count} occurrences": { ar: "السورة {surah}، الآية {ayah} · {count} وقوعات", en: "Surah {surah}, verse {ayah} · {count} occurrences", tr: "Sure {surah}, ayet {ayah} · {count} geçiş", ur: "سورہ {surah}، آیت {ayah} · {count} وقوعات", id: "Surah {surah}, ayat {ayah} · {count} kemunculan", es: "Sura {surah}, versículo {ayah} · {count} ocurrencias", de: "Sure {surah}, Vers {ayah} · {count} Vorkommen" },
+  "Fréquence des {n} lettres": { ar: "تكرار {n} حرفًا", en: "Frequency of the {n} letters", tr: "{n} harfin sıklığı", ur: "{n} حروف کی تعدد", id: "Frekuensi {n} huruf", es: "Frecuencia de las {n} letras", de: "Häufigkeit der {n} Buchstaben" },
+  "Part de chaque lettre dans l'ensemble des lettres du texte.": {
+    ar: "نسبة كل حرف من مجموع حروف النص.",
+    en: "Share of each letter among all the letters of the text.",
+    tr: "Metnin tüm harfleri arasında her harfin payı.",
+    ur: "متن کے تمام حروف میں سے ہر حرف کا حصہ۔",
+    id: "Proporsi setiap huruf dari keseluruhan huruf teks.",
+    es: "Proporción de cada letra dentro del conjunto de letras del texto.",
+    de: "Anteil jedes Buchstabens an allen Buchstaben des Textes.",
+  },
+};

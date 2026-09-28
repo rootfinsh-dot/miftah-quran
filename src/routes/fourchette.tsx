@@ -9,6 +9,7 @@ import {
 } from "@/components/quran-shell";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
+import { useT } from "@/lib/i18n";
 import {
   formatNumber,
   languageName,
@@ -42,6 +43,7 @@ export const Route = createFileRoute("/fourchette")({
 });
 
 function FourchettePage() {
+  const t = useT();
   const arabic = useArabicQuran();
   const [edition, setEdition] = useState("fr.hamidullah");
   useEffect(() => {
@@ -64,7 +66,7 @@ function FourchettePage() {
       />
       <div className="mx-auto mt-6 max-w-6xl px-5">
         <label className="surface-card flex flex-col gap-2 p-4 sm:flex-row sm:items-center">
-          <span className="text-sm font-medium text-primary-deep">Langue de la traduction</span>
+          <span className="text-sm font-medium text-primary-deep">{t("Langue de la traduction")}</span>
           <select
             className="rounded-md border border-border bg-background px-3 py-2 text-sm sm:min-w-[22rem]"
             value={edition}
@@ -80,7 +82,7 @@ function FourchettePage() {
               ))}
           </select>
           {list.data ? (
-            <span className="text-xs text-muted-foreground">{list.data.length} traductions disponibles</span>
+            <span className="text-xs text-muted-foreground">{t("{n} traductions disponibles", { n: list.data.length })}</span>
           ) : null}
         </label>
       </div>
@@ -106,6 +108,7 @@ function clamp(n: number, min: number, max: number) {
 type RangeToolProps = { quran: QuranEdition; french: QuranEdition | undefined; label: string; rtl: boolean };
 
 function RangeTool({ quran, french, label, rtl }: RangeToolProps) {
+  const t = useT();
   const [s1, setS1] = useState(1);
   const [a1, setA1] = useState(1);
   const [s2, setS2] = useState(2);
@@ -145,9 +148,9 @@ function RangeTool({ quran, french, label, rtl }: RangeToolProps) {
     return { fs, fa, ts, ta, ayahs, w, l, rows, verses };
   }, [quran, french, s1, a1, s2, a2]);
 
-  const input = (label: string, value: number, set: (n: number) => void, max: number) => (
+  const input = (labelText: string, value: number, set: (n: number) => void, max: number) => (
     <label className="flex flex-col gap-1 text-sm">
-      <span className="text-muted-foreground">{label}</span>
+      <span className="text-muted-foreground">{labelText}</span>
       <input
         type="number"
         min={1}
@@ -170,9 +173,9 @@ function RangeTool({ quran, french, label, rtl }: RangeToolProps) {
     setA2((a) => Math.min(a, maxA(n)));
   };
 
-  const surahSelect = (label: string, value: number, set: (n: number) => void) => (
+  const surahSelect = (labelText: string, value: number, set: (n: number) => void) => (
     <label className="flex flex-col gap-1 text-sm">
-      <span className="text-muted-foreground">{label}</span>
+      <span className="text-muted-foreground">{labelText}</span>
       <select
         value={value}
         onChange={(e) => set(parseInt(e.target.value, 10))}
@@ -191,23 +194,29 @@ function RangeTool({ quran, french, label, rtl }: RangeToolProps) {
     <div className="mx-auto mt-8 max-w-6xl space-y-6 px-5">
       <div className="surface-card flex flex-wrap items-end gap-6 p-6">
         <div className="flex gap-3">
-          {surahSelect("Sourate de départ", s1, changeS1)}
-          {input(`Verset (max ${maxA(s1)})`, a1, setA1, maxA(s1))}
+          {surahSelect(t("Sourate de départ"), s1, changeS1)}
+          {input(t("Verset (max {n})", { n: maxA(s1) }), a1, setA1, maxA(s1))}
         </div>
         <span className="pb-2 text-2xl text-gold">→</span>
         <div className="flex gap-3">
-          {surahSelect("Sourate d'arrivée", s2, changeS2)}
-          {input(`Verset (max ${maxA(s2)})`, a2, setA2, maxA(s2))}
+          {surahSelect(t("Sourate d'arrivée"), s2, changeS2)}
+          {input(t("Verset (max {n})", { n: maxA(s2) }), a2, setA2, maxA(s2))}
         </div>
       </div>
 
       {"error" in result ? (
-        <p className="surface-card p-6 text-destructive">{result.error}</p>
+        <p className="surface-card p-6 text-destructive">{t(result.error)}</p>
       ) : (
         <>
           <p className="text-muted-foreground">
-            De {quran.surahs[result.fs! - 1]!.name} ({result.fs}:{result.fa}) à{" "}
-            {quran.surahs[result.ts! - 1]!.name} ({result.ts}:{result.ta}) — bornes incluses
+            {t("De {a} ({fs}:{fa}) à {b} ({ts}:{ta}) — bornes incluses", {
+              a: quran.surahs[result.fs! - 1]!.name,
+              fs: result.fs!,
+              fa: result.fa!,
+              b: quran.surahs[result.ts! - 1]!.name,
+              ts: result.ts!,
+              ta: result.ta!,
+            })}
           </p>
           <div className="grid gap-4 sm:grid-cols-3">
             <StatCard label="Versets" value={formatNumber(result.ayahs!)} />
@@ -218,9 +227,9 @@ function RangeTool({ quran, french, label, rtl }: RangeToolProps) {
             <table className="w-full text-sm">
               <thead>
                 <tr className="text-left text-muted-foreground">
-                  <th className="p-2">N°</th>
-                  <th className="p-2">Sourate</th>
-                  <th className="p-2 text-right">Versets comptés</th>
+                  <th className="p-2">{t("N°")}</th>
+                  <th className="p-2">{t("Sourate")}</th>
+                  <th className="p-2 text-right">{t("Versets comptés")}</th>
                 </tr>
               </thead>
               <tbody>
@@ -236,10 +245,10 @@ function RangeTool({ quran, french, label, rtl }: RangeToolProps) {
           </div>
           <div className="surface-card p-5">
             <h2 className="font-display text-xl font-semibold text-primary-deep">
-              Texte des versets ({formatNumber(result.verses!.length)})
+              {t("Texte des versets ({n})", { n: formatNumber(result.verses!.length) })}
             </h2>
             <p className="mt-1 text-sm text-muted-foreground">
-              Chaque verset est affiché en arabe suivi de sa traduction ({label}).
+              {t("Chaque verset est affiché en arabe suivi de sa traduction ({label}).", { label })}
             </p>
             <div className="mt-4 divide-y divide-border">
               {result.verses!.map((v) => (
@@ -254,7 +263,7 @@ function RangeTool({ quran, french, label, rtl }: RangeToolProps) {
                     <p className="mt-2 text-sm text-muted-foreground" dir={rtl ? "rtl" : "ltr"}>{v.french}</p>
                   ) : (
                     <p className="mt-2 text-sm text-muted-foreground italic">
-                      Traduction en cours de chargement…
+                      {t("Traduction en cours de chargement…")}
                     </p>
                   )}
                 </div>
