@@ -1,5 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 
+import { useT } from "@/lib/i18n";
+
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
@@ -49,6 +51,7 @@ const CARDS = [
 ];
 
 function Index() {
+  const t = useT();
   return (
     <div>
       <section className="emerald-panel relative overflow-hidden">
@@ -62,25 +65,25 @@ function Index() {
         />
         <div className="relative mx-auto max-w-6xl px-5 py-20 sm:py-28">
           <p className="text-xs uppercase tracking-[0.3em] text-gold-soft">
-            Lecture quantitative du texte
+            {t("Lecture quantitative du texte")}
           </p>
           <h1 className="mt-5 max-w-3xl text-4xl font-semibold leading-tight sm:text-6xl">
-            Mesurer, compter et comparer le texte du Coran
+            {t("Mesurer, compter et comparer le texte du Coran")}
           </h1>
           <p className="mt-6 max-w-2xl text-base text-primary-foreground/85 sm:text-lg">
-            Miftah calcule directement sur le texte arabe intégral (recension Uthmani) et affiche
-            la traduction française à côté de chaque verset. Toutes les analyses sont transparentes
-            et reproductibles.
+            {t(
+              "Miftah calcule directement sur le texte arabe intégral (recension Uthmani) et affiche la traduction française à côté de chaque verset. Toutes les analyses sont transparentes et reproductibles.",
+            )}
           </p>
           <div className="mt-9 flex flex-wrap gap-3">
             <Link to="/comptage" className="btn-emerald border border-gold/40 px-6 py-3 font-medium">
-              Lancer une analyse
+              {t("Lancer une analyse")}
             </Link>
             <Link
               to="/statistiques"
               className="inline-flex items-center rounded-md border border-primary-foreground/30 px-6 py-3 font-medium transition-colors hover:bg-primary-foreground/10"
             >
-              Voir les statistiques
+              {t("Voir les statistiques")}
             </Link>
           </div>
           <p className="arabic mt-12 text-2xl text-gold-soft">
@@ -90,7 +93,7 @@ function Index() {
       </section>
 
       <section className="mx-auto max-w-6xl px-5 py-16">
-        <h2 className="text-3xl font-semibold text-primary-deep">Quatre outils d'analyse</h2>
+        <h2 className="text-3xl font-semibold text-primary-deep">{t("Quatre outils d'analyse")}</h2>
         <div className="gold-rule mt-4 w-20" />
         <div className="mt-10 grid gap-5 sm:grid-cols-2">
           {CARDS.map((card) => (
@@ -99,10 +102,10 @@ function Index() {
               to={card.to}
               className="surface-card group p-6 transition-transform hover:-translate-y-1"
             >
-              <h3 className="text-xl font-semibold text-primary-deep">{card.title}</h3>
-              <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{card.text}</p>
+              <h3 className="text-xl font-semibold text-primary-deep">{t(card.title)}</h3>
+              <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{t(card.text)}</p>
               <span className="mt-5 inline-block text-sm font-medium text-primary group-hover:text-gold">
-                Ouvrir →
+                {t("Ouvrir →")}
               </span>
             </Link>
           ))}
@@ -111,19 +114,20 @@ function Index() {
 
       <section className="mx-auto max-w-6xl px-5 pb-8">
         <div className="surface-card p-8">
-          <h2 className="text-2xl font-semibold text-primary-deep">Comment les comptages sont faits</h2>
+          <h2 className="text-2xl font-semibold text-primary-deep">{t("Comment les comptages sont faits")}</h2>
           <ul className="mt-5 space-y-3 text-sm leading-relaxed text-muted-foreground">
             <li>
-              Les signes diacritiques et les allongements sont retirés avant comparaison, et les
-              variantes de l'alif sont unifiées : les résultats ne dépendent donc pas de la
-              vocalisation.
+              {t(
+                "Les signes diacritiques et les allongements sont retirés avant comparaison, et les variantes de l'alif sont unifiées : les résultats ne dépendent donc pas de la vocalisation.",
+              )}
             </li>
             <li>
-              Un mot est une suite de caractères séparée par des espaces ; vous pouvez choisir la
-              recherche exacte (mot entier) ou partielle (racine incluse dans un mot).
+              {t(
+                "Un mot est une suite de caractères séparée par des espaces ; vous pouvez choisir la recherche exacte (mot entier) ou partielle (racine incluse dans un mot).",
+              )}
             </li>
             <li>
-              Les valeurs numériques suivent la table abjad classique (ا=1, ب=2, ج=3, … غ=1000).
+              {t("Les valeurs numériques suivent la table abjad classique (ا=1, ب=2, ج=3, … غ=1000).")}
             </li>
           </ul>
         </div>
