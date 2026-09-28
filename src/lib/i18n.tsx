@@ -1,6 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from "react";
 
-import { DICTIONARY } from "@/locales";
+import { DICTIONARY } from "@/locales/all";
 
 export const LANGUAGES = [
   { code: "fr", label: "Français", rtl: false },
