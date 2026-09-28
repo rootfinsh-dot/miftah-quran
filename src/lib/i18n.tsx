@@ -61,8 +61,7 @@ export function I18nProvider({ children }: { children: ReactNode }) {
 
 export function useI18n() {
   const ctx = useContext(I18nContext);
-  if (!ctx) throw new Error("useI18n must be used inside I18nProvider");
-  return ctx;
+  return ctx ?? { lang: "fr" as Lang, setLang: () => {}, t: (fr: string, vars?: Record<string, string | number>) => interpolate(fr, vars) };
 }
 
 export function useT() {

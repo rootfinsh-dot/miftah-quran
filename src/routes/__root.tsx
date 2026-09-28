@@ -14,7 +14,6 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { I18nProvider, LANGUAGES, useI18n, useT, type Lang } from "../lib/i18n";
 
 function NotFoundComponent() {
-  const t = useT();
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
@@ -124,14 +123,33 @@ const NAV = [
   { to: "/fourchette", label: "Fourchette" },
 ] as const;
 
+function LanguageSelect() {
+  const { lang, setLang } = useI18n();
+  return (
+    <select
+      aria-label="Langue"
+      value={lang}
+      onChange={(e) => setLang(e.target.value as Lang)}
+      className="rounded-md border border-border bg-card px-2 py-1.5 text-sm text-primary-deep"
+    >
+      {LANGUAGES.map((l) => (
+        <option key={l.code} value={l.code}>
+          {l.label}
+        </option>
+      ))}
+    </select>
+  );
+}
+
 function SiteHeader() {
+  const t = useT();
   return (
     <header className="sticky top-0 z-50 border-b border-border/70 bg-background/85 backdrop-blur">
       <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-5 py-4">
         <Link to="/" className="flex items-baseline gap-2">
           <span className="font-display text-2xl font-semibold text-primary-deep">Miftah</span>
           <span className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
-            analyse du Coran
+            {t("analyse du Coran")}
           </span>
         </Link>
         <nav className="flex flex-wrap items-center gap-1 text-sm">
@@ -142,9 +160,10 @@ function SiteHeader() {
               className="rounded-md px-3 py-1.5 text-muted-foreground transition-colors hover:bg-secondary hover:text-primary-deep"
               activeProps={{ className: "bg-secondary text-primary-deep font-semibold" }}
             >
-              {item.label}
+              {t(item.label)}
             </Link>
           ))}
+          <LanguageSelect />
         </nav>
       </div>
     </header>
@@ -152,13 +171,15 @@ function SiteHeader() {
 }
 
 function SiteFooter() {
+  const t = useT();
   return (
     <footer className="mt-20 border-t border-border/70 bg-card/60">
       <div className="mx-auto max-w-6xl px-5 py-8 text-sm text-muted-foreground">
         <div className="gold-rule mb-5 w-16" />
         <p>
-          Texte arabe : recension Uthmani. Traduction française : Muhammad Hamidullah. Les
-          résultats sont calculés à la volée et dépendent des règles de comptage choisies.
+          {t(
+            "Texte arabe : recension Uthmani. Traduction française : Muhammad Hamidullah. Les résultats sont calculés à la volée et dépendent des règles de comptage choisies.",
+          )}
         </p>
       </div>
     </footer>
@@ -170,6 +191,7 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <I18nProvider>
       <div className="flex min-h-screen flex-col">
         <SiteHeader />
         <main className="flex-1">
@@ -178,6 +200,7 @@ function RootComponent() {
         </main>
         <SiteFooter />
       </div>
+      </I18nProvider>
     </QueryClientProvider>
   );
 }
