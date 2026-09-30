@@ -1,9 +1,10 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider, useQueryClient } from "@tanstack/react-query";
 import {
   Outlet,
   Link,
   createRootRouteWithContext,
   useRouter,
+  useNavigate,
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
@@ -12,6 +13,8 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { I18nProvider, LANGUAGES, useI18n, useT, type Lang } from "../lib/i18n";
+import { useUser } from "../lib/auth";
+import { supabase } from "@/integrations/supabase/client";
 
 function NotFoundComponent() {
   return (
@@ -141,6 +144,37 @@ function LanguageSelect() {
   );
 }
 
+function AccountButton() {
+  const t = useT();
+  const { user } = useUser();
+  const navigate = useNavigate();
+  const qc = useQueryClient();
+  if (!user)
+    return (
+      <Link to="/auth" className="btn-emerald px-3 py-1.5 text-sm font-medium">
+        {t("Connexion")}
+      </Link>
+    );
+  return (
+    <>
+      <Link to="/dashboard" className="btn-emerald px-3 py-1.5 text-sm font-medium">
+        {t("Mon espace")}
+      </Link>
+      <button
+        onClick={async () => {
+          await qc.cancelQueries();
+          qc.clear();
+          await supabase.auth.signOut();
+          navigate({ to: "/auth", replace: true });
+        }}
+        className="rounded-md px-3 py-1.5 text-muted-foreground hover:bg-secondary"
+      >
+        {t("Déconnexion")}
+      </button>
+    </>
+  );
+}
+
 function SiteHeader() {
   const t = useT();
   return (
@@ -163,6 +197,10 @@ function SiteHeader() {
               {t(item.label)}
             </Link>
           ))}
+          <Link to="/pricing" className="rounded-md px-3 py-1.5 text-muted-foreground hover:bg-secondary hover:text-primary-deep" activeProps={{ className: "bg-secondary text-primary-deep font-semibold" }}>
+            {t("Tarifs")}
+          </Link>
+          <AccountButton />
           <LanguageSelect />
         </nav>
       </div>
