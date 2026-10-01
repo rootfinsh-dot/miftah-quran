@@ -2,6 +2,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 
 import { DataGate, PageHeader, StatCard, useArabicQuran } from "@/components/quran-shell";
+import { ProGate, QuotaBadge, SaveAnalysisButton, useQuota } from "@/lib/entitlements";
+import { useT } from "@/lib/i18n";
 import {
   computeSurahStats,
   digitSum,
@@ -46,6 +48,17 @@ function MotifsPage() {
 function Patterns({ quran }: { quran: QuranEdition }) {
   const stats = useMemo(() => computeSurahStats(quran), [quran]);
   const [divisor, setDivisor] = useState(19);
+  const [draft, setDraft] = useState(19);
+  const [blocked, setBlocked] = useState(false);
+  const quota = useQuota("motifs.basic");
+  const tr = useT();
+  async function apply(n: number) {
+    setDraft(n);
+    if (n === divisor) return;
+    const ok = await quota.consume();
+    setBlocked(!ok);
+    if (ok) setDivisor(n);
+  }
 
   const totals = useMemo(
     () =>
@@ -83,21 +96,37 @@ function Patterns({ quran }: { quran: QuranEdition }) {
           <input
             type="number"
             min={2}
-            value={divisor}
-            onChange={(e) => setDivisor(Number(e.target.value) || 2)}
+            value={draft}
+            onChange={(e) => setDraft(Number(e.target.value) || 2)}
+            onKeyDown={(e) => e.key === "Enter" && apply(Math.max(2, draft))}
             className="field w-40 text-lg"
           />
         </label>
+        <button onClick={() => apply(Math.max(2, draft))} className="btn-emerald mt-3 px-4 py-2 text-sm font-medium">
+          {tr("Tester")}
+        </button>
         <div className="mt-3 flex flex-wrap gap-2 text-sm">
           {[7, 11, 19, 114].map((n) => (
             <button
               key={n}
-              onClick={() => setDivisor(n)}
+              onClick={() => apply(n)}
               className="rounded-md border border-border px-3 py-1 transition-colors hover:bg-secondary"
             >
               {n}
             </button>
           ))}
+        </div>
+        <div className="mt-4 space-y-2">
+          <QuotaBadge quota={quota} />
+          {blocked && (
+            <p className="text-sm text-destructive">{tr("Limite quotidienne atteinte pour les motifs numériques.")}</p>
+          )}
+          <SaveAnalysisButton
+            tool="motifs"
+            title={`${tr("Motifs numériques")} — ${tr("diviseur")} ${d}`}
+            params={{ divisor: d }}
+            summary={{ divisor: d, divisible: globalTests.filter((g) => g.divisible).map((g) => g.label), surahs: surahsDivisible.length }}
+          />
         </div>
       </div>
 
@@ -172,6 +201,7 @@ function Patterns({ quran }: { quran: QuranEdition }) {
           </div>
         </div>
 
+        <ProGate feature="motifs.advanced">
         <div className="surface-card p-6">
           <h2 className="text-xl font-semibold text-primary-deep">Symétries remarquables</h2>
           <div className="mt-4 space-y-3 text-sm">
@@ -200,6 +230,7 @@ function Patterns({ quran }: { quran: QuranEdition }) {
             </div>
           </div>
         </div>
+        </ProGate>
       </div>
 
       <p className="text-sm text-muted-foreground">

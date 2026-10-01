@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
+import { ProGate, SaveAnalysisButton } from "@/lib/entitlements";
 
 import {
   DataGate,
@@ -218,11 +219,18 @@ function RangeTool({ quran, french, label, rtl }: RangeToolProps) {
               ta: result.ta!,
             })}
           </p>
+          <SaveAnalysisButton
+            tool="fourchette"
+            title={`${t("Fourchette")} ${result.fs}:${result.fa} → ${result.ts}:${result.ta}`}
+            params={{ from: `${result.fs}:${result.fa}`, to: `${result.ts}:${result.ta}` }}
+            summary={{ ayahs: result.ayahs, words: result.w, letters: result.l }}
+          />
           <div className="grid gap-4 sm:grid-cols-3">
             <StatCard label="Versets" value={formatNumber(result.ayahs!)} />
             <StatCard label="Mots" value={formatNumber(result.w!)} />
             <StatCard label="Lettres" value={formatNumber(result.l!)} />
           </div>
+          <ProGate feature="fourchette.advanced">
           <div className="surface-card overflow-x-auto p-4">
             <table className="w-full text-sm">
               <thead>
@@ -243,6 +251,7 @@ function RangeTool({ quran, french, label, rtl }: RangeToolProps) {
               </tbody>
             </table>
           </div>
+          </ProGate>
           <div className="surface-card p-5">
             <h2 className="font-display text-xl font-semibold text-primary-deep">
               {t("Texte des versets ({n})", { n: formatNumber(result.verses!.length) })}
