@@ -39,6 +39,7 @@ function Pricing() {
             </ul>
             <Link
               to={p.code === "FREE" ? (user ? "/dashboard" : "/auth") : "/paiement"}
+              search={p.code === "FREE" ? undefined : { plan: p.code }}
               className="btn-emerald mt-6 px-4 py-2.5 text-center font-medium"
             >
               {t(p.cta)}

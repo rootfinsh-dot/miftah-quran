@@ -11,15 +11,21 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AboutRouteImport } from './routes/about'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as ComptageRouteImport } from './routes/comptage'
+import { Route as ContactRouteImport } from './routes/contact'
 import { Route as FourchetteRouteImport } from './routes/fourchette'
 import { Route as GematrieRouteImport } from './routes/gematrie'
+import { Route as MethodologieRouteImport } from './routes/methodologie'
 import { Route as MotifsRouteImport } from './routes/motifs'
 import { Route as PaiementRouteImport } from './routes/paiement'
 import { Route as PricingRouteImport } from './routes/pricing'
+import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as SoutenirRouteImport } from './routes/soutenir'
 import { Route as StatistiquesRouteImport } from './routes/statistiques'
+import { Route as TermsRouteImport } from './routes/terms'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedProfilRouteImport } from './routes/_authenticated/profil'
 import { Route as AuthenticatedSubscriptionRouteImport } from './routes/_authenticated/subscription'
@@ -33,6 +39,11 @@ const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
   id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
@@ -43,6 +54,11 @@ const ComptageRoute = ComptageRouteImport.update({
   path: '/comptage',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const FourchetteRoute = FourchetteRouteImport.update({
   id: '/fourchette',
   path: '/fourchette',
@@ -51,6 +67,11 @@ const FourchetteRoute = FourchetteRouteImport.update({
 const GematrieRoute = GematrieRouteImport.update({
   id: '/gematrie',
   path: '/gematrie',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MethodologieRoute = MethodologieRouteImport.update({
+  id: '/methodologie',
+  path: '/methodologie',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MotifsRoute = MotifsRouteImport.update({
@@ -68,14 +89,29 @@ const PricingRoute = PricingRouteImport.update({
   path: '/pricing',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
   id: '/reset-password',
   path: '/reset-password',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SoutenirRoute = SoutenirRouteImport.update({
+  id: '/soutenir',
+  path: '/soutenir',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const StatistiquesRoute = StatistiquesRouteImport.update({
   id: '/statistiques',
   path: '/statistiques',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
@@ -97,30 +133,42 @@ const AuthenticatedSubscriptionRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
   '/comptage': typeof ComptageRoute
+  '/contact': typeof ContactRoute
   '/fourchette': typeof FourchetteRoute
   '/gematrie': typeof GematrieRoute
+  '/methodologie': typeof MethodologieRoute
   '/motifs': typeof MotifsRoute
   '/paiement': typeof PaiementRoute
   '/pricing': typeof PricingRoute
+  '/privacy': typeof PrivacyRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/soutenir': typeof SoutenirRoute
   '/statistiques': typeof StatistiquesRoute
+  '/terms': typeof TermsRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/profil': typeof AuthenticatedProfilRoute
   '/subscription': typeof AuthenticatedSubscriptionRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
   '/comptage': typeof ComptageRoute
+  '/contact': typeof ContactRoute
   '/fourchette': typeof FourchetteRoute
   '/gematrie': typeof GematrieRoute
+  '/methodologie': typeof MethodologieRoute
   '/motifs': typeof MotifsRoute
   '/paiement': typeof PaiementRoute
   '/pricing': typeof PricingRoute
+  '/privacy': typeof PrivacyRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/soutenir': typeof SoutenirRoute
   '/statistiques': typeof StatistiquesRoute
+  '/terms': typeof TermsRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/profil': typeof AuthenticatedProfilRoute
   '/subscription': typeof AuthenticatedSubscriptionRoute
@@ -129,15 +177,21 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
   '/comptage': typeof ComptageRoute
+  '/contact': typeof ContactRoute
   '/fourchette': typeof FourchetteRoute
   '/gematrie': typeof GematrieRoute
+  '/methodologie': typeof MethodologieRoute
   '/motifs': typeof MotifsRoute
   '/paiement': typeof PaiementRoute
   '/pricing': typeof PricingRoute
+  '/privacy': typeof PrivacyRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/soutenir': typeof SoutenirRoute
   '/statistiques': typeof StatistiquesRoute
+  '/terms': typeof TermsRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/profil': typeof AuthenticatedProfilRoute
   '/_authenticated/subscription': typeof AuthenticatedSubscriptionRoute
@@ -146,30 +200,42 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/about'
     | '/auth'
     | '/comptage'
+    | '/contact'
     | '/fourchette'
     | '/gematrie'
+    | '/methodologie'
     | '/motifs'
     | '/paiement'
     | '/pricing'
+    | '/privacy'
     | '/reset-password'
+    | '/soutenir'
     | '/statistiques'
+    | '/terms'
     | '/dashboard'
     | '/profil'
     | '/subscription'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/about'
     | '/auth'
     | '/comptage'
+    | '/contact'
     | '/fourchette'
     | '/gematrie'
+    | '/methodologie'
     | '/motifs'
     | '/paiement'
     | '/pricing'
+    | '/privacy'
     | '/reset-password'
+    | '/soutenir'
     | '/statistiques'
+    | '/terms'
     | '/dashboard'
     | '/profil'
     | '/subscription'
@@ -177,15 +243,21 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/_authenticated'
+    | '/about'
     | '/auth'
     | '/comptage'
+    | '/contact'
     | '/fourchette'
     | '/gematrie'
+    | '/methodologie'
     | '/motifs'
     | '/paiement'
     | '/pricing'
+    | '/privacy'
     | '/reset-password'
+    | '/soutenir'
     | '/statistiques'
+    | '/terms'
     | '/_authenticated/dashboard'
     | '/_authenticated/profil'
     | '/_authenticated/subscription'
@@ -194,15 +266,21 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AboutRoute: typeof AboutRoute
   AuthRoute: typeof AuthRoute
   ComptageRoute: typeof ComptageRoute
+  ContactRoute: typeof ContactRoute
   FourchetteRoute: typeof FourchetteRoute
   GematrieRoute: typeof GematrieRoute
+  MethodologieRoute: typeof MethodologieRoute
   MotifsRoute: typeof MotifsRoute
   PaiementRoute: typeof PaiementRoute
   PricingRoute: typeof PricingRoute
+  PrivacyRoute: typeof PrivacyRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
+  SoutenirRoute: typeof SoutenirRoute
   StatistiquesRoute: typeof StatistiquesRoute
+  TermsRoute: typeof TermsRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -221,6 +299,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/auth': {
       id: '/auth'
       path: '/auth'
@@ -235,6 +320,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ComptageRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/fourchette': {
       id: '/fourchette'
       path: '/fourchette'
@@ -247,6 +339,13 @@ declare module '@tanstack/react-router' {
       path: '/gematrie'
       fullPath: '/gematrie'
       preLoaderRoute: typeof GematrieRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/methodologie': {
+      id: '/methodologie'
+      path: '/methodologie'
+      fullPath: '/methodologie'
+      preLoaderRoute: typeof MethodologieRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/motifs': {
@@ -270,6 +369,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PricingRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/reset-password': {
       id: '/reset-password'
       path: '/reset-password'
@@ -277,11 +383,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ResetPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/soutenir': {
+      id: '/soutenir'
+      path: '/soutenir'
+      fullPath: '/soutenir'
+      preLoaderRoute: typeof SoutenirRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/statistiques': {
       id: '/statistiques'
       path: '/statistiques'
       fullPath: '/statistiques'
       preLoaderRoute: typeof StatistiquesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/dashboard': {
@@ -326,15 +446,21 @@ const AuthenticatedRouteRouteWithChildren =
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AboutRoute: AboutRoute,
   AuthRoute: AuthRoute,
   ComptageRoute: ComptageRoute,
+  ContactRoute: ContactRoute,
   FourchetteRoute: FourchetteRoute,
   GematrieRoute: GematrieRoute,
+  MethodologieRoute: MethodologieRoute,
   MotifsRoute: MotifsRoute,
   PaiementRoute: PaiementRoute,
   PricingRoute: PricingRoute,
+  PrivacyRoute: PrivacyRoute,
   ResetPasswordRoute: ResetPasswordRoute,
+  SoutenirRoute: SoutenirRoute,
   StatistiquesRoute: StatistiquesRoute,
+  TermsRoute: TermsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

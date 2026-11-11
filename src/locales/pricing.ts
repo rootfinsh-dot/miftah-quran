@@ -1,0 +1,30 @@
+import type { Dict } from "@/lib/i18n";
+
+/** Traductions des tarifs, des plans et de leurs fonctionnalités. */
+export const pricing: Dict = {
+  mois: { ar: "شهرًا", en: "month", tr: "ay", ur: "ماہانہ", id: "bulan", es: "mes", de: "Monat" },
+  "Retour aux tarifs": { ar: "العودة إلى الأسعار", en: "Back to pricing", tr: "Fiyatlara dön", ur: "قیمتوں پر واپس", id: "Kembali ke harga", es: "Volver a precios", de: "Zurück zu den Preisen" },
+  "Choisissez votre plan": { ar: "اختر باقتك", en: "Choose your plan", tr: "Planınızı seçin", ur: "اپنا پلان منتخب کریں", id: "Pilih paket Anda", es: "Elige tu plan", de: "Wählen Sie Ihren Plan" },
+  "Les prix sont provisoires. Le paiement en ligne sera bientôt disponible.": { ar: "الأسعار مؤقتة. الدفع عبر الإنترنت متاح قريبًا.", en: "Prices are provisional. Online payment will be available soon.", tr: "Fiyatlar geçicidir. Çevrimiçi ödeme yakında kullanılacak.", ur: "قیمتیں عارضی ہیں۔ آن لائن ادائیگی جلد دستیاب ہوگی۔", id: "Harga bersifat sementara. Pembayaran online segera tersedia.", es: "Los precios son provisionales. El pago en línea estará disponible pronto.", de: "Die Preise sind vorläufig. Die Online-Zahlung folgt in Kürze." },
+  "Commencer gratuitement": { ar: "ابدأ مجانًا", en: "Start for free", tr: "Ücretsiz başla", ur: "مفت شروع کریں", id: "Mulai gratis", es: "Empezar gratis", de: "Kostenlos starten" },
+  "Passer à Pro": { ar: "الترقية إلى Pro", en: "Upgrade to Pro", tr: "Pro'ya yükselt", ur: "Pro پر جائیں", id: "Naik ke Pro", es: "Pasar a Pro", de: "Auf Pro upgraden" },
+  "Choisir Research": { ar: "اختيار Research", en: "Choose Research", tr: "Research seç", ur: "Research منتخب کریں", id: "Pilih Research", es: "Elegir Research", de: "Research wählen" },
+  "Gématrie simple": { ar: "حساب الجُمَّل الأساسي", en: "Basic gematria", tr: "Temel ebced", ur: "بنیادی ابجد", id: "Gematria dasar", es: "Gematría básica", de: "Einfache Gematrie" },
+  "Accès limité aux motifs numériques": { ar: "وصول محدود إلى الأنماط العددية", en: "Limited access to numeric patterns", tr: "Sayısal örüntülere sınırlı erişim", ur: "عددی نمونوں تک محدود رسائی", id: "Akses terbatas ke pola numerik", es: "Acceso limitado a patrones numéricos", de: "Eingeschränkter Zugriff auf Zahlenmuster" },
+  "Nombre limité de sauvegardes": { ar: "عدد محدود من التحليلات المحفوظة", en: "Limited number of saved analyses", tr: "Sınırlı kaydedilen analiz sayısı", ur: "محفوظ تجزیوں کی محدود تعداد", id: "Jumlah analisis tersimpan terbatas", es: "Número limitado de análisis guardados", de: "Begrenzte Anzahl gespeicherter Analysen" },
+  "Toutes les fonctions Free": { ar: "جميع وظائف Free", en: "All Free features", tr: "Tüm Free özellikleri", ur: "تمام Free خصوصیات", id: "Semua fitur Free", es: "Todas las funciones de Free", de: "Alle Free-Funktionen" },
+  "Motifs numériques avancés": { ar: "أنماط عددية متقدمة", en: "Advanced numeric patterns", tr: "Gelişmiş sayısal örüntüler", ur: "اعلیٰ عددی نمونے", id: "Pola numerik lanjutan", es: "Patrones numéricos avanzados", de: "Erweiterte Zahlenmuster" },
+  "Analyse avancée": { ar: "تحليل متقدم", en: "Advanced analysis", tr: "Gelişmiş analiz", ur: "اعلیٰ تجزیہ", id: "Analisis lanjutan", es: "Análisis avanzado", de: "Erweiterte Analyse" },
+  Comparaison: { ar: "المقارنة", en: "Comparison", tr: "Karşılaştırma", ur: "موازنہ", id: "Perbandingan", es: "Comparación", de: "Vergleich" },
+  "Statistiques avancées": { ar: "إحصاءات متقدمة", en: "Advanced statistics", tr: "Gelişmiş istatistikler", ur: "اعلیٰ شماریات", id: "Statistik lanjutan", es: "Estadísticas avanzadas", de: "Erweiterte Statistik" },
+  "Abjad avancé": { ar: "أبجد متقدم", en: "Advanced abjad", tr: "Gelişmiş ebced", ur: "اعلیٰ ابجد", id: "Abjad lanjutan", es: "Abjad avanzado", de: "Erweitertes Abjad" },
+  "Graphiques avancés": { ar: "رسوم بيانية متقدمة", en: "Advanced charts", tr: "Gelişmiş grafikler", ur: "اعلیٰ گراف", id: "Grafik lanjutan", es: "Gráficos avanzados", de: "Erweiterte Diagramme" },
+  "Sauvegarde étendue et historique": { ar: "حفظ موسع وسجل", en: "Extended saving and history", tr: "Genişletilmiş kayıt ve geçmiş", ur: "وسیع محفوظ کرنا اور تاریخچہ", id: "Penyimpanan luas dan riwayat", es: "Guardado ampliado e historial", de: "Erweitertes Speichern und Verlauf" },
+  "Export PDF, CSV, XLSX": { ar: "تصدير PDF وCSV وXLSX", en: "Export PDF, CSV, XLSX", tr: "PDF, CSV, XLSX dışa aktarma", ur: "PDF، CSV، XLSX برآمد", id: "Ekspor PDF, CSV, XLSX", es: "Exportar PDF, CSV, XLSX", de: "Export PDF, CSV, XLSX" },
+  "Analyses personnalisées": { ar: "تحليلات مخصصة", en: "Custom analyses", tr: "Özel analizler", ur: "حسبِ خواہش تجزیے", id: "Analisis khusus", es: "Análisis personalizados", de: "Individuelle Analysen" },
+  "Paramètres avancés": { ar: "إعدادات متقدمة", en: "Advanced settings", tr: "Gelişmiş ayarlar", ur: "اعلیٰ ترتیبات", id: "Pengaturan lanjutan", es: "Ajustes avanzados", de: "Erweiterte Einstellungen" },
+  "Rapports de recherche": { ar: "تقارير بحث", en: "Research reports", tr: "Araştırma raporları", ur: "تحقیقی رپورٹس", id: "Laporan riset", es: "Informes de investigación", de: "Forschungsberichte" },
+  "Export JSON": { ar: "تصدير JSON", en: "JSON export", tr: "JSON dışa aktarma", ur: "JSON برآمد", id: "Ekspor JSON", es: "Exportar JSON", de: "JSON-Export" },
+  "Fonctionnalités de reproductibilité": { ar: "أدوات إعادة إنتاج النتائج", en: "Reproducibility features", tr: "Tekrarlanabilirlik özellikleri", ur: "نتائج کی دوبارہ پیداوار کی خصوصیات", id: "Fitur reproduktibilitas", es: "Funciones de reproducibilidad", de: "Reproduzierbarkeitsfunktionen" },
+  "Futures fonctionnalités API": { ar: "ميزات API قادمة", en: "Upcoming API features", tr: "Yaklaşan API özellikleri", ur: "آنے والی API خصوصیات", id: "Fitur API mendatang", es: "Próximas funciones de API", de: "Künftige API-Funktionen" },
+};

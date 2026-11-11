@@ -6,6 +6,8 @@ import { statistiques } from "./statistiques";
 import { motifs } from "./motifs";
 import { gematrie } from "./gematrie";
 import { fourchette } from "./fourchette";
+import { editorial } from "./editorial";
+import { pricing } from "./pricing";
 
 export const DICTIONARY: Dict = {
   ...common,
@@ -15,4 +17,6 @@ export const DICTIONARY: Dict = {
   ...motifs,
   ...gematrie,
   ...fourchette,
+  ...editorial,
+  ...pricing,
 };

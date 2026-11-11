@@ -16,6 +16,9 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { I18nProvider, LANGUAGES, useI18n, useT, type Lang } from "../lib/i18n";
 import { useUser } from "../lib/auth";
 import { supabase } from "@/integrations/supabase/client";
+import { PrivacySettings } from "@/components/privacy-settings";
+import { AdvertisingSlot } from "@/components/advertising";
+import { getConsent } from "@/lib/advertising";
 
 function NotFoundComponent() {
   return (
@@ -211,6 +214,14 @@ function SiteHeader() {
 
 function SiteFooter() {
   const t = useT();
+  const footerLinks = [
+    { to: "/about", label: "À propos" },
+    { to: "/methodologie", label: "Méthodologie" },
+    { to: "/contact", label: "Contact" },
+    { to: "/privacy", label: "Confidentialité" },
+    { to: "/terms", label: "Conditions" },
+    { to: "/soutenir", label: "Soutenir" },
+  ] as const;
   return (
     <footer className="mt-20 border-t border-border/70 bg-card/60">
       <div className="mx-auto max-w-6xl px-5 py-8 text-sm text-muted-foreground">
@@ -220,6 +231,14 @@ function SiteFooter() {
             "Texte arabe : recension Uthmani. Traduction française : Muhammad Hamidullah. Les résultats sont calculés à la volée et dépendent des règles de comptage choisies.",
           )}
         </p>
+        <nav className="mt-5 flex flex-wrap gap-x-5 gap-y-2" aria-label={t("Liens du pied de page")}>
+          {footerLinks.map((l) => (
+            <Link key={l.to} to={l.to} className="hover:text-primary-deep hover:underline underline-offset-4">
+              {t(l.label)}
+            </Link>
+          ))}
+        </nav>
+        <div className="mt-6"><PrivacySettings /></div>
       </div>
     </footer>
   );
@@ -237,6 +256,7 @@ function RootComponent() {
           {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
           <Outlet />
         </main>
+        <AdvertisingSlot consent={getConsent()} />
         <SiteFooter />
       </div>
       </I18nProvider>
