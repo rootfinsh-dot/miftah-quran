@@ -1,4 +1,4 @@
-/** Configuration multi-providers pour les dons (PayPal corrigé sans restriction + RedotPay). */
+/** Configuration multi-providers pour les dons (PayPal avec email + RedotPay avec infos). */
 
 export type DonateProvider = "paypal" | "redotpay" | "buy-me-a-coffee" | "ko-fi" | "stripe" | "custom";
 
@@ -12,7 +12,7 @@ export interface DonateConfig {
 
 export const DEFAULT_AMOUNTS = [5, 10, 20, 50];
 
-/** Construit l'URL de paiement selon le provider et le montant. */
+/** Construit l'URL de paiement ou retourne les instructions. */
 export function buildDonateURL(provider: DonateProvider, account: string, amount: number, currency = "EUR"): string | null {
   const acc = account.trim();
   if (!acc) return null;
@@ -20,14 +20,10 @@ export function buildDonateURL(provider: DonateProvider, account: string, amount
 
   switch (provider) {
     case "paypal": {
-      // Si c'est un identifiant PayPal.Me (sans @), utilise le lien direct PayPal.Me (évite l'erreur de pays)
-      if (!acc.includes("@")) {
-        return `https://paypal.me/${encodeURIComponent(acc)}/${amount}${cur}`;
-      }
-      // Sinon lien de don standard
+      // Utilisation du lien de paiement direct PayPal avec email
       const params = new URLSearchParams({
         cmd: "_donations",
-        business: acc,
+        business: acc, // Ici, l'email fonctionne directement
         item_name: "Miftah Quran",
         currency: cur,
         amount: String(amount),
@@ -37,7 +33,9 @@ export function buildDonateURL(provider: DonateProvider, account: string, amount
       return `https://www.paypal.com/cgi-bin/webscr?${params.toString()}`;
     }
     case "redotpay":
-      return acc.includes("?") ? `${acc}&amount=${amount}` : `${acc}?amount=${amount}`;
+      // RedotPay ne propose pas de lien de don direct via URL web.
+      // On retourne une URL vide pour que le bouton affiche des instructions (voir soutenir.tsx)
+      return null;
     case "buy-me-a-coffee":
       return `https://www.buymeacoffee.com/${encodeURIComponent(acc)}?currency=${cur}&custom=${amount}`;
     case "ko-fi":

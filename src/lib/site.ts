@@ -2,14 +2,13 @@ export const SITE_URL = "https://miftah-quran.lovable.app";
 export const CONTACT_EMAIL = "rootfinsh@gmail.com";
 export const DONATE_URL = "";
 
-/** Configuration des comptes de don (PayPal et RedotPay activables simultanément).
- *  - paypal : mettre votre identifiant PayPal.Me (ex: "dabalarbi") ou votre email.
- *  - redotpay : mettre votre lien ou identifiant de paiement RedotPay.
- *  Si un compte est vide (""), le bouton correspondant restera désactivé.
+/** Configuration des comptes de don.
+ *  - paypal : mettre votre email (ex: "dabalarbi@gmail.com").
+ *  - redotpay : mettre votre UID et Surnom pour instructions.
  */
 export const DONATE_ACCOUNTS = {
-  paypal: "dabalarbi",
-  redotpay: "",
+  paypal: "dabalarbi@gmail.com",
+  redotpay: "UID: 1471439889 | Surnom: larbiou",
 };
 
 export const DONATE_AMOUNTS: number[] = [5, 10, 20, 50];
