@@ -1,122 +1,145 @@
+import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { HandCoins, Heart, Gift, Check } from "lucide-react";
-
-import { Button } from "@/components/ui/button";
-import { useT } from "@/lib/i18n";
-import { DONATE_ACCOUNT, DONATE_AMOUNTS, DONATE_PROVIDER } from "@/lib/site";
-import { buildDonateURL, hasDonation, type DonateConfig, DEFAULT_AMOUNTS } from "@/lib/donate";
-import { pageHead } from "@/lib/seo";
+import { DONATE_ACCOUNTS, DONATE_AMOUNTS } from "@/lib/site";
+import { buildDonateURL } from "@/lib/donate";
+import { Heart, ShieldCheck, ExternalLink, CreditCard } from "lucide-react";
 
 export const Route = createFileRoute("/soutenir")({
-  head: () => pageHead("/soutenir", "fr"),
-  component: Soutenir,
+  component: SoutenirPage,
 });
 
-function Soutenir() {
-  const t = useT();
-  const [selected, setSelected] = useState<number>(DEFAULT_AMOUNTS[1] ?? 10);
-  const amounts = DONATE_AMOUNTS.length > 0 ? DONATE_AMOUNTS : DEFAULT_AMOUNTS;
-  const config: DonateConfig = {
-    provider: DONATE_PROVIDER,
-    account: DONATE_ACCOUNT,
-    amounts,
-    currency: "EUR",
-    beneficiary: "Miftah",
-  };
-  const active = hasDonation(config);
-  const donateURL = active ? buildDonateURL(config, selected) : null;
-  const displayAmount = (a: number) => `${a} €`;
+function SoutenirPage() {
+  const [selectedAmount, setSelectedAmount] = useState<number>(10);
+  const [customAmount, setCustomAmount] = useState<string>("");
+
+  const activeAmount = customAmount ? parseFloat(customAmount) || selectedAmount : selectedAmount;
+
+  const paypalUrl = buildDonateURL("paypal", DONATE_ACCOUNTS.paypal, activeAmount);
+  const redotpayUrl = buildDonateURL("redotpay", DONATE_ACCOUNTS.redotpay, activeAmount);
 
   return (
-    <div className="mx-auto max-w-3xl px-5 py-16">
-      <p className="text-xs uppercase tracking-[0.2em] text-gold">Miftah</p>
-      <h1 className="mt-3 text-4xl font-semibold text-primary-deep">{t("Soutenir Miftah")}</h1>
-      <div className="gold-rule mt-5 w-20" />
-      <p className="mt-5 text-base leading-7 text-muted-foreground">
-        {t(
-          "Miftah est un projet éducatif indépendant, ouvert et sans publicité. Votre soutien aide à couvrir l'hébergement et à financer le développement des outils. Aucune somme n'est obligatoire : tout le site reste libre.",
-        )}
-      </p>
+    <div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
+      <div className="text-center mb-12">
+        <div className="inline-flex items-center justify-center p-3 bg-emerald-500/10 rounded-full text-emerald-600 mb-4">
+          <Heart className="w-8 h-8" />
+        </div>
+        <h1 className="text-3xl font-bold tracking-tight mb-3">Soutenir Miftah Quran</h1>
+        <p className="text-muted-foreground max-w-xl mx-auto">
+          Miftah est et restera 100% gratuit, sans publicité intrusive et sans barrière payante pour l'essentiel.
+          Votre soutien aide à couvrir les frais d'hébergement et à faire évoluer la recherche.
+        </p>
+      </div>
 
-      <div className="mt-10 grid gap-5 sm:grid-cols-3">
-        {/* Carte Dons */}
-        <div className="surface-card flex flex-col p-6">
-          <Gift className="size-7 text-gold" />
-          <h2 className="mt-4 text-xl font-semibold text-primary-deep">{t("Dons")}</h2>
-          <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-            {t("Faites un don du montant de votre choix pour soutenir le projet.")}
-          </p>
+      <div className="surface-card p-6 sm:p-8 rounded-2xl shadow-sm border mb-8">
+        <h2 className="text-lg font-semibold mb-4 text-center">Choisissez un montant</h2>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+          {DONATE_AMOUNTS.map((amt) => (
+            <button
+              key={amt}
+              onClick={() => { setSelectedAmount(amt); setCustomAmount(""); }}
+              className={`py-3 px-4 rounded-xl font-medium border transition-all ${
+                selectedAmount === amt && !customAmount
+                  ? "bg-emerald-600 text-white border-emerald-600 shadow-md"
+                  : "bg-background hover:bg-muted/50 border-border"
+              }`}
+            >
+              {amt} €
+            </button>
+          ))}
+        </div>
 
-          {active && (
-            <div className="mt-4">
-              <div className="flex flex-wrap gap-2" role="group" aria-label={t("Choisir un montant")}>
-                {amounts.map((a) => (
-                  <button
-                    key={a}
-                    type="button"
-                    onClick={() => setSelected(a)}
-                    className={`rounded-md border px-3 py-1.5 text-sm font-medium transition-colors ${
-                      selected === a
-                        ? "border-gold bg-gold/15 text-primary-deep"
-                        : "border-border text-muted-foreground hover:bg-secondary"
-                    }`}
-                  >
-                    {displayAmount(a)}
-                  </button>
-                ))}
+        <div className="mb-8">
+          <label className="block text-sm font-medium mb-2 text-center text-muted-foreground">
+            Ou entrez un montant libre (€)
+          </label>
+          <input
+            type="number"
+            min="1"
+            placeholder="Ex : 15"
+            value={customAmount}
+            onChange={(e) => setCustomAmount(e.target.value)}
+            className="w-full max-w-xs mx-auto block px-4 py-2 rounded-xl border border-input bg-background text-center text-lg"
+          />
+        </div>
+
+        <div className="border-t pt-8">
+          <h3 className="text-md font-semibold mb-6 text-center">Sélectionnez votre moyen de paiement</h3>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Option PayPal */}
+            <div className="border rounded-2xl p-6 flex flex-col justify-between bg-card">
+              <div>
+                <div className="flex items-center justify-between mb-3">
+                  <span className="font-bold text-lg flex items-center gap-2">
+                    <CreditCard className="w-5 h-5 text-blue-500" /> PayPal / Carte
+                  </span>
+                  <span className="text-xs bg-blue-500/10 text-blue-600 font-medium px-2.5 py-1 rounded-full">
+                    Recommandé
+                  </span>
+                </div>
+                <p className="text-sm text-muted-foreground mb-6">
+                  Don sécurisé via PayPal ou carte bancaire (via PayPal.Me sans restriction).
+                </p>
               </div>
-              <p className="mt-3 text-xs text-muted-foreground">
-                {t("Montant choisi : {amount}", { amount: displayAmount(selected) })}
-              </p>
-              {donateURL ? (
+              {paypalUrl ? (
                 <a
-                  href={donateURL}
+                  href={paypalUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="btn-emerald mt-4 flex items-center justify-center gap-2 px-4 py-2.5 font-medium"
+                  className="w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-xl text-center flex items-center justify-center gap-2 transition-all shadow-sm"
                 >
-                  <Check className="size-4" />
-                  {t("Faire un don")}
+                  Faire un don de {activeAmount} € via PayPal <ExternalLink className="w-4 h-4" />
                 </a>
               ) : (
-                <Button variant="outline" className="mt-4" disabled>
-                  {t("Bientôt disponible")}
-                </Button>
+                <button
+                  disabled
+                  className="w-full py-3 px-4 bg-muted text-muted-foreground font-medium rounded-xl text-center cursor-not-allowed"
+                >
+                  Bientôt disponible
+                </button>
               )}
             </div>
-          )}
 
-          {!active && (
-            <Button variant="outline" className="mt-4" disabled>
-              {t("Bientôt disponible")}
-            </Button>
-          )}
+            {/* Option RedotPay */}
+            <div className="border rounded-2xl p-6 flex flex-col justify-between bg-card">
+              <div>
+                <div className="flex items-center justify-between mb-3">
+                  <span className="font-bold text-lg flex items-center gap-2">
+                    <ShieldCheck className="w-5 h-5 text-emerald-500" /> RedotPay / Crypto
+                  </span>
+                  <span className="text-xs bg-emerald-500/10 text-emerald-600 font-medium px-2.5 py-1 rounded-full">
+                    International
+                  </span>
+                </div>
+                <p className="text-sm text-muted-foreground mb-6">
+                  Paiement sécurisé et rapide via RedotPay ou cryptomonnaies.
+                </p>
+              </div>
+              {redotpayUrl ? (
+                <a
+                  href={redotpayUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full py-3 px-4 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-xl text-center flex items-center justify-center gap-2 transition-all shadow-sm"
+                >
+                  Faire un don de {activeAmount} € via RedotPay <ExternalLink className="w-4 h-4" />
+                </a>
+              ) : (
+                <button
+                  disabled
+                  className="w-full py-3 px-4 bg-muted text-muted-foreground font-medium rounded-xl text-center cursor-not-allowed"
+                >
+                  Bientôt disponible
+                </button>
+              )}
+            </div>
+          </div>
         </div>
+      </div>
 
-        {/* Carte Abonnement */}
-        <div className="surface-card flex flex-col p-6">
-          <HandCoins className="size-7 text-gold" />
-          <h2 className="mt-4 text-xl font-semibold text-primary-deep">{t("Abonnement")}</h2>
-          <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-            {t("Les plans Pro et Research financeront durablement le projet.")}
-          </p>
-          <Link to="/pricing" className="btn-emerald mt-5 text-center px-4 py-2.5 font-medium">
-            {t("Voir les tarifs")}
-          </Link>
-        </div>
-
-        {/* Carte Partager */}
-        <div className="surface-card flex flex-col p-6">
-          <Heart className="size-7 text-gold" />
-          <h2 className="mt-4 text-xl font-semibold text-primary-deep">{t("Partager")}</h2>
-          <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-            {t("Recommandez Miftah à des proches qui étudient le texte coranique.")}
-          </p>
-          <Link to="/" className="btn-emerald mt-5 text-center px-4 py-2.5 font-medium">
-            {t("Découvrir les outils")}
-          </Link>
-        </div>
+      <div className="text-center text-sm text-muted-foreground flex items-center justify-center gap-2">
+        <ShieldCheck className="w-4 h-4 text-emerald-600" />
+        <span>Transactions 100% sécurisées. Aucun stockage de données bancaires sur nos serveurs.</span>
       </div>
     </div>
   );
