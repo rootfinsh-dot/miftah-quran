@@ -1,4 +1,4 @@
-/** Configuration multi-providers pour les dons (PayPal avec email + RedotPay avec infos). */
+/** Configuration multi-providers pour les dons (PayPal standardisé sans restriction + RedotPay). */
 
 export type DonateProvider = "paypal" | "redotpay" | "buy-me-a-coffee" | "ko-fi" | "stripe" | "custom";
 
@@ -20,21 +20,21 @@ export function buildDonateURL(provider: DonateProvider, account: string, amount
 
   switch (provider) {
     case "paypal": {
-      // Utilisation du lien de paiement direct PayPal avec email
+      // UTILISATION DE LA COMMANDE _xclick (Standard) au lieu de _donations (Restrictif)
       const params = new URLSearchParams({
-        cmd: "_donations",
-        business: acc, // Ici, l'email fonctionne directement
-        item_name: "Miftah Quran",
-        currency: cur,
+        cmd: "_xclick",
+        business: acc, // Votre email
+        item_name: "Soutien Miftah Quran",
+        currency_code: cur,
         amount: String(amount),
         no_shipping: "1",
         no_note: "1",
+        return: "https://miftah-quran.lovable.app/soutenir",
+        cancel_return: "https://miftah-quran.lovable.app/soutenir",
       });
       return `https://www.paypal.com/cgi-bin/webscr?${params.toString()}`;
     }
     case "redotpay":
-      // RedotPay ne propose pas de lien de don direct via URL web.
-      // On retourne une URL vide pour que le bouton affiche des instructions (voir soutenir.tsx)
       return null;
     case "buy-me-a-coffee":
       return `https://www.buymeacoffee.com/${encodeURIComponent(acc)}?currency=${cur}&custom=${amount}`;
