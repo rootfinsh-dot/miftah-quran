@@ -7,6 +7,7 @@ import {
   useNavigate,
   HeadContent,
   Scripts,
+  retainSearchParams,
   type ErrorComponentProps,
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
@@ -18,7 +19,8 @@ import { useUser } from "../lib/auth";
 import { supabase } from "@/integrations/supabase/client";
 import { PrivacySettings } from "@/components/privacy-settings";
 import { AdvertisingSlot } from "@/components/advertising";
-import { getConsent } from "@/lib/advertising";
+import { z } from "zod";
+import { zodValidator } from "@tanstack/zod-adapter";
 
 function NotFoundComponent() {
   return (
@@ -78,6 +80,8 @@ function ErrorComponent({ error, reset }: ErrorComponentProps) {
 }
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
+  validateSearch: zodValidator(z.object({ lang: z.string().optional() })),
+  search: { middlewares: [retainSearchParams(["lang"])] },
   head: () => ({
     meta: [
       { charSet: "utf-8" },
@@ -256,7 +260,7 @@ function RootComponent() {
           {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
           <Outlet />
         </main>
-        <AdvertisingSlot consent={getConsent()} />
+        <AdvertisingSlot />
         <SiteFooter />
       </div>
       </I18nProvider>

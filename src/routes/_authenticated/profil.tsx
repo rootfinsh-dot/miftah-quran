@@ -1,3 +1,4 @@
+import { pageHead } from "@/lib/seo";
 import { createFileRoute } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
@@ -7,14 +8,7 @@ import { useAccount } from "@/lib/account";
 import { useT } from "@/lib/i18n";
 
 export const Route = createFileRoute("/_authenticated/profil")({
-  head: () => ({
-    meta: [
-      { title: "Mon profil — Miftah" },
-      { name: "description", content: "Modifiez votre profil Miftah." },
-      { property: "og:title", content: "Mon profil — Miftah" },
-      { property: "og:description", content: "Modifiez votre profil Miftah." },
-    ],
-  }),
+  head: ({ match }) => pageHead("/profil", match.search.lang, false),
   component: Profil,
 });
 

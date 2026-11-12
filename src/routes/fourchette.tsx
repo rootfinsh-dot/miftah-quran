@@ -1,3 +1,4 @@
+import { pageHead } from "@/lib/seo";
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { ProGate, SaveAnalysisButton } from "@/lib/entitlements";
@@ -23,23 +24,7 @@ import {
 } from "@/lib/quran";
 
 export const Route = createFileRoute("/fourchette")({
-  head: () => ({
-    meta: [
-      { title: "Compter les versets d'une fourchette — Miftah" },
-      {
-        name: "description",
-        content:
-          "Saisissez une sourate et un verset de début et de fin pour compter les versets, mots et lettres de la plage choisie.",
-      },
-      { property: "og:title", content: "Compter les versets d'une fourchette — Miftah" },
-      {
-        property: "og:description",
-        content: "Comptez les versets entre deux positions du Coran saisies manuellement.",
-      },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-    ],
-  }),
+  head: ({ match }) => pageHead("/fourchette", match.search.lang, true),
   component: FourchettePage,
 });
 

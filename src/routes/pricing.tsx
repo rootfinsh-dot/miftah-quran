@@ -1,3 +1,4 @@
+import { pageHead } from "@/lib/seo";
 import { createFileRoute, Link } from "@tanstack/react-router";
 
 import { useUser } from "@/lib/auth";
@@ -5,14 +6,7 @@ import { useT } from "@/lib/i18n";
 import { PLANS, formatPrice } from "@/lib/plans";
 
 export const Route = createFileRoute("/pricing")({
-  head: () => ({
-    meta: [
-      { title: "Tarifs — Miftah Free, Pro et Research" },
-      { name: "description", content: "Comparez les plans Free, Pro et Research de Miftah." },
-      { property: "og:title", content: "Tarifs — Miftah" },
-      { property: "og:description", content: "Plans Free, Pro et Research pour l'analyse du texte coranique." },
-    ],
-  }),
+  head: ({ match }) => pageHead("/pricing", match.search.lang, true),
   component: Pricing,
 });
 
@@ -39,7 +33,7 @@ function Pricing() {
             </ul>
             <Link
               to={p.code === "FREE" ? (user ? "/dashboard" : "/auth") : "/paiement"}
-              search={p.code === "FREE" ? undefined : { plan: p.code }}
+              search={(previous) => p.code === "FREE" ? previous : { ...previous, plan: p.code }}
               className="btn-emerald mt-6 px-4 py-2.5 text-center font-medium"
             >
               {t(p.cta)}

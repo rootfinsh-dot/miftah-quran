@@ -1,3 +1,4 @@
+import { pageHead } from "@/lib/seo";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 
@@ -5,14 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useT } from "@/lib/i18n";
 
 export const Route = createFileRoute("/reset-password")({
-  head: () => ({
-    meta: [
-      { title: "Nouveau mot de passe — Miftah" },
-      { name: "description", content: "Définissez un nouveau mot de passe pour votre compte Miftah." },
-      { property: "og:title", content: "Nouveau mot de passe — Miftah" },
-      { property: "og:description", content: "Définissez un nouveau mot de passe pour votre compte Miftah." },
-    ],
-  }),
+  head: ({ match }) => pageHead("/reset-password", match.search.lang, false),
   component: ResetPage,
 });
 

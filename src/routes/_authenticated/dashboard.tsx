@@ -1,3 +1,4 @@
+import { pageHead } from "@/lib/seo";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
 
@@ -8,14 +9,7 @@ import { useT } from "@/lib/i18n";
 import { planInfo } from "@/lib/plans";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
-  head: () => ({
-    meta: [
-      { title: "Tableau de bord — Miftah" },
-      { name: "description", content: "Votre espace personnel Miftah." },
-      { property: "og:title", content: "Tableau de bord — Miftah" },
-      { property: "og:description", content: "Votre espace personnel Miftah." },
-    ],
-  }),
+  head: ({ match }) => pageHead("/dashboard", match.search.lang, false),
   component: Dashboard,
 });
 

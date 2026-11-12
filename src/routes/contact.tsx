@@ -4,6 +4,6 @@ import { EditorialPage } from "@/components/editorial-page";
 import { pageHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/contact")({
-  head: () => pageHead("/contact", "fr"),
+  head: ({ match }) => pageHead("/contact", match.search.lang, true),
   component: () => <EditorialPage page="contact" title="Contacter Miftah" />,
 });

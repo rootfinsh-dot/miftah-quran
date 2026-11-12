@@ -10,9 +10,9 @@ import { pageHead } from "@/lib/seo";
 type PaymentSearch = { plan?: PlanCode };
 
 export const Route = createFileRoute("/paiement")({
-  head: () => pageHead("/paiement", "fr"),
+  head: ({ match }) => pageHead("/paiement", match.search.lang, false),
   validateSearch: (search: Record<string, unknown>): PaymentSearch => {
-    const plan = search.plan;
+    const plan = search["plan"];
     return plan === "PRO" || plan === "RESEARCH" || plan === "FREE" ? { plan } : {};
   },
   component: Paiement,

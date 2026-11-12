@@ -16,7 +16,7 @@ export function EditorialPage({ page, title }: { page: string; title: string }) 
       {section.paragraphs.map((paragraph) => <p key={paragraph} className="mt-4 text-base leading-7 text-muted-foreground">{t(paragraph)}</p>)}
     </section>)}
     {page === "methodologie" && <section className="mt-8"><h2 className="text-2xl font-semibold text-primary-deep">{t("Références")}</h2><ul className="mt-4 space-y-3">
-      {[ ["AlQuran Cloud — API", "https://alquran.cloud/api"], ["AlQuran Cloud — conditions", "https://alquran.cloud/terms-and-conditions"], ["AlQuran Cloud — sources", "https://alquran.cloud/contributors"] ].map(([label, href]) => <li key={href}><a href={href} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-primary underline underline-offset-4">{t(label)}<ExternalLink className="size-3" /></a></li>)}
+      {([ ["AlQuran Cloud — API", "https://alquran.cloud/api"], ["AlQuran Cloud — conditions", "https://alquran.cloud/terms-and-conditions"], ["AlQuran Cloud — sources", "https://alquran.cloud/contributors"] ] as const).map(([label, href]) => <li key={href}><a href={href} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-primary underline underline-offset-4">{t(label)}<ExternalLink className="size-3" /></a></li>)}
     </ul></section>}
     <div className="mt-10 flex flex-wrap items-center gap-4">
       <Button asChild variant="outline"><a href={`mailto:${CONTACT_EMAIL}`}><Mail />{CONTACT_EMAIL}</a></Button>

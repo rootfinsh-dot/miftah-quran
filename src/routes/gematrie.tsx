@@ -1,3 +1,4 @@
+import { pageHead } from "@/lib/seo";
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 
@@ -13,21 +14,7 @@ import {
 } from "@/lib/quran";
 
 export const Route = createFileRoute("/gematrie")({
-  head: () => ({
-    meta: [
-      { title: "Gématrie et valeurs abjad — Miftah" },
-      {
-        name: "description",
-        content:
-          "Calculez la valeur numérique abjad d'un mot arabe ou d'un verset du Coran, lettre par lettre.",
-      },
-      { property: "og:title", content: "Gématrie et valeurs abjad — Miftah" },
-      {
-        property: "og:description",
-        content: "Valeur numérique abjad des mots et des versets du Coran, détaillée lettre à lettre.",
-      },
-    ],
-  }),
+  head: ({ match }) => pageHead("/gematrie", match.search.lang, true),
   component: GematriePage,
 });
 

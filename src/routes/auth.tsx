@@ -1,3 +1,4 @@
+import { pageHead } from "@/lib/seo";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 
@@ -6,14 +7,7 @@ import { lovable } from "@/integrations/lovable/index";
 import { useT } from "@/lib/i18n";
 
 export const Route = createFileRoute("/auth")({
-  head: () => ({
-    meta: [
-      { title: "Connexion — Miftah" },
-      { name: "description", content: "Créez un compte ou connectez-vous à Miftah." },
-      { property: "og:title", content: "Connexion — Miftah" },
-      { property: "og:description", content: "Créez un compte ou connectez-vous à Miftah." },
-    ],
-  }),
+  head: ({ match }) => pageHead("/auth", match.search.lang, false),
   component: AuthPage,
 });
 

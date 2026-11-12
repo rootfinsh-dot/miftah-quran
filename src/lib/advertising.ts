@@ -8,7 +8,7 @@
  */
 
 export const advertisingConfig = {
-  enabled: true,
+  enabled: false,
   approved: false,
   publisherId: "",
   cmpCertified: false,

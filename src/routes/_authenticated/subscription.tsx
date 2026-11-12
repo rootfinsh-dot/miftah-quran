@@ -1,3 +1,4 @@
+import { pageHead } from "@/lib/seo";
 import { createFileRoute, Link } from "@tanstack/react-router";
 
 import { useAccount } from "@/lib/account";
@@ -5,14 +6,7 @@ import { useT } from "@/lib/i18n";
 import { formatPrice, planInfo } from "@/lib/plans";
 
 export const Route = createFileRoute("/_authenticated/subscription")({
-  head: () => ({
-    meta: [
-      { title: "Mon abonnement — Miftah" },
-      { name: "description", content: "Plan, statut et fonctionnalités de votre abonnement Miftah." },
-      { property: "og:title", content: "Mon abonnement — Miftah" },
-      { property: "og:description", content: "Gérez votre abonnement Miftah." },
-    ],
-  }),
+  head: ({ match }) => pageHead("/subscription", match.search.lang, false),
   component: Subscription,
 });
 

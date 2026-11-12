@@ -4,6 +4,6 @@ import { EditorialPage } from "@/components/editorial-page";
 import { pageHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/terms")({
-  head: () => pageHead("/terms", "fr"),
+  head: ({ match }) => pageHead("/terms", match.search.lang, true),
   component: () => <EditorialPage page="terms" title="Conditions d'utilisation" />,
 });

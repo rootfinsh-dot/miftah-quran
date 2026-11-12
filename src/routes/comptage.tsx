@@ -1,3 +1,4 @@
+import { pageHead } from "@/lib/seo";
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 
@@ -12,21 +13,7 @@ import {
 } from "@/lib/quran";
 
 export const Route = createFileRoute("/comptage")({
-  head: () => ({
-    meta: [
-      { title: "Comptage de mots et de lettres — Miftah" },
-      {
-        name: "description",
-        content:
-          "Comptez les occurrences d'un mot ou d'une lettre arabe dans le Coran, sourate par sourate, avec les versets et leur traduction française.",
-      },
-      { property: "og:title", content: "Comptage de mots et de lettres — Miftah" },
-      {
-        property: "og:description",
-        content: "Occurrences d'un mot ou d'une lettre dans le Coran, détaillées par sourate.",
-      },
-    ],
-  }),
+  head: ({ match }) => pageHead("/comptage", match.search.lang, true),
   component: ComptagePage,
 });
 

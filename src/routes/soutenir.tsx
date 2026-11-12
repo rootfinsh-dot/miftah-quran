@@ -1,3 +1,4 @@
+import { pageHead } from "@/lib/seo";
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { DONATE_ACCOUNTS, DONATE_AMOUNTS } from "@/lib/site";

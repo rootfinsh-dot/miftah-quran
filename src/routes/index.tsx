@@ -1,24 +1,10 @@
+import { pageHead } from "@/lib/seo";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useT } from "@/lib/i18n";
 import { ReciterPlayer } from "@/components/ReciterPlayer";
 
 export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title: "Miftah — analyse mathématique du Coran" },
-      {
-        name: "description",
-        content:
-          "Analysez le texte coranique : comptage de mots et de lettres, statistiques des sourates, motifs numériques et valeurs abjad.",
-      },
-      { property: "og:title", content: "Miftah — analyse mathématique du Coran" },
-      {
-        property: "og:description",
-        content:
-          "Comptages, statistiques, motifs numériques et gématrie du texte coranique, avec traduction française.",
-      },
-    ],
-  }),
+  head: ({ match }) => pageHead("/", match.search.lang, true),
   component: Index,
 });
 
@@ -98,7 +84,7 @@ function Index() {
       </section>
 
       <section className="mx-auto max-w-6xl px-5 py-16">
-        <h2 className="text-3xl font-semibold text-primary-deep">{t("Quatre outils d'analyse")}</h2>
+        <h2 className="text-3xl font-semibold text-primary-deep">{t("Cinq outils d'analyse")}</h2>
         <div className="gold-rule mt-4 w-20" />
         <div className="mt-10 grid gap-5 sm:grid-cols-2">
           {CARDS.map((card) => (
@@ -118,7 +104,7 @@ function Index() {
       </section>
 
       <section className="mx-auto max-w-6xl px-5 pb-8">
-        <div className="surface-card p-8">
+        <div className="border-t border-border py-8">
           <h2 className="text-2xl font-semibold text-primary-deep">{t("Comment les comptages sont faits")}</h2>
           <ul className="mt-5 space-y-3 text-sm leading-relaxed text-muted-foreground">
             <li>
@@ -135,6 +121,7 @@ function Index() {
               {t("Les valeurs numériques suivent la table abjad classique (ا=1, ب=2, ج=3, … غ=1000).")}
             </li>
           </ul>
+          <Link to="/methodologie" className="mt-5 inline-block text-primary underline underline-offset-4">{t("Méthodologie et sources")}</Link>
         </div>
       </section>
     </div>

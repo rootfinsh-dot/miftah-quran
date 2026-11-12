@@ -1,5 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from "react";
 
+import { useNavigate, useSearch } from "@tanstack/react-router";
 import { DICTIONARY } from "@/locales/all";
 
 export const LANGUAGES = [
@@ -30,23 +31,24 @@ function interpolate(s: string, vars?: Record<string, string | number>) {
 }
 
 export function I18nProvider({ children }: { children: ReactNode }) {
-  const [lang, setLangState] = useState<Lang>("fr");
+  const search = useSearch({ from: "__root__" });
+  const navigate = useNavigate();
+  const lang = LANGUAGES.find((entry) => entry.code === search.lang)?.code ?? "fr";
 
   useEffect(() => {
-    const saved = localStorage.getItem(STORAGE_KEY) as Lang | null;
-    if (saved && LANGUAGES.some((l) => l.code === saved)) setLangState(saved);
-  }, []);
+    localStorage.setItem(STORAGE_KEY, lang);
+  }, [lang]);
 
   useEffect(() => {
-    const info = LANGUAGES.find((l) => l.code === lang)!;
+    const info = LANGUAGES.find((l) => l.code === lang);
     document.documentElement.lang = lang;
-    document.documentElement.dir = info.rtl ? "rtl" : "ltr";
+    document.documentElement.dir = info?.rtl ? "rtl" : "ltr";
   }, [lang]);
 
   const setLang = useCallback((l: Lang) => {
-    setLangState(l);
+    navigate({ to: ".", search: (previous) => ({ ...previous, lang: l }), replace: true });
     localStorage.setItem(STORAGE_KEY, l);
-  }, []);
+  }, [navigate]);
 
   const t = useCallback(
     (fr: string, vars?: Record<string, string | number>) => {

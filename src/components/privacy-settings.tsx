@@ -7,17 +7,7 @@ import { CONSENT_STORAGE_KEY, getConsent } from "@/lib/advertising";
 
 export function PrivacySettings() {
   const [open, setOpen] = useState(false);
-  const [granted, setGranted] = useState<boolean>(() => getConsent());
   const t = useT();
-
-  const setConsent = (value: boolean) => {
-    try {
-      localStorage.setItem(CONSENT_STORAGE_KEY, value ? "ad-granted" : "ad-declined");
-    } catch {
-      /* stockage indisponible : on ignore */
-    }
-    setGranted(value);
-  };
 
   return (
     <>
@@ -62,27 +52,13 @@ export function PrivacySettings() {
               <Button
                 variant="outline"
                 onClick={() => {
-                  setConsent(true);
+                  localStorage.removeItem(CONSENT_STORAGE_KEY);
                   setOpen(false);
-                  window.location.reload();
-                }}
-              >
-                {t("Autoriser la publicité")}
-              </Button>
-              <Button
-                variant="outline"
-                onClick={() => {
-                  setConsent(false);
-                  setOpen(false);
-                  window.location.reload();
                 }}
               >
                 {t("Refuser la publicité")}
               </Button>
             </div>
-            <p className="mt-3 text-xs text-muted-foreground">
-              {t("Choix actuel : {state}", { state: granted ? t("Publicité autorisée") : t("Publicité refusée") })}
-            </p>
 
             <Button asChild variant="link" className="mt-3">
               <Link to="/privacy" onClick={() => setOpen(false)}>

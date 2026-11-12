@@ -1,3 +1,4 @@
+import { pageHead } from "@/lib/seo";
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 
@@ -6,21 +7,7 @@ import { useT } from "@/lib/i18n";
 import { computeSurahStats, formatNumber, type QuranEdition, type SurahStats } from "@/lib/quran";
 
 export const Route = createFileRoute("/statistiques")({
-  head: () => ({
-    meta: [
-      { title: "Statistiques des sourates — Miftah" },
-      {
-        name: "description",
-        content:
-          "Nombre de versets, de mots, de lettres et valeur abjad de chacune des 114 sourates, avec classements et totaux.",
-      },
-      { property: "og:title", content: "Statistiques des sourates — Miftah" },
-      {
-        property: "og:description",
-        content: "Versets, mots, lettres et valeurs abjad des 114 sourates du Coran.",
-      },
-    ],
-  }),
+  head: ({ match }) => pageHead("/statistiques", match.search.lang, true),
   component: StatistiquesPage,
 });
 

@@ -1,3 +1,4 @@
+import { pageHead } from "@/lib/seo";
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 
@@ -13,21 +14,7 @@ import {
 } from "@/lib/quran";
 
 export const Route = createFileRoute("/motifs")({
-  head: () => ({
-    meta: [
-      { title: "Motifs numériques du Coran — Miftah" },
-      {
-        name: "description",
-        content:
-          "Divisibilité par 19 et autres diviseurs, symétries entre numéros de sourates et nombres de versets, sommes de chiffres.",
-      },
-      { property: "og:title", content: "Motifs numériques du Coran — Miftah" },
-      {
-        property: "og:description",
-        content: "Tests de divisibilité, symétries et régularités numériques du texte coranique.",
-      },
-    ],
-  }),
+  head: ({ match }) => pageHead("/motifs", match.search.lang, true),
   component: MotifsPage,
 });
 
