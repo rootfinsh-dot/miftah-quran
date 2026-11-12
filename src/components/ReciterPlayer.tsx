@@ -1,7 +1,6 @@
-import { useState, useEffect } from "react";
-import { Download, Music, Play, AlertCircle } from "lucide-react";
+import { useState } from "react";
+import { Download, Music, ExternalLink } from "lucide-react";
 
-// Liste précise des 114 sourates avec leur nombre de versets
 const SURAHS = [
   { id: 1, name: "1. Al-Fatiha", ayahs: 7 }, { id: 2, name: "2. Al-Baqarah", ayahs: 286 },
   { id: 3, name: "3. Ali 'Imran", ayahs: 200 }, { id: 4, name: "4. An-Nisa", ayahs: 176 },
@@ -63,41 +62,32 @@ const SURAHS = [
 ];
 
 const RECITERS = [
-  { name: "Mishary Al-Afasy", id: "ar.alafasy" },
-  { name: "Mahmoud Al-Husary", id: "ar.alhusary" },
-  { name: "Abdul Basit", id: "ar.abdulbasit" },
-  { name: "Mohamed Al-Minshawi", id: "ar.minshawi" },
+  { name: "Mishary Al-Afasy", id: "Alafasy_128kbps" },
+  { name: "Mahmoud Al-Husary", id: "Husary_128kbps" },
+  { name: "Abdul Basit (Mujawwad)", id: "Abdul_Basit_Mujawwad_128kbps" },
+  { name: "Mohamed Al-Minshawi", id: "Minshawi_Murattal_128kbps" },
 ];
-
-/** Calcule le numéro de verset global (1 à 6236) pour l'API. */
-function getGlobalAyahNumber(surahId: number, ayahId: number): number {
-  let count = 0;
-  for (let i = 0; i < surahId - 1; i++) {
-    count += SURAHS[i].ayahs;
-  }
-  return count + ayahId;
-}
 
 export function ReciterPlayer() {
   const [surahId, setSurahId] = useState(1);
   const [ayahId, setAyahId] = useState(1);
   const [reciterId, setReciterId] = useState(RECITERS[0].id);
 
-  const globalAyah = getGlobalAyahNumber(surahId, ayahId);
-
-  // URL corrigée : l'API AlQuran.cloud utilise le numéro global du verset
-  const audioUrl = `https://cdn.alquran.cloud/media/audio/ayah/${reciterId}/${globalAyah}`;
   const currentSurah = SURAHS.find(s => s.id === surahId) || SURAHS[0];
+
+  // EveryAyah nécessite des nombres sur 3 chiffres (ex: 001001.mp3)
+  const paddedSurah = String(surahId).padStart(3, '0');
+  const paddedAyah = String(ayahId).padStart(3, '0');
+  const audioUrl = `https://everyayah.com/data/${reciterId}/${paddedSurah}${paddedAyah}.mp3`;
 
   return (
     <div className="surface-card p-6 rounded-2xl border-2 border-emerald-500/30 shadow-xl bg-white text-black">
       <div className="flex items-center gap-3 mb-6 text-emerald-700">
         <Music className="w-6 h-6" />
-        <h2 className="text-xl font-bold">Écoute et Téléchargement</h2>
+        <h2 className="text-xl font-bold">Récitation du Coran</h2>
       </div>
 
       <div className="grid grid-cols-1 gap-4 mb-6">
-        {/* Sourate */}
         <div>
           <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Sourate</label>
           <select
@@ -112,7 +102,6 @@ export function ReciterPlayer() {
         </div>
 
         <div className="grid grid-cols-2 gap-4">
-          {/* Verset */}
           <div>
             <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Verset</label>
             <select
@@ -125,8 +114,6 @@ export function ReciterPlayer() {
               ))}
             </select>
           </div>
-
-          {/* Récitateur */}
           <div>
             <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Récitateur</label>
             <select
@@ -150,19 +137,14 @@ export function ReciterPlayer() {
       </div>
 
       <div className="space-y-3">
-        {/* Bouton de Téléchargement Direct */}
         <a
           href={audioUrl}
           target="_blank"
-          rel="noreferrer external"
+          rel="noopener noreferrer"
           className="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl flex items-center justify-center gap-2 transition-all shadow-md active:scale-95"
         >
-          <Download className="w-5 h-5" /> Télécharger le fichier MP3
+          <Download className="w-5 h-5" /> Télécharger (MP3)
         </a>
-
-        <p className="text-[10px] text-center text-gray-400 italic">
-          Note : Si le téléchargement ne se lance pas automatiquement, faites un clic droit sur le lecteur audio et choisissez "Enregistrer l'audio sous...".
-        </p>
       </div>
     </div>
   );
