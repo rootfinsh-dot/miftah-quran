@@ -1,10 +1,25 @@
-import { pageHead } from "@/lib/seo";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useT } from "@/lib/i18n";
 import { ReciterPlayer } from "@/components/ReciterPlayer";
+import { Heart } from "lucide-react";
 
 export const Route = createFileRoute("/")({
-  head: ({ match }) => pageHead("/", match.search.lang, true),
+  head: () => ({
+    meta: [
+      { title: "Miftah — analyse mathématique du Coran" },
+      {
+        name: "description",
+        content:
+          "Analysez le texte coranique : comptage de mots et de lettres, statistiques des sourates, motifs numériques et valeurs abjad.",
+      },
+      { property: "og:title", content: "Miftah — analyse mathématique du Coran" },
+      {
+        property: "og:description",
+        content:
+          "Comptages, statistiques, motifs numériques et gématrie du texte coranique, avec traduction française.",
+      },
+    ],
+  }),
   component: Index,
 });
 
@@ -50,41 +65,44 @@ function Index() {
           }}
         />
         <div className="relative mx-auto max-w-6xl px-5 py-20 sm:py-28">
-          <p className="text-xs uppercase tracking-[0.3em] text-gold-soft">
-            {t("Lecture quantitative du texte")}
-          </p>
-          <h1 className="mt-5 max-w-3xl text-4xl font-semibold leading-tight sm:text-6xl">
-            {t("Mesurer, compter et comparer le texte du Coran")}
-          </h1>
-          <p className="mt-6 max-w-2xl text-base text-primary-foreground/85 sm:text-lg">
-            {t(
-              "Miftah calcule directement sur le texte arabe intégral (recension Uthmani) et affiche la traduction française à côté de chaque verset. Toutes les analyses sont transparentes et reproductibles.",
-            )}
-          </p>
-          <div className="mt-9 flex flex-wrap gap-3">
-            <Link to="/comptage" className="btn-emerald border border-gold/40 px-6 py-3 font-medium">
-              {t("Lancer une analyse")}
-            </Link>
-            <Link
-              to="/statistiques"
-              className="inline-flex items-center rounded-md border border-primary-foreground/30 px-6 py-3 font-medium transition-colors hover:bg-primary-foreground/10"
-            >
-              {t("Voir les statistiques")}
-            </Link>
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-8">
+            <div className="flex-1">
+              <p className="text-xs uppercase tracking-[0.3em] text-gold-soft">
+                {t("Lecture quantitative du texte")}
+              </p>
+              <h1 className="mt-5 max-w-3xl text-4xl font-semibold leading-tight sm:text-6xl">
+                {t("Mesurer, compter et comparer le texte du Coran")}
+              </h1>
+              <p className="mt-6 max-w-2xl text-base text-primary-foreground/85 sm:text-lg">
+                {t(
+                  "Miftah calcule directement sur le texte arabe intégral (recension Uthmani) et affiche la traduction française à côté de chaque verset. Toutes les analyses sont transparentes et reproductibles.",
+                )}
+              </p>
+              <div className="mt-9 flex flex-wrap gap-3">
+                <Link to="/comptage" className="btn-emerald border border-gold/40 px-6 py-3 font-medium">
+                  {t("Lancer une analyse")}
+                </Link>
+                <Link to="/soutenir" className="bg-amber-400 hover:bg-amber-500 text-primary-deep px-6 py-3 rounded-md font-bold flex items-center gap-2 animate-pulse shadow-lg">
+                  <Heart className="w-5 h-5 fill-current" />
+                  {t("Soutenir le projet")}
+                </Link>
+              </div>
+            </div>
+
+            {/* Lecteur complet ajouté sur la droite de l'accueil */}
+            <div className="w-full max-w-md">
+              <ReciterPlayer />
+            </div>
           </div>
+
           <p className="arabic mt-12 text-2xl text-gold-soft">
             وَكُلَّ شَىْءٍ أَحْصَيْنَٰهُ كِتَٰبًا
           </p>
-
-          {/* Lecteur ajouté sur la page d'accueil pour test */}
-          <div className="mt-8 max-w-md">
-            <ReciterPlayer ayahNumber={1} />
-          </div>
         </div>
       </section>
 
       <section className="mx-auto max-w-6xl px-5 py-16">
-        <h2 className="text-3xl font-semibold text-primary-deep">{t("Cinq outils d'analyse")}</h2>
+        <h2 className="text-3xl font-semibold text-primary-deep">{t("Quatre outils d'analyse")}</h2>
         <div className="gold-rule mt-4 w-20" />
         <div className="mt-10 grid gap-5 sm:grid-cols-2">
           {CARDS.map((card) => (
@@ -104,7 +122,7 @@ function Index() {
       </section>
 
       <section className="mx-auto max-w-6xl px-5 pb-8">
-        <div className="border-t border-border py-8">
+        <div className="surface-card p-8">
           <h2 className="text-2xl font-semibold text-primary-deep">{t("Comment les comptages sont faits")}</h2>
           <ul className="mt-5 space-y-3 text-sm leading-relaxed text-muted-foreground">
             <li>
@@ -121,7 +139,6 @@ function Index() {
               {t("Les valeurs numériques suivent la table abjad classique (ا=1, ب=2, ج=3, … غ=1000).")}
             </li>
           </ul>
-          <Link to="/methodologie" className="mt-5 inline-block text-primary underline underline-offset-4">{t("Méthodologie et sources")}</Link>
         </div>
       </section>
     </div>
