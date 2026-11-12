@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-
 import { useT } from "@/lib/i18n";
+import { ReciterPlayer } from "@/components/ReciterPlayer";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -89,6 +89,11 @@ function Index() {
           <p className="arabic mt-12 text-2xl text-gold-soft">
             وَكُلَّ شَىْءٍ أَحْصَيْنَٰهُ كِتَٰبًا
           </p>
+
+          {/* Lecteur ajouté sur la page d'accueil pour test */}
+          <div className="mt-8 max-w-md">
+            <ReciterPlayer ayahNumber={1} />
+          </div>
         </div>
       </section>
 
