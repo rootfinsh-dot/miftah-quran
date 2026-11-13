@@ -8,6 +8,7 @@ import { gematrie } from "./gematrie";
 import { fourchette } from "./fourchette";
 import { editorial } from "./editorial";
 import { pricing } from "./pricing";
+import { siteInterface } from "./site-interface";
 
 export const DICTIONARY: Dict = {
   ...common,
@@ -19,4 +20,5 @@ export const DICTIONARY: Dict = {
   ...fourchette,
   ...editorial,
   ...pricing,
+  ...siteInterface,
 };

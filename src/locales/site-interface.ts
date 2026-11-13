@@ -1,0 +1,20 @@
+import type { Dict } from "@/lib/i18n";
+export const siteInterface: Dict = {
+  "À propos de Miftah": { en: "About Miftah", ar: "عن مفتاح" },
+  "Politique de confidentialité": { en: "Privacy policy", ar: "سياسة الخصوصية" },
+  "Conditions d'utilisation": { en: "Terms of use", ar: "شروط الاستخدام" },
+  "Méthodologie et sources": { en: "Methodology and sources", ar: "المنهجية والمصادر" },
+  "Contacter Miftah": { en: "Contact Miftah", ar: "تواصل مع مفتاح" }, Contact: { en: "Contact", ar: "تواصل معنا" },
+  Tarifs: { en: "Pricing", ar: "الأسعار" }, Connexion: { en: "Sign in", ar: "تسجيل الدخول" }, Déconnexion: { en: "Sign out", ar: "تسجيل الخروج" },
+  "Mon espace": { en: "My workspace", ar: "مساحتي" }, "À propos": { en: "About", ar: "عن المشروع" },
+  Méthodologie: { en: "Methodology", ar: "المنهجية" }, Confidentialité: { en: "Privacy", ar: "الخصوصية" }, Conditions: { en: "Terms", ar: "الشروط" }, Soutenir: { en: "Support", ar: "الدعم" },
+  "Liens du pied de page": { en: "Site information", ar: "معلومات الموقع" }, Références: { en: "References", ar: "المراجع" },
+  "Réglages de confidentialité": { en: "Privacy settings", ar: "إعدادات الخصوصية" }, Fermer: { en: "Close", ar: "إغلاق" },
+  "Refuser la publicité": { en: "Keep advertising disabled", ar: "إبقاء الإعلانات معطلة" },
+  "La publicité et le suivi publicitaire sont désactivés. Aucun consentement publicitaire n'est demandé ou enregistré.": { en: "Advertising and advertising tracking are disabled. No advertising consent is requested or recorded.", ar: "الإعلانات والتتبع الإعلاني معطلان. لا تُطلب أو تُسجل موافقة إعلانية." },
+  "Les préférences de langue et la session de connexion utilisent le stockage nécessaire au fonctionnement du site.": { en: "Language preferences and sign-in sessions use storage necessary for site functionality.", ar: "تستخدم تفضيلات اللغة وجلسات الدخول التخزين اللازم لتشغيل الموقع." },
+  "AlQuran Cloud — API": { en: "AlQuran Cloud — API", ar: "AlQuran Cloud — واجهة البيانات" },
+  "AlQuran Cloud — conditions": { en: "AlQuran Cloud — terms", ar: "AlQuran Cloud — الشروط" },
+  "AlQuran Cloud — sources": { en: "AlQuran Cloud — sources", ar: "AlQuran Cloud — المصادر" },
+  "Cinq outils d'analyse": { en: "Five analysis tools", ar: "خمس أدوات للتحليل" },
+};

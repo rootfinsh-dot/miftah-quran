@@ -84,8 +84,8 @@ const LANGUAGES = [
 export function ReciterPlayer() {
   const [surahId, setSurahId] = useState(1);
   const [ayahId, setAyahId] = useState(1);
-  const [reciterId, setReciterId] = useState(RECITERS[0].id);
-  const [translationId, setTranslationId] = useState(LANGUAGES[0].id);
+  const [reciterId, setReciterId] = useState(RECITERS[0]?.id ?? "Alafasy_128kbps");
+  const [translationId, setTranslationId] = useState(LANGUAGES[0]?.id ?? "fr.hamidullah");
   const [mode, setMode] = useState<"ayah" | "surah" | "continue">("surah");
   const [isPlaying, setIsPlaying] = useState(false);
   const [text, setText] = useState({ arabic: "", translation: "" });
@@ -109,6 +109,7 @@ export function ReciterPlayer() {
       return;
     }
 
+    if (!currentSurah) return;
     if (ayahId < currentSurah.ayahs) {
       setAyahId(prev => prev + 1);
     } else if (surahId < 114) {

@@ -2,24 +2,10 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useT } from "@/lib/i18n";
 import { ReciterPlayer } from "@/components/ReciterPlayer";
 import { Heart } from "lucide-react";
+import { pageHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title: "Miftah — analyse mathématique du Coran" },
-      {
-        name: "description",
-        content:
-          "Analysez le texte coranique : comptage de mots et de lettres, statistiques des sourates, motifs numériques et valeurs abjad.",
-      },
-      { property: "og:title", content: "Miftah — analyse mathématique du Coran" },
-      {
-        property: "og:description",
-        content:
-          "Comptages, statistiques, motifs numériques et gématrie du texte coranique, avec traduction française.",
-      },
-    ],
-  }),
+  head: ({ match }) => pageHead("/", match.search.lang),
   component: Index,
 });
 
@@ -102,7 +88,7 @@ function Index() {
       </section>
 
       <section className="mx-auto max-w-6xl px-5 py-16">
-        <h2 className="text-3xl font-semibold text-primary-deep">{t("Quatre outils d'analyse")}</h2>
+        <h2 className="text-3xl font-semibold text-primary-deep">{t("Cinq outils d'analyse")}</h2>
         <div className="gold-rule mt-4 w-20" />
         <div className="mt-10 grid gap-5 sm:grid-cols-2">
           {CARDS.map((card) => (
