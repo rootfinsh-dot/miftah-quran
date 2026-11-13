@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Download, Music, ExternalLink } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import { Download, Play, Pause, SkipForward, Globe, BookOpen, Music, Settings2 } from "lucide-react";
 
 const SURAHS = [
   { id: 1, name: "1. Al-Fatiha", ayahs: 7 }, { id: 2, name: "2. Al-Baqarah", ayahs: 286 },
@@ -62,89 +62,177 @@ const SURAHS = [
 ];
 
 const RECITERS = [
-  { name: "Mishary Al-Afasy", id: "Alafasy_128kbps" },
-  { name: "Mahmoud Al-Husary", id: "Husary_128kbps" },
+  { name: "Mishary Rashid Al-Afasy", id: "Alafasy_128kbps" },
+  { name: "Mahmoud Khalil Al-Husary", id: "Husary_128kbps" },
   { name: "Abdul Basit (Mujawwad)", id: "Abdul_Basit_Mujawwad_128kbps" },
-  { name: "Mohamed Al-Minshawi", id: "Minshawi_Murattal_128kbps" },
+  { name: "Mohamed Siddiq Al-Minshawi", id: "Minshawi_Murattal_128kbps" },
+];
+
+const LANGUAGES = [
+  { id: "fr.hamidullah", name: "Français (Hamidullah)" },
+  { id: "en.sahih", name: "English (Sahih Intl)" },
+  { id: "es.cortes", name: "Español (Cortes)" },
+  { id: "de.aburida", name: "Deutsch (Abu Rida)" },
+  { id: "ja.japanese", name: "日本語 (Japanese)" },
+  { id: "ar.jalalayn", name: "Tafsir Al-Jalalayn (Arabe)" },
+  { id: "ar.muyassar", name: "Tafsir Al-Muyassar (Arabe)" },
 ];
 
 export function ReciterPlayer() {
   const [surahId, setSurahId] = useState(1);
   const [ayahId, setAyahId] = useState(1);
   const [reciterId, setReciterId] = useState(RECITERS[0].id);
+  const [translationId, setTranslationId] = useState(LANGUAGES[0].id);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [textData, setTextData] = useState({ arabic: "", translation: "" });
+  const audioRef = useRef<HTMLAudioElement>(null);
 
-  const currentSurah = SURAHS.find(s => s.id === surahId) || SURAHS[0];
+  // Charger le texte et la traduction depuis l'API
+  useEffect(() => {
+    fetch(`https://api.alquran.cloud/v3/ayah/${surahId}:${ayahId}/editions/quran-uthmani,${translationId}`)
+      .then(res => res.json())
+      .then(data => {
+        if (data.data) {
+          setTextData({
+            arabic: data.data[0].text,
+            translation: data.data[1].text
+          });
+        }
+      });
+  }, [surahId, ayahId, translationId]);
 
-  // EveryAyah nécessite des nombres sur 3 chiffres (ex: 001001.mp3)
-  const paddedSurah = String(surahId).padStart(3, '0');
-  const paddedAyah = String(ayahId).padStart(3, '0');
-  const audioUrl = `https://everyayah.com/data/${reciterId}/${paddedSurah}${paddedAyah}.mp3`;
+  const handleNext = () => {
+    const currentSurah = SURAHS.find(s => s.id === surahId);
+    if (ayahId < (currentSurah?.ayahs || 0)) {
+      setAyahId(prev => prev + 1);
+    } else if (surahId < 114) {
+      setSurahId(prev => prev + 1);
+      setAyahId(1);
+    } else {
+      setIsPlaying(false);
+    }
+  };
+
+  const togglePlay = () => {
+    if (audioRef.current) {
+      if (isPlaying) audioRef.current.pause();
+      else audioRef.current.play();
+      setIsPlaying(!isPlaying);
+    }
+  };
+
+  const audioUrl = `https://everyayah.com/data/${reciterId}/${String(surahId).padStart(3, '0')}${String(ayahId).padStart(3, '0')}.mp3`;
+  const currentSurahObj = SURAHS.find(s => s.id === surahId) || SURAHS[0];
 
   return (
-    <div className="surface-card p-6 rounded-2xl border-2 border-emerald-500/30 shadow-xl bg-white text-black">
-      <div className="flex items-center gap-3 mb-6 text-emerald-700">
-        <Music className="w-6 h-6" />
-        <h2 className="text-xl font-bold">Récitation du Coran</h2>
+    <div className="surface-card p-0 rounded-3xl border-2 border-emerald-500/20 overflow-hidden shadow-2xl bg-white max-w-2xl mx-auto my-8">
+      {/* Zone d'affichage du texte (Sous-titres) */}
+      <div className="bg-emerald-950 p-8 sm:p-12 text-center min-h-[300px] flex flex-col justify-center gap-6 relative">
+        <div className="absolute top-4 left-0 right-0 flex justify-center gap-2">
+           <span className="text-[10px] bg-emerald-500/20 text-emerald-400 px-3 py-1 rounded-full uppercase tracking-widest font-bold">
+             Sourate {surahId} : Verset {ayahId}
+           </span>
+        </div>
+        <p className="arabic text-3xl sm:text-4xl leading-[2.5] text-white drop-shadow-sm font-medium rtl">
+          {textData.arabic || "..."}
+        </p>
+        <p className="text-emerald-200/70 text-base sm:text-lg italic leading-relaxed max-w-lg mx-auto">
+          {textData.translation || "Chargement..."}
+        </p>
       </div>
 
-      <div className="grid grid-cols-1 gap-4 mb-6">
-        <div>
-          <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Sourate</label>
+      <div className="p-6 bg-white">
+        {/* Contrôles de sélection */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+          <div className="space-y-1">
+             <label className="text-[10px] font-bold text-gray-400 uppercase flex items-center gap-1 ml-1">
+               <Globe className="w-3 h-3" /> Langue / Tafsir
+             </label>
+             <select
+               value={translationId}
+               onChange={(e) => setTranslationId(e.target.value)}
+               className="w-full p-3 rounded-xl border-2 border-gray-100 bg-gray-50 text-black font-semibold outline-none focus:border-emerald-500 transition-all text-sm"
+             >
+               {LANGUAGES.map(l => <option key={l.id} value={l.id}>{l.name}</option>)}
+             </select>
+          </div>
+          <div className="space-y-1">
+             <label className="text-[10px] font-bold text-gray-400 uppercase flex items-center gap-1 ml-1">
+               <Music className="w-3 h-3" /> Récitateur
+             </label>
+             <select
+               value={reciterId}
+               onChange={(e) => setReciterId(e.target.value)}
+               className="w-full p-3 rounded-xl border-2 border-gray-100 bg-gray-50 text-black font-semibold outline-none focus:border-emerald-500 transition-all text-sm"
+             >
+               {RECITERS.map(r => <option key={r.id} value={r.id}>{r.name}</option>)}
+             </select>
+          </div>
+        </div>
+
+        {/* Sélection Sourate/Verset */}
+        <div className="grid grid-cols-2 gap-4 mb-8">
           <select
             value={surahId}
             onChange={(e) => { setSurahId(Number(e.target.value)); setAyahId(1); }}
-            className="w-full p-3 rounded-lg border-2 border-gray-100 bg-gray-50 text-black font-semibold outline-none focus:border-emerald-500"
+            className="p-3 rounded-xl border-2 border-gray-100 bg-gray-50 text-black font-bold outline-none text-sm"
           >
-            {SURAHS.map((s) => (
-              <option key={s.id} value={s.id}>{s.name}</option>
+            {SURAHS.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
+          </select>
+          <select
+            value={ayahId}
+            onChange={(e) => setAyahId(Number(e.target.value))}
+            className="p-3 rounded-xl border-2 border-gray-100 bg-gray-50 text-black font-bold outline-none text-sm"
+          >
+            {Array.from({ length: currentSurahObj.ayahs }, (_, i) => i + 1).map(n => (
+              <option key={n} value={n}>Verset {n}</option>
             ))}
           </select>
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Verset</label>
-            <select
-              value={ayahId}
-              onChange={(e) => setAyahId(Number(e.target.value))}
-              className="w-full p-3 rounded-lg border-2 border-gray-100 bg-gray-50 text-black font-semibold outline-none focus:border-emerald-500"
-            >
-              {Array.from({ length: currentSurah.ayahs }, (_, i) => i + 1).map((n) => (
-                <option key={n} value={n}>Verset {n}</option>
-              ))}
-            </select>
-          </div>
-          <div>
-            <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Récitateur</label>
-            <select
-              value={reciterId}
-              onChange={(e) => setReciterId(e.target.value)}
-              className="w-full p-3 rounded-lg border-2 border-gray-100 bg-gray-50 text-black font-semibold outline-none focus:border-emerald-500"
-            >
-              {RECITERS.map((r) => (
-                <option key={r.id} value={r.id}>{r.name}</option>
-              ))}
-            </select>
-          </div>
+        {/* Lecteur Audio invisible */}
+        <audio
+          ref={audioRef}
+          key={audioUrl}
+          src={audioUrl}
+          onEnded={handleNext}
+          onPlay={() => setIsPlaying(true)}
+          onPause={() => setIsPlaying(false)}
+          autoPlay={isPlaying}
+        />
+
+        {/* Barre de contrôle principale */}
+        <div className="flex items-center gap-6">
+           <button
+             onClick={togglePlay}
+             className="w-16 h-16 bg-emerald-600 text-white rounded-full flex items-center justify-center shadow-xl hover:bg-emerald-700 hover:scale-105 active:scale-95 transition-all"
+           >
+             {isPlaying ? <Pause className="w-8 h-8" /> : <Play className="w-8 h-8 ml-1" />}
+           </button>
+
+           <div className="flex-1 flex flex-col">
+              <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">En cours de lecture</span>
+              <span className="text-black font-black text-lg truncate">{currentSurahObj.name}</span>
+           </div>
+
+           <button
+             onClick={handleNext}
+             className="p-4 text-emerald-600 hover:bg-emerald-50 rounded-full transition-all active:scale-90"
+             title="Verset suivant"
+           >
+              <SkipForward className="w-6 h-6" />
+           </button>
+
+           <a
+             href={audioUrl}
+             target="_blank"
+             rel="noopener noreferrer"
+             className="p-4 text-gray-300 hover:text-emerald-600 transition-all"
+             title="Télécharger MP3"
+           >
+              <Download className="w-6 h-6" />
+           </a>
         </div>
-      </div>
-
-      <div className="bg-emerald-50 p-4 rounded-xl mb-6">
-        <audio key={audioUrl} controls className="w-full h-12 rounded-lg">
-          <source src={audioUrl} type="audio/mp3" />
-          Votre navigateur ne supporte pas l'audio.
-        </audio>
-      </div>
-
-      <div className="space-y-3">
-        <a
-          href={audioUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl flex items-center justify-center gap-2 transition-all shadow-md active:scale-95"
-        >
-          <Download className="w-5 h-5" /> Télécharger (MP3)
-        </a>
       </div>
     </div>
   );
