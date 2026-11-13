@@ -15,6 +15,13 @@
       "when": 1790839895962,
       "tag": "0001_saves_and_usage",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1794600978389,
+      "tag": "0002_harden_has_role_and_feature_permissions",
+      "breakpoints": true
     }
   ]
 }

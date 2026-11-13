@@ -51,13 +51,11 @@ export function useCanUse(featureKey: string) {
 export function ProGate({ feature, children }: { feature: string; children: ReactNode }) {
   const t = useT();
   const { allowed, required, ready } = useCanUse(feature);
-  if (!ready || allowed) return <>{children}</>;
+  if (allowed && ready) return <>{children}</>;
+  if (!ready) return null;
   return (
-    <div className="relative">
-      <div aria-hidden className="pointer-events-none select-none opacity-40 blur-sm">
-        {children}
-      </div>
-      <div className="absolute inset-0 flex items-center justify-center p-4">
+    <div className="relative min-h-48">
+      <div className="flex items-center justify-center p-4">
         <div className="surface-card max-w-sm p-6 text-center shadow-lg">
           <p className="text-xs uppercase tracking-widest text-gold">
             {t("Réservé au plan {p}", { p: required === "RESEARCH" ? "Research" : "Pro" })}
