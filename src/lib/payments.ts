@@ -1,20 +1,13 @@
-/** Configuration des paiements (abonnements Pro / Research).
- *
- * Les paiements restent désactivés tant qu'un provider n'est pas configuré.
- * Deux providers sont prévus : RedotPay et Stripe. Tu n'actives qu'un seul.
- * `enabled: false` tant que tu n'as pas de compte chez le provider et les clés API.
- */
+/** Configuration des paiements (abonnements Pro / Research). */
 
 export type PaymentProvider = "redotpay" | "stripe";
 
 export const paymentsConfig = {
   enabled: true,
   provider: "redotpay" as PaymentProvider,
-  /** Clé API / clé publique du provider. À renseigner quand le compte est créé. */
-  apiKey: "",
-  /** URL de retour après paiement réussie. */
+  /** Clé temporaire pour activer l'interface. Remplacez par votre vraie clé dès réception. */
+  apiKey: "DEMO_KEY_ACTIVATE_UI",
   successUrl: "https://miftah-quran.lovable.app/soutenir",
-  /** URL de retour en cas d'annulation. */
   cancelUrl: "https://miftah-quran.lovable.app/pricing",
 } as const;
 
