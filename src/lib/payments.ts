@@ -8,11 +8,11 @@
 export type PaymentProvider = "redotpay" | "stripe";
 
 export const paymentsConfig = {
-  enabled: false,
+  enabled: true,
   provider: "redotpay" as PaymentProvider,
   /** Clé API / clé publique du provider. À renseigner quand le compte est créé. */
   apiKey: "",
-  /** URL de retour après paiement réussi. */
+  /** URL de retour après paiement réussie. */
   successUrl: "https://miftah-quran.lovable.app/soutenir",
   /** URL de retour en cas d'annulation. */
   cancelUrl: "https://miftah-quran.lovable.app/pricing",
