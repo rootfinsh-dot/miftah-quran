@@ -94,6 +94,21 @@ function Counter({
             {t("Chercher et Compter")}
           </button>
         </form>
+        <div className="mt-4 flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
+          <span>{t("Exemples :")}</span>
+          {SUGGESTIONS.map((s) => (
+            <button
+              key={s}
+              onClick={() => {
+                setInput(s);
+                setTerm(s);
+              }}
+              className="arabic rounded-md border border-border px-3 py-1 text-base transition-colors hover:bg-secondary"
+            >
+              {s}
+            </button>
+          ))}
+        </div>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2">
@@ -102,7 +117,6 @@ function Counter({
       </div>
 
       <div className="grid gap-6 lg:grid-cols-2">
-          {/* Mots exacts */}
           <div className="surface-card p-6">
             <h2 className="text-xl font-semibold text-primary-deep">{t("Occurrences exactes")}</h2>
             <div className="mt-4 max-h-[480px] space-y-5 overflow-y-auto pr-1">
@@ -116,7 +130,6 @@ function Counter({
             </div>
           </div>
 
-          {/* Dérivés */}
           <div className="surface-card p-6">
             <h2 className="text-xl font-semibold text-primary-deep">{t("Formes dérivées de la racine")}</h2>
             <div className="mt-4 max-h-[480px] space-y-5 overflow-y-auto pr-1">

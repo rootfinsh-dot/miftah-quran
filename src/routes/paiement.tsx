@@ -1,129 +1,121 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { Check, Lock } from "lucide-react";
-
-import { useUser } from "@/lib/auth";
+import { createFileRoute, useSearch } from "@tanstack/react-router";
+import { useMemo } from "react";
 import { useT } from "@/lib/i18n";
-import { PLANS, formatPrice, planInfo, type PlanCode } from "@/lib/plans";
 import { paymentsConfig, paymentsEnabled } from "@/lib/payments";
-import { pageHead } from "@/lib/seo";
-
-type PaymentSearch = { plan?: PlanCode };
+import { Link } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/paiement")({
-  head: ({ match }) => pageHead("/paiement", match.search.lang, false),
-  validateSearch: (search: Record<string, unknown>): PaymentSearch => {
-    const plan = search["plan"];
-    return plan === "PRO" || plan === "RESEARCH" || plan === "FREE" ? { plan } : {};
-  },
-  component: Paiement,
+  component: PaiementPage,
 });
 
-function Paiement() {
+type PaiementSearch = { plan?: string };
+
+function PaiementPage() {
   const t = useT();
-  const { plan } = Route.useSearch();
-  const { user } = useUser();
-  const selected = planInfo(plan);
-  const isFree = selected.price === 0;
-  const checkoutReady = paymentsEnabled(paymentsConfig);
+  const search = useSearch({ from: "/paiement" }) as PaiementSearch;
+  const plan = search.plan || "FREE";
+
+  const enabled = useMemo(() => paymentsEnabled(paymentsConfig), []);
+
+  const plans = {
+    FREE: {
+      name: t("Gratuit"),
+      price: "0 €",
+      features: ["Comptage de mots/lettres", "Statistiques des sourates", "Gématrie abjad", "Comptage par fourchette"],
+    },
+    PRO: {
+      name: t("Pro"),
+      price: "9 €/mois",
+      features: ["Tout l'offre gratuite", "Analyses avancées", "Export des données", "Support prioritaire"],
+    },
+    RESEARCH: {
+      name: t("Research"),
+      price: "19 €/mois",
+      features: ["Tout l'offre Pro", "Motifs numériques illimités", "Accès API", "Collaboration"],
+    },
+  } as const;
+
+  const currentPlan = plans[plan as keyof typeof plans] || plans.FREE;
 
   return (
-    <div className="mx-auto max-w-lg px-5 py-16">
-      <p className="text-xs uppercase tracking-[0.2em] text-gold">Miftah</p>
-      <h1 className="mt-3 text-3xl font-semibold text-primary-deep">
-        {isFree ? t("Votre accès gratuit") : t("Finaliser votre abonnement")}
+    <div className="mx-auto max-w-4xl px-5 py-12">
+      <h1 className="text-3xl font-bold text-primary-deep mb-2">
+        {t("Paiement")}
       </h1>
-      <div className="gold-rule mt-4 w-20" />
+      <p className="text-muted-foreground mb-8">
+        {t("Plan sélectionné")} : <strong>{currentPlan.name}</strong> — {currentPlan.price}
+      </p>
 
-      <div className="surface-card mt-8 p-6">
-        <div className="flex items-baseline justify-between gap-3">
-          <h2 className="text-xl font-semibold text-primary-deep">{selected.name}</h2>
-          <p className="text-lg font-semibold">
-            {formatPrice(selected.price)}
-            {selected.price > 0 && (
-              <span className="text-sm font-normal text-muted-foreground"> / {t("mois")}</span>
-            )}
+      {/* Cas 1 : FREE */}
+      {plan === "FREE" && (
+        <div className="surface-card p-8 text-center">
+          <div className="text-5xl mb-4">🎁</div>
+          <h2 className="text-2xl font-semibold text-primary-deep mb-2">
+            {t("Votre accès gratuit")}
+          </h2>
+          <div className="gold-rule mx-auto my-4 w-16" />
+          <p className="text-muted-foreground mb-6">
+            {t("Aucun paiement n'est requis.")}
+          </p>
+          <div className="flex flex-wrap justify-center gap-3">
+            <Link to="/comptage" className="btn-emerald px-6 py-3 font-medium">
+              {t("Utiliser maintenant")}
+            </Link>
+            <Link to="/pricing" className="px-6 py-3 rounded-md border border-border hover:bg-secondary">
+              {t("Voir les offres payantes")}
+            </Link>
+          </div>
+        </div>
+      )}
+
+      {/* Cas 2 : Paiement configuré (PRO/RESEARCH) */}
+      {plan !== "FREE" && enabled && (
+        <div className="surface-card p-8">
+          <h2 className="text-2xl font-semibold text-primary-deep mb-2">
+            {currentPlan.name}
+          </h2>
+          <p className="text-4xl font-bold text-gold mb-6">{currentPlan.price}</p>
+          <ul className="mb-8 space-y-2">
+            {currentPlan.features.map((f) => (
+              <li key={f} className="flex items-center gap-2 text-sm">
+                <span className="text-emerald-600">✓</span> {f}
+              </li>
+            ))}
+          </ul>
+
+          <a
+            href={paymentsConfig.successUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-emerald inline-block px-8 py-3 font-medium text-center"
+          >
+            {t("Payer maintenant")}
+          </a>
+          <p className="mt-4 text-xs text-muted-foreground">
+            {t("Vous serez redirigé vers le secure checkout.")}
           </p>
         </div>
+      )}
 
-        {isFree && (
-          <p className="mt-3 rounded-md border border-gold/40 bg-gold/10 px-4 py-3 text-sm text-primary-deep">
-            {t("Aucun paiement n'est requis. Aucun moyen de paiement n'est demandé.")}
+      {/* Cas 3 : Paiement non configuré (PRO/RESEARCH) */}
+      {plan !== "FREE" && !enabled && (
+        <div className="surface-card p-8 text-center">
+          <div className="text-5xl mb-4">🔒</div>
+          <h2 className="text-2xl font-semibold text-primary-deep mb-2">
+            {t("Paiement pas encore ouvert")}
+          </h2>
+          <p className="text-muted-foreground mb-6">
+            {t("Le paiement en ligne pour le plan")} {currentPlan.name} {t("n'est pas encore disponible.")}
           </p>
-        )}
-
-        <ul className="mt-5 space-y-2 text-sm text-muted-foreground">
-          {selected.features.map((f) => (
-            <li key={f} className="flex items-start gap-2">
-              <Check className="mt-0.5 size-4 shrink-0 text-primary" />
-              <span>{t(f)}</span>
-            </li>
-          ))}
-        </ul>
-
-        {isFree ? (
-          <div className="mt-7 flex flex-wrap gap-2">
-            <Link to={user ? "/dashboard" : "/auth"} className="btn-emerald px-5 py-2.5 font-medium">
-              {user ? t("Accéder à mes outils") : t("Créer un compte gratuit")}
-            </Link>
-            <Link
-              to="/comptage"
-              className="rounded-md border border-border px-5 py-2.5 font-medium hover:bg-secondary"
-            >
-              {t("Utiliser sans compte")}
-            </Link>
-          </div>
-        ) : checkoutReady ? (
-          <div className="mt-7">
-            <p className="text-sm text-muted-foreground">
-              {user
-                ? t("Compte : {email}", { email: user.email ?? "—" })
-                : t("Créez un compte avant de payer pour activer votre abonnement.")}
-            </p>
-            <Link
-              to={user ? "/pricing" : "/auth"}
-              className="btn-emerald mt-4 inline-flex px-5 py-2.5 font-medium"
-            >
-              {user ? t("Procéder au paiement") : t("Se connecter pour payer")}
-            </Link>
-          </div>
-        ) : (
-          <div className="mt-7">
-            <p className="flex items-start gap-2 text-sm text-muted-foreground">
-              <Lock className="mt-0.5 size-4 shrink-0 text-gold" />
-              <span>
-                {t(
-                  "Le paiement en ligne n'est pas encore ouvert. Vous utilisez déjà gratuitement les outils de base : comptage, statistiques, gématrie et fourchette.",
-                )}
-              </span>
-            </p>
-            <div className="mt-4 flex flex-wrap gap-2">
-              <Link to="/comptage" className="btn-emerald px-5 py-2.5 font-medium">
-                {t("Continuer gratuitement")}
-              </Link>
-              <Link
-                to="/pricing"
-                className="rounded-md border border-border px-5 py-2.5 font-medium hover:bg-secondary"
-              >
-                {t("Voir tous les plans")}
-              </Link>
-            </div>
-          </div>
-        )}
-      </div>
-
-      <div className="mt-6 text-center text-sm text-muted-foreground">
-        <Link to="/pricing" className="underline underline-offset-4 hover:text-primary-deep">
-          {t("Retour aux tarifs")}
-        </Link>
-        <span className="mx-2">·</span>
-        <Link to="/soutenir" className="underline underline-offset-4 hover:text-primary-deep">
-          {t("Soutenir sans abonnement")}
-        </Link>
-      </div>
-
-      <p className="mt-8 text-center text-xs text-muted-foreground">
-        {t("Plans disponibles : {list}", { list: PLANS.map((p) => p.name).join(" · ") })}
-      </p>
+          <div className="gold-rule mx-auto my-4 w-16" />
+          <p className="text-muted-foreground mb-6">
+            {t("Vous utilisez déjà gratuitement les outils de base : comptage, statistiques, gématrie et fourchette.")}
+          </p>
+          <Link to="/pricing" className="btn-emerald px-6 py-3 font-medium">
+            {t("Retour aux offres")}
+          </Link>
+        </div>
+      )}
     </div>
   );
 }
