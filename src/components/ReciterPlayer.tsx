@@ -43,11 +43,11 @@ export function ReciterPlayer() {
       />
 
       <div className="flex items-center justify-center gap-6 mb-6">
-        <button onClick={() => setAyahId(a => Math.max(1, a - 1))} className="p-3 bg-gray-100 rounded-full"><SkipBack /></button>
+        <button onClick={() => setAyahId(a => Math.max(1, a - 1))} className="p-3 bg-gray-100 rounded-full"><SkipBack className="text-black" /></button>
         <button onClick={() => { setIsPlaying(!isPlaying); }} className="w-16 h-16 bg-emerald-600 text-white rounded-full flex items-center justify-center">
             {isPlaying ? <Pause /> : <Play />}
         </button>
-        <button onClick={handleNext} className="p-3 bg-gray-100 rounded-full"><SkipForward /></button>
+        <button onClick={handleNext} className="p-3 bg-gray-100 rounded-full"><SkipForward className="text-black" /></button>
       </div>
 
       <p className="text-center text-sm font-bold text-black">Sourate {surahId} : Verset {ayahId}</p>
