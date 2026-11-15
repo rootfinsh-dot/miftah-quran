@@ -56,7 +56,7 @@ function Counter({
     quran.surahs.forEach((s) => {
       s.ayahs.forEach((a) => {
         a.text.split(" ").forEach((w) => {
-          list.push({ surah: s.id, ayah: a.id, word: w, text: a.text });
+          list.push({ surah: s.number, ayah: a.numberInSurah, word: w, text: a.text });
         });
       });
     });
