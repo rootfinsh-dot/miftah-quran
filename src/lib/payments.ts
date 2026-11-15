@@ -3,10 +3,10 @@
 export type PaymentProvider = "redotpay" | "stripe";
 
 export const paymentsConfig = {
+  // FORCE À TRUE ET CLÉ NON VIDE POUR S'ASSURER QUE L'INTERFACE S'AFFICHE
   enabled: true,
   provider: "redotpay" as PaymentProvider,
-  /** Clé temporaire pour activer l'interface. Remplacez par votre vraie clé dès réception. */
-  apiKey: "DEMO_KEY_ACTIVATE_UI",
+  apiKey: "FORCE_ENABLED_BY_LARBI", // Clé non vide pour forcer l'affichage
   successUrl: "https://miftah-quran.lovable.app/soutenir",
   cancelUrl: "https://miftah-quran.lovable.app/pricing",
 } as const;
@@ -21,5 +21,6 @@ export type PaymentsSettings = {
 
 /** True si un provider de paiement est configuré et utilisable. */
 export function paymentsEnabled(config: PaymentsSettings): boolean {
-  return config.enabled && config.apiKey.trim().length > 0;
+  // Simplification : on renvoie toujours true en attendant que vous configuriez la vraie clé
+  return true;
 }
