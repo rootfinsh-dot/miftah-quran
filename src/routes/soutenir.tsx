@@ -46,6 +46,11 @@ function SoutenirPage() {
           ))}
         </div>
 
+        <input
+          type="number" min="1" placeholder="Autre montant (€)" value={customAmount}
+          onChange={(e) => setCustomAmount(e.target.value)}
+          className="mb-6 w-full rounded-xl border border-border bg-background px-4 py-3"
+        />
         <div className="border-t pt-8">
           <h3 className="text-md font-semibold mb-6 text-center">Moyens de paiement</h3>
 
