@@ -24,11 +24,11 @@ const RECITERS = [
 export function ReciterPlayer() {
   const [surahId, setSurahId] = useState(1);
   const [ayahId, setAyahId] = useState(1);
-  const [reciterId, setReciterId] = useState(RECITERS[0].id);
+  const [reciterId, setReciterId] = useState(RECITERS[0]?.id ?? "Alafasy_128kbps");
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
 
-  const currentSurah = SURAHS.find(s => s.id === surahId) || SURAHS[0];
+  const currentSurah = SURAHS.find(s => s.id === surahId) ?? { id: 1, ayahs: 7 };
   const audioUrl = `https://everyayah.com/data/${reciterId}/${String(surahId).padStart(3, '0')}${String(ayahId).padStart(3, '0')}.mp3`;
 
   // --- CORRECTION : Forcer la lecture à chaque changement de verset ---
