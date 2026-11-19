@@ -10,9 +10,15 @@
 export const advertisingConfig = {
   enabled: false,
   approved: false,
-  publisherId: "",
+  publisherId: "", // À remplir : ca-pub-XXXXXXXXXXXXXX (16 chiffres)
   cmpCertified: false,
 } as const;
+
+/** Unités publicitaires AdSense déclarées côté client. */
+export const AdSenseAdUnits: Array<{ slot: string; label: string }> = [
+  // Ajoutez vos unités publicitaires :
+  // { slot: "VOTRE_CODE_AD_SLOT", label: "Description" }
+];
 
 export type AdvertisingSettings = {
   enabled: boolean;
