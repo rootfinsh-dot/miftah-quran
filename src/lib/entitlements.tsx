@@ -63,7 +63,10 @@ export function ProGate({ feature, children }: { feature: string; children: Reac
           <p className="mt-2 text-sm text-muted-foreground">
             {t("Passez à un plan supérieur pour débloquer cette analyse.")}
           </p>
-          <Link to="/pricing" className="btn-emerald mt-4 inline-flex px-4 py-2 text-sm font-medium">
+          <Link
+            to="/pricing"
+            className="btn-emerald mt-4 inline-flex px-4 py-2 text-sm font-medium"
+          >
             {t("Voir les tarifs")}
           </Link>
         </div>
@@ -129,7 +132,8 @@ export function useQuota(featureKey: string) {
   async function consume(): Promise<boolean> {
     if (unlimited) return true;
     if (remaining <= 0) return false;
-    if (user) await supabase.from("usage_events").insert({ user_id: user.id, feature_key: featureKey });
+    if (user)
+      await supabase.from("usage_events").insert({ user_id: user.id, feature_key: featureKey });
     else localIncrement(featureKey);
     setTick((x) => x + 1);
     qc.invalidateQueries({ queryKey: ["usage"] });
@@ -148,7 +152,9 @@ export function QuotaBadge({ quota }: { quota: ReturnType<typeof useQuota> }) {
       {quota.remaining === 0 && (
         <>
           {" — "}
-          <Link to="/pricing" className="text-primary hover:text-gold">{t("Passer à Pro")}</Link>
+          <Link to="/pricing" className="text-primary hover:text-gold">
+            {t("Passer à Pro")}
+          </Link>
         </>
       )}
     </p>
@@ -174,7 +180,10 @@ export function SaveAnalysisButton({
 
   if (!user)
     return (
-      <Link to="/auth" className="rounded-md border border-border px-3 py-1.5 text-sm hover:bg-secondary">
+      <Link
+        to="/auth"
+        className="rounded-md border border-border px-3 py-1.5 text-sm hover:bg-secondary"
+      >
         {t("Connectez-vous pour sauvegarder")}
       </Link>
     );
@@ -205,11 +214,15 @@ export function SaveAnalysisButton({
         {state === "saving" ? t("Sauvegarde…") : t("Sauvegarder l'analyse")}
       </button>
       {state === "ok" && <span className="text-sm text-primary">{t("Analyse sauvegardée")}</span>}
-      {state === "error" && <span className="text-sm text-destructive">{t("Erreur lors de la sauvegarde")}</span>}
+      {state === "error" && (
+        <span className="text-sm text-destructive">{t("Erreur lors de la sauvegarde")}</span>
+      )}
       {state === "limit" && (
         <span className="text-sm text-destructive">
           {t("Limite mensuelle de sauvegardes atteinte.")}{" "}
-          <Link to="/pricing" className="underline">{t("Passer à Pro")}</Link>
+          <Link to="/pricing" className="underline">
+            {t("Passer à Pro")}
+          </Link>
         </span>
       )}
     </span>

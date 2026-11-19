@@ -26,7 +26,10 @@ function Profil() {
 
   async function save(e: React.FormEvent) {
     e.preventDefault();
-    const { error } = await supabase.from("profiles").update({ display_name: name, updated_at: new Date().toISOString() }).eq("user_id", user.id);
+    const { error } = await supabase
+      .from("profiles")
+      .update({ display_name: name, updated_at: new Date().toISOString() })
+      .eq("user_id", user.id);
     setMsg(error ? error.message : t("Profil enregistré."));
     qc.invalidateQueries({ queryKey: ["account", user.id] });
   }
@@ -36,7 +39,12 @@ function Profil() {
       <form onSubmit={save} className="surface-card space-y-4 p-8">
         <h1 className="text-3xl font-semibold text-primary-deep">{t("Mon profil")}</h1>
         <p className="text-sm text-muted-foreground">{user.email}</p>
-        <input value={name} onChange={(e) => setName(e.target.value)} placeholder={t("Nom affiché")} className="w-full rounded-md border border-border bg-card px-3 py-2 text-sm" />
+        <input
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          placeholder={t("Nom affiché")}
+          className="w-full rounded-md border border-border bg-card px-3 py-2 text-sm"
+        />
         {msg && <p className="text-sm text-primary">{msg}</p>}
         <button className="btn-emerald w-full px-4 py-2.5 font-medium">{t("Enregistrer")}</button>
       </form>

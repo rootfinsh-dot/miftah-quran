@@ -3,12 +3,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { ProGate, SaveAnalysisButton } from "@/lib/entitlements";
 
-import {
-  DataGate,
-  PageHeader,
-  StatCard,
-  useArabicQuran,
-} from "@/components/quran-shell";
+import { DataGate, PageHeader, StatCard, useArabicQuran } from "@/components/quran-shell";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { useT } from "@/lib/i18n";
@@ -52,15 +47,29 @@ function FourchettePage() {
       />
       <div className="mx-auto mt-6 max-w-6xl px-5">
         <label className="surface-card flex flex-col gap-2 p-4 sm:flex-row sm:items-center">
-          <span className="text-sm font-medium text-primary-deep">{t("Langue de la traduction")}</span>
+          <span className="text-sm font-medium text-primary-deep">
+            {t("Langue de la traduction")}
+          </span>
           <select
             className="rounded-md border border-border bg-background px-3 py-2 text-sm sm:min-w-[22rem]"
             value={edition}
             onChange={(e) => changeEdition(e.target.value)}
           >
-            {(list.data ?? [{ identifier: "fr.hamidullah", language: "fr", name: "Hamidullah", englishName: "Hamidullah", direction: "ltr" } as TranslationEdition])
+            {(
+              list.data ?? [
+                {
+                  identifier: "fr.hamidullah",
+                  language: "fr",
+                  name: "Hamidullah",
+                  englishName: "Hamidullah",
+                  direction: "ltr",
+                } as TranslationEdition,
+              ]
+            )
               .slice()
-              .sort((a, b) => languageName(a.language).localeCompare(languageName(b.language), "fr"))
+              .sort((a, b) =>
+                languageName(a.language).localeCompare(languageName(b.language), "fr"),
+              )
               .map((e) => (
                 <option key={e.identifier} value={e.identifier}>
                   {languageName(e.language)} — {e.englishName}
@@ -68,7 +77,9 @@ function FourchettePage() {
               ))}
           </select>
           {list.data ? (
-            <span className="text-xs text-muted-foreground">{t("{n} traductions disponibles", { n: list.data.length })}</span>
+            <span className="text-xs text-muted-foreground">
+              {t("{n} traductions disponibles", { n: list.data.length })}
+            </span>
           ) : null}
         </label>
       </div>
@@ -77,7 +88,11 @@ function FourchettePage() {
           <RangeTool
             quran={quran}
             french={french.data}
-            label={current ? `${languageName(current.language)} — ${current.englishName}` : "Français — Hamidullah"}
+            label={
+              current
+                ? `${languageName(current.language)} — ${current.englishName}`
+                : "Français — Hamidullah"
+            }
             rtl={current?.direction === "rtl"}
           />
         )}
@@ -91,7 +106,12 @@ function clamp(n: number, min: number, max: number) {
   return Math.min(Math.max(n, min), max);
 }
 
-type RangeToolProps = { quran: QuranEdition; french: QuranEdition | undefined; label: string; rtl: boolean };
+type RangeToolProps = {
+  quran: QuranEdition;
+  french: QuranEdition | undefined;
+  label: string;
+  rtl: boolean;
+};
 
 function RangeTool({ quran, french, label, rtl }: RangeToolProps) {
   const t = useT();
@@ -109,8 +129,16 @@ function RangeTool({ quran, french, label, rtl }: RangeToolProps) {
     const end = ts * 1000 + ta;
     if (start > end) return { error: "La position de départ doit précéder la position d'arrivée." };
     const rows: { number: number; name: string; count: number }[] = [];
-    const verses: { surah: number; surahName: string; numberInSurah: number; text: string; french: string | undefined }[] = [];
-    let ayahs = 0, w = 0, l = 0;
+    const verses: {
+      surah: number;
+      surahName: string;
+      numberInSurah: number;
+      text: string;
+      french: string | undefined;
+    }[] = [];
+    let ayahs = 0,
+      w = 0,
+      l = 0;
     for (let s = fs; s <= ts; s++) {
       const surah = quran.surahs[s - 1]!;
       const frenchSurah = french?.surahs[s - 1];
@@ -216,26 +244,28 @@ function RangeTool({ quran, french, label, rtl }: RangeToolProps) {
             <StatCard label="Lettres" value={formatNumber(result.l!)} />
           </div>
           <ProGate feature="fourchette.advanced">
-          <div className="surface-card overflow-x-auto p-4">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="text-left text-muted-foreground">
-                  <th className="p-2">{t("N°")}</th>
-                  <th className="p-2">{t("Sourate")}</th>
-                  <th className="p-2 text-right">{t("Versets comptés")}</th>
-                </tr>
-              </thead>
-              <tbody>
-                {result.rows!.map((r) => (
-                  <tr key={r.number} className="border-t border-border">
-                    <td className="p-2">{r.number}</td>
-                    <td className="p-2 font-arabic" dir="rtl">{r.name}</td>
-                    <td className="p-2 text-right">{r.count}</td>
+            <div className="surface-card overflow-x-auto p-4">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="text-left text-muted-foreground">
+                    <th className="p-2">{t("N°")}</th>
+                    <th className="p-2">{t("Sourate")}</th>
+                    <th className="p-2 text-right">{t("Versets comptés")}</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody>
+                  {result.rows!.map((r) => (
+                    <tr key={r.number} className="border-t border-border">
+                      <td className="p-2">{r.number}</td>
+                      <td className="p-2 font-arabic" dir="rtl">
+                        {r.name}
+                      </td>
+                      <td className="p-2 text-right">{r.count}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </ProGate>
           <div className="surface-card p-5">
             <h2 className="font-display text-xl font-semibold text-primary-deep">
@@ -254,7 +284,9 @@ function RangeTool({ quran, french, label, rtl }: RangeToolProps) {
                     {v.text}
                   </p>
                   {v.french ? (
-                    <p className="mt-2 text-sm text-muted-foreground" dir={rtl ? "rtl" : "ltr"}>{v.french}</p>
+                    <p className="mt-2 text-sm text-muted-foreground" dir={rtl ? "rtl" : "ltr"}>
+                      {v.french}
+                    </p>
                   ) : (
                     <p className="mt-2 text-sm text-muted-foreground italic">
                       {t("Traduction en cours de chargement…")}

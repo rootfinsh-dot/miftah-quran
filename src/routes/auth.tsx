@@ -66,11 +66,14 @@ function AuthPage() {
   }
 
   async function google() {
-    const r = await lovable.auth.signInWithOAuth("google", { redirect_uri: window.location.origin + "/auth" });
+    const r = await lovable.auth.signInWithOAuth("google", {
+      redirect_uri: window.location.origin + "/auth",
+    });
     if (r.error) setErr(r.error.message ?? String(r.error));
   }
 
-  const title = mode === "login" ? "Connexion" : mode === "signup" ? "Créer un compte" : "Mot de passe oublié";
+  const title =
+    mode === "login" ? "Connexion" : mode === "signup" ? "Créer un compte" : "Mot de passe oublié";
   const input = "w-full rounded-md border border-border bg-card px-3 py-2 text-sm";
 
   return (
@@ -80,27 +83,68 @@ function AuthPage() {
         <div className="gold-rule mt-3 w-16" />
         <form onSubmit={submit} className="mt-6 space-y-4">
           {mode === "signup" && (
-            <input className={input} placeholder={t("Nom affiché")} value={name} onChange={(e) => setName(e.target.value)} />
+            <input
+              className={input}
+              placeholder={t("Nom affiché")}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
           )}
-          <input className={input} type="email" required placeholder={t("E-mail")} value={email} onChange={(e) => setEmail(e.target.value)} />
+          <input
+            className={input}
+            type="email"
+            required
+            placeholder={t("E-mail")}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
           {mode !== "forgot" && (
-            <input className={input} type="password" required minLength={6} placeholder={t("Mot de passe")} value={password} onChange={(e) => setPassword(e.target.value)} />
+            <input
+              className={input}
+              type="password"
+              required
+              minLength={6}
+              placeholder={t("Mot de passe")}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
           )}
           {err && <p className="text-sm text-destructive">{err}</p>}
           {msg && <p className="text-sm text-primary">{msg}</p>}
           <button disabled={busy} className="btn-emerald w-full px-4 py-2.5 font-medium">
-            {t(mode === "login" ? "Se connecter" : mode === "signup" ? "S'inscrire" : "Envoyer le lien")}
+            {t(
+              mode === "login"
+                ? "Se connecter"
+                : mode === "signup"
+                  ? "S'inscrire"
+                  : "Envoyer le lien",
+            )}
           </button>
         </form>
         {mode !== "forgot" && (
-          <button onClick={google} className="mt-3 w-full rounded-md border border-border bg-card px-4 py-2.5 text-sm font-medium hover:bg-secondary">
+          <button
+            onClick={google}
+            className="mt-3 w-full rounded-md border border-border bg-card px-4 py-2.5 text-sm font-medium hover:bg-secondary"
+          >
             {t("Continuer avec Google")}
           </button>
         )}
         <div className="mt-6 flex flex-wrap justify-between gap-2 text-sm text-muted-foreground">
-          {mode !== "login" && <button onClick={() => setMode("login")} className="hover:text-primary">{t("Déjà un compte ? Se connecter")}</button>}
-          {mode !== "signup" && <button onClick={() => setMode("signup")} className="hover:text-primary">{t("Créer un compte")}</button>}
-          {mode === "login" && <button onClick={() => setMode("forgot")} className="hover:text-primary">{t("Mot de passe oublié ?")}</button>}
+          {mode !== "login" && (
+            <button onClick={() => setMode("login")} className="hover:text-primary">
+              {t("Déjà un compte ? Se connecter")}
+            </button>
+          )}
+          {mode !== "signup" && (
+            <button onClick={() => setMode("signup")} className="hover:text-primary">
+              {t("Créer un compte")}
+            </button>
+          )}
+          {mode === "login" && (
+            <button onClick={() => setMode("forgot")} className="hover:text-primary">
+              {t("Mot de passe oublié ?")}
+            </button>
+          )}
         </div>
       </div>
     </div>

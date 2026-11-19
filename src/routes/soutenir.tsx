@@ -34,7 +34,10 @@ function SoutenirPage() {
           {DONATE_AMOUNTS.map((amt) => (
             <button
               key={amt}
-              onClick={() => { setSelectedAmount(amt); setCustomAmount(""); }}
+              onClick={() => {
+                setSelectedAmount(amt);
+                setCustomAmount("");
+              }}
               className={`py-3 px-4 rounded-xl font-medium border ${
                 selectedAmount === amt && !customAmount
                   ? "bg-emerald-600 text-white"
@@ -47,7 +50,10 @@ function SoutenirPage() {
         </div>
 
         <input
-          type="number" min="1" placeholder="Autre montant (€)" value={customAmount}
+          type="number"
+          min="1"
+          placeholder="Autre montant (€)"
+          value={customAmount}
           onChange={(e) => setCustomAmount(e.target.value)}
           className="mb-6 w-full rounded-xl border border-border bg-background px-4 py-3"
         />
@@ -57,16 +63,27 @@ function SoutenirPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Option PayPal */}
             <div className="border rounded-2xl p-6 flex flex-col justify-between bg-card">
-              <span className="font-bold text-lg mb-2 flex items-center gap-2"><CreditCard className="w-5 h-5 text-blue-500" /> PayPal</span>
-              <a href={paypalUrl!} target="_blank" rel="noopener noreferrer" className="w-full py-3 bg-blue-600 text-white font-medium rounded-xl text-center">
+              <span className="font-bold text-lg mb-2 flex items-center gap-2">
+                <CreditCard className="w-5 h-5 text-blue-500" /> PayPal
+              </span>
+              <a
+                href={paypalUrl!}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full py-3 bg-blue-600 text-white font-medium rounded-xl text-center"
+              >
                 Faire un don de {activeAmount} €
               </a>
             </div>
 
             {/* Option RedotPay */}
             <div className="border rounded-2xl p-6 flex flex-col bg-card">
-              <span className="font-bold text-lg mb-2 flex items-center gap-2"><ShieldCheck className="w-5 h-5 text-emerald-500" /> RedotPay</span>
-              <p className="text-sm text-muted-foreground mb-4">Envoyez le don via votre application RedotPay :</p>
+              <span className="font-bold text-lg mb-2 flex items-center gap-2">
+                <ShieldCheck className="w-5 h-5 text-emerald-500" /> RedotPay
+              </span>
+              <p className="text-sm text-muted-foreground mb-4">
+                Envoyez le don via votre application RedotPay :
+              </p>
               <div className="bg-muted p-3 rounded-lg text-sm font-mono break-all">
                 {redotpayInfo}
               </div>

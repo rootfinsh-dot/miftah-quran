@@ -89,8 +89,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { title: "Miftah — analyse mathématique du Coran" },
       {
         name: "description",
-        content:
-          "Comptages, statistiques, motifs numériques et valeurs abjad du texte coranique.",
+        content: "Comptages, statistiques, motifs numériques et valeurs abjad du texte coranique.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -205,7 +204,11 @@ function SiteHeader() {
               {t(item.label)}
             </Link>
           ))}
-          <Link to="/pricing" className="rounded-md px-3 py-1.5 text-muted-foreground hover:bg-secondary hover:text-primary-deep" activeProps={{ className: "bg-secondary text-primary-deep font-semibold" }}>
+          <Link
+            to="/pricing"
+            className="rounded-md px-3 py-1.5 text-muted-foreground hover:bg-secondary hover:text-primary-deep"
+            activeProps={{ className: "bg-secondary text-primary-deep font-semibold" }}
+          >
             {t("Tarifs")}
           </Link>
           <AccountButton />
@@ -235,14 +238,23 @@ function SiteFooter() {
             "Texte arabe : recension Uthmani. Traduction française : Muhammad Hamidullah. Les résultats sont calculés à la volée et dépendent des règles de comptage choisies.",
           )}
         </p>
-        <nav className="mt-5 flex flex-wrap gap-x-5 gap-y-2" aria-label={t("Liens du pied de page")}>
+        <nav
+          className="mt-5 flex flex-wrap gap-x-5 gap-y-2"
+          aria-label={t("Liens du pied de page")}
+        >
           {footerLinks.map((l) => (
-            <Link key={l.to} to={l.to} className="hover:text-primary-deep hover:underline underline-offset-4">
+            <Link
+              key={l.to}
+              to={l.to}
+              className="hover:text-primary-deep hover:underline underline-offset-4"
+            >
               {t(l.label)}
             </Link>
           ))}
         </nav>
-        <div className="mt-6"><PrivacySettings /></div>
+        <div className="mt-6">
+          <PrivacySettings />
+        </div>
       </div>
     </footer>
   );
@@ -254,15 +266,15 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <I18nProvider>
-      <div className="flex min-h-screen flex-col">
-        <SiteHeader />
-        <main className="flex-1">
-          {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-          <Outlet />
-        </main>
-        <AdvertisingSlot />
-        <SiteFooter />
-      </div>
+        <div className="flex min-h-screen flex-col">
+          <SiteHeader />
+          <main className="flex-1">
+            {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+            <Outlet />
+          </main>
+          <AdvertisingSlot />
+          <SiteFooter />
+        </div>
       </I18nProvider>
     </QueryClientProvider>
   );

@@ -17,10 +17,15 @@ function Pricing() {
     <div className="mx-auto max-w-6xl px-5 py-16">
       <h1 className="text-4xl font-semibold text-primary-deep">{t("Choisissez votre plan")}</h1>
       <div className="gold-rule mt-4 w-20" />
-      <p className="mt-4 text-sm text-muted-foreground">{t("Les prix sont provisoires. Le paiement en ligne sera bientôt disponible.")}</p>
+      <p className="mt-4 text-sm text-muted-foreground">
+        {t("Les prix sont provisoires. Le paiement en ligne sera bientôt disponible.")}
+      </p>
       <div className="mt-10 grid gap-5 md:grid-cols-3">
         {PLANS.map((p) => (
-          <div key={p.code} className={`surface-card flex flex-col p-6 ${p.highlight ? "ring-2 ring-gold" : ""}`}>
+          <div
+            key={p.code}
+            className={`surface-card flex flex-col p-6 ${p.highlight ? "ring-2 ring-gold" : ""}`}
+          >
             <h2 className="text-2xl font-semibold text-primary-deep">{p.name}</h2>
             <p className="mt-2 text-3xl font-semibold">
               {formatPrice(p.price)}
@@ -33,7 +38,7 @@ function Pricing() {
             </ul>
             <Link
               to={p.code === "FREE" ? (user ? "/dashboard" : "/auth") : "/paiement"}
-              search={(previous) => p.code === "FREE" ? previous : { ...previous, plan: p.code }}
+              search={(previous) => (p.code === "FREE" ? previous : { ...previous, plan: p.code })}
               className="btn-emerald mt-6 px-4 py-2.5 text-center font-medium"
             >
               {t(p.cta)}

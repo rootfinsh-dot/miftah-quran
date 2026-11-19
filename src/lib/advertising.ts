@@ -22,10 +22,7 @@ export type AdvertisingSettings = {
 };
 
 /** True si la publicité doit réellement être chargée (toutes les conditions vérifiées). */
-export function mayLoadAdvertising(
-  config: AdvertisingSettings,
-  consent: boolean,
-): boolean {
+export function mayLoadAdvertising(config: AdvertisingSettings, consent: boolean): boolean {
   return (
     config.enabled &&
     config.approved &&

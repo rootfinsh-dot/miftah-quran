@@ -27,7 +27,14 @@ function ResetPage() {
     <div className="mx-auto max-w-md px-5 py-16">
       <form onSubmit={submit} className="surface-card space-y-4 p-8">
         <h1 className="text-3xl font-semibold text-primary-deep">{t("Nouveau mot de passe")}</h1>
-        <input type="password" required minLength={6} value={pw} onChange={(e) => setPw(e.target.value)} className="w-full rounded-md border border-border bg-card px-3 py-2 text-sm" />
+        <input
+          type="password"
+          required
+          minLength={6}
+          value={pw}
+          onChange={(e) => setPw(e.target.value)}
+          className="w-full rounded-md border border-border bg-card px-3 py-2 text-sm"
+        />
         {err && <p className="text-sm text-destructive">{err}</p>}
         <button className="btn-emerald w-full px-4 py-2.5 font-medium">{t("Enregistrer")}</button>
       </form>

@@ -2,7 +2,13 @@ import { pageHead } from "@/lib/seo";
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 
-import { DataGate, PageHeader, StatCard, useArabicQuran, useFrenchQuran } from "@/components/quran-shell";
+import {
+  DataGate,
+  PageHeader,
+  StatCard,
+  useArabicQuran,
+  useFrenchQuran,
+} from "@/components/quran-shell";
 import { useT } from "@/lib/i18n";
 import {
   ABJAD,
@@ -83,7 +89,9 @@ function Gematria({
 
       <div className="grid gap-6 lg:grid-cols-2">
         <div className="surface-card p-6">
-          <h2 className="text-xl font-semibold text-primary-deep">{t("Détail lettre par lettre")}</h2>
+          <h2 className="text-xl font-semibold text-primary-deep">
+            {t("Détail lettre par lettre")}
+          </h2>
           <div className="mt-4 flex flex-wrap gap-2" dir="rtl">
             {breakdown.map((b, i) => (
               <span
@@ -134,7 +142,9 @@ function Gematria({
             </select>
           </label>
           <label>
-            <span className="mb-2 block font-medium">{t("Verset (1 – {n})", { n: ayahCount })}</span>
+            <span className="mb-2 block font-medium">
+              {t("Verset (1 – {n})", { n: ayahCount })}
+            </span>
             <input
               type="number"
               min={1}

@@ -66,8 +66,14 @@ function Stats({ quran }: { quran: QuranEdition }) {
 
   const maxWords = Math.max(...stats.map((s) => s.wordCount));
 
-  const longest = stats.slice().sort((a, b) => b.ayahCount - a.ayahCount).slice(0, 5);
-  const shortest = stats.slice().sort((a, b) => a.ayahCount - b.ayahCount).slice(0, 5);
+  const longest = stats
+    .slice()
+    .sort((a, b) => b.ayahCount - a.ayahCount)
+    .slice(0, 5);
+  const shortest = stats
+    .slice()
+    .sort((a, b) => a.ayahCount - b.ayahCount)
+    .slice(0, 5);
 
   return (
     <div className="mx-auto mt-10 max-w-6xl space-y-10 px-5">
@@ -77,9 +83,21 @@ function Stats({ quran }: { quran: QuranEdition }) {
           value="114"
           hint={t("{a} mecquoises, {b} médinoises", { a: mecquoises, b: 114 - mecquoises })}
         />
-        <StatCard label={t("Versets")} value={formatNumber(totals.ayahs)} hint={t("basmalas d'ouverture incluses dans le texte")} />
-        <StatCard label={t("Mots")} value={formatNumber(totals.words)} hint={t("séparés par espaces, texte normalisé")} />
-        <StatCard label={t("Lettres")} value={formatNumber(totals.letters)} hint={t("hors diacritiques")} />
+        <StatCard
+          label={t("Versets")}
+          value={formatNumber(totals.ayahs)}
+          hint={t("basmalas d'ouverture incluses dans le texte")}
+        />
+        <StatCard
+          label={t("Mots")}
+          value={formatNumber(totals.words)}
+          hint={t("séparés par espaces, texte normalisé")}
+        />
+        <StatCard
+          label={t("Lettres")}
+          value={formatNumber(totals.letters)}
+          hint={t("hors diacritiques")}
+        />
       </div>
 
       <div className="grid gap-6 lg:grid-cols-2">
@@ -88,7 +106,9 @@ function Stats({ quran }: { quran: QuranEdition }) {
       </div>
 
       <div className="surface-card p-6">
-        <h2 className="text-xl font-semibold text-primary-deep">{t("Nombre de mots par sourate")}</h2>
+        <h2 className="text-xl font-semibold text-primary-deep">
+          {t("Nombre de mots par sourate")}
+        </h2>
         <div className="mt-5 flex h-40 items-end gap-[3px]">
           {stats.map((s) => (
             <span
@@ -102,7 +122,9 @@ function Stats({ quran }: { quran: QuranEdition }) {
             />
           ))}
         </div>
-        <p className="mt-3 text-xs text-muted-foreground">{t("Sourates 1 à 114, de gauche à droite.")}</p>
+        <p className="mt-3 text-xs text-muted-foreground">
+          {t("Sourates 1 à 114, de gauche à droite.")}
+        </p>
       </div>
 
       <div className="surface-card overflow-hidden">
@@ -160,7 +182,9 @@ function Stats({ quran }: { quran: QuranEdition }) {
                     <span className="arabic text-base">{s.name}</span>
                     <span className="ml-2 text-xs text-muted-foreground">{s.frenchName}</span>
                   </td>
-                  <td className="p-3 text-muted-foreground">{s.revelationType === "Mecquoise" ? t("Mecquoise") : t("Médinoise")}</td>
+                  <td className="p-3 text-muted-foreground">
+                    {s.revelationType === "Mecquoise" ? t("Mecquoise") : t("Médinoise")}
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -184,7 +208,9 @@ function TopList({ title, rows }: { title: string; rows: SurahStats[] }) {
               <span className="arabic text-base">{s.name}</span>
               <span className="ml-2 text-xs text-muted-foreground">{s.frenchName}</span>
             </span>
-            <span className="font-medium">{t("{n} versets", { n: formatNumber(s.ayahCount) })}</span>
+            <span className="font-medium">
+              {t("{n} versets", { n: formatNumber(s.ayahCount) })}
+            </span>
           </li>
         ))}
       </ul>

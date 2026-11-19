@@ -42,10 +42,14 @@ export function PrivacySettings() {
               {t("Réglages de confidentialité")}
             </h2>
             <p className="mt-5 text-sm leading-6 text-muted-foreground">
-              {t("La publicité et le suivi publicitaire sont désactivés. Aucun consentement publicitaire n'est demandé ou enregistré.")}
+              {t(
+                "La publicité et le suivi publicitaire sont désactivés. Aucun consentement publicitaire n'est demandé ou enregistré.",
+              )}
             </p>
             <p className="mt-3 text-sm leading-6 text-muted-foreground">
-              {t("Les préférences de langue et la session de connexion utilisent le stockage nécessaire au fonctionnement du site.")}
+              {t(
+                "Les préférences de langue et la session de connexion utilisent le stockage nécessaire au fonctionnement du site.",
+              )}
             </p>
 
             <div className="mt-5 flex flex-wrap gap-2">

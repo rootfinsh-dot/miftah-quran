@@ -45,12 +45,23 @@ function Dashboard() {
       <div className="gold-rule mt-3 w-16" />
       <div className="mt-8 grid gap-5 sm:grid-cols-3">
         <div className="surface-card p-6">
-          <p className="text-xs uppercase tracking-widest text-muted-foreground">{t("Plan actuel")}</p>
-          <p className="mt-2 text-2xl font-semibold text-primary-deep">{data?.isAdmin ? "Admin" : plan.name}</p>
-          <Link to="/subscription" className="mt-3 inline-block text-sm text-primary hover:text-gold">{t("Mon abonnement →")}</Link>
+          <p className="text-xs uppercase tracking-widest text-muted-foreground">
+            {t("Plan actuel")}
+          </p>
+          <p className="mt-2 text-2xl font-semibold text-primary-deep">
+            {data?.isAdmin ? "Admin" : plan.name}
+          </p>
+          <Link
+            to="/subscription"
+            className="mt-3 inline-block text-sm text-primary hover:text-gold"
+          >
+            {t("Mon abonnement →")}
+          </Link>
         </div>
         <div className="surface-card p-6">
-          <p className="text-xs uppercase tracking-widest text-muted-foreground">{t("Analyses sauvegardées")}</p>
+          <p className="text-xs uppercase tracking-widest text-muted-foreground">
+            {t("Analyses sauvegardées")}
+          </p>
           <p className="mt-2 text-2xl font-semibold text-primary-deep">{items.length}</p>
           {isFree && (
             <p className="mt-1 text-xs text-muted-foreground">
@@ -59,27 +70,39 @@ function Dashboard() {
           )}
         </div>
         <div className="surface-card p-6">
-          <p className="text-xs uppercase tracking-widest text-muted-foreground">{t("Mon profil")}</p>
-          <Link to="/profil" className="mt-3 inline-block text-sm text-primary hover:text-gold">{t("Modifier le profil →")}</Link>
+          <p className="text-xs uppercase tracking-widest text-muted-foreground">
+            {t("Mon profil")}
+          </p>
+          <Link to="/profil" className="mt-3 inline-block text-sm text-primary hover:text-gold">
+            {t("Modifier le profil →")}
+          </Link>
         </div>
       </div>
 
       <div className="surface-card mt-8 p-6">
-        <h2 className="text-xl font-semibold text-primary-deep">{t("Mes analyses et historique")}</h2>
+        <h2 className="text-xl font-semibold text-primary-deep">
+          {t("Mes analyses et historique")}
+        </h2>
         {saved.isPending ? (
           <p className="mt-4 text-sm text-muted-foreground">{t("Chargement…")}</p>
         ) : items.length === 0 ? (
           <p className="mt-4 text-sm text-muted-foreground">
-            {t("Aucune analyse sauvegardée. Utilisez le bouton « Sauvegarder l'analyse » dans les outils Motifs ou Fourchette.")}
+            {t(
+              "Aucune analyse sauvegardée. Utilisez le bouton « Sauvegarder l'analyse » dans les outils Motifs ou Fourchette.",
+            )}
           </p>
         ) : (
           <ul className="mt-4 divide-y divide-border">
             {items.map((i) => (
-              <li key={i.id} className="flex flex-wrap items-center justify-between gap-3 py-3 text-sm">
+              <li
+                key={i.id}
+                className="flex flex-wrap items-center justify-between gap-3 py-3 text-sm"
+              >
                 <div>
                   <p className="font-medium text-primary-deep">{i.title}</p>
                   <p className="text-xs text-muted-foreground">
-                    {new Date(i.created_at).toLocaleString()} · {Object.entries((i.summary ?? {}) as Record<string, unknown>)
+                    {new Date(i.created_at).toLocaleString()} ·{" "}
+                    {Object.entries((i.summary ?? {}) as Record<string, unknown>)
                       .filter(([, v]) => typeof v === "number" || typeof v === "string")
                       .map(([k, v]) => `${k}: ${v}`)
                       .join(" · ")}
@@ -87,11 +110,17 @@ function Dashboard() {
                 </div>
                 <div className="flex gap-2">
                   {TOOL_LINK[i.tool] && (
-                    <Link to={TOOL_LINK[i.tool]!} className="rounded-md border border-border px-3 py-1 hover:bg-secondary">
+                    <Link
+                      to={TOOL_LINK[i.tool]!}
+                      className="rounded-md border border-border px-3 py-1 hover:bg-secondary"
+                    >
                       {t("Ouvrir l'outil")}
                     </Link>
                   )}
-                  <button onClick={() => remove(i.id)} className="rounded-md px-3 py-1 text-destructive hover:bg-secondary">
+                  <button
+                    onClick={() => remove(i.id)}
+                    className="rounded-md px-3 py-1 text-destructive hover:bg-secondary"
+                  >
                     {t("Supprimer")}
                   </button>
                 </div>

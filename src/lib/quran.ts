@@ -70,14 +70,66 @@ export function letters(text: string): string[] {
 /* ---------- Alphabet & valeurs abjad ---------- */
 
 export const ARABIC_LETTERS = [
-  "ا","ب","ت","ث","ج","ح","خ","د","ذ","ر","ز","س","ش","ص","ض","ط","ظ","ع","غ","ف",
-  "ق","ك","ل","م","ن","ه","و","ي","ء",
+  "ا",
+  "ب",
+  "ت",
+  "ث",
+  "ج",
+  "ح",
+  "خ",
+  "د",
+  "ذ",
+  "ر",
+  "ز",
+  "س",
+  "ش",
+  "ص",
+  "ض",
+  "ط",
+  "ظ",
+  "ع",
+  "غ",
+  "ف",
+  "ق",
+  "ك",
+  "ل",
+  "م",
+  "ن",
+  "ه",
+  "و",
+  "ي",
+  "ء",
 ];
 
 export const ABJAD: Record<string, number> = {
-  ا: 1, ب: 2, ج: 3, د: 4, ه: 5, و: 6, ز: 7, ح: 8, ط: 9,
-  ي: 10, ك: 20, ل: 30, م: 40, ن: 50, س: 60, ع: 70, ف: 80, ص: 90,
-  ق: 100, ر: 200, ش: 300, ت: 400, ث: 500, خ: 600, ذ: 700, ض: 800, ظ: 900, غ: 1000,
+  ا: 1,
+  ب: 2,
+  ج: 3,
+  د: 4,
+  ه: 5,
+  و: 6,
+  ز: 7,
+  ح: 8,
+  ط: 9,
+  ي: 10,
+  ك: 20,
+  ل: 30,
+  م: 40,
+  ن: 50,
+  س: 60,
+  ع: 70,
+  ف: 80,
+  ص: 90,
+  ق: 100,
+  ر: 200,
+  ش: 300,
+  ت: 400,
+  ث: 500,
+  خ: 600,
+  ذ: 700,
+  ض: 800,
+  ظ: 900,
+  غ: 1000,
   ء: 1,
 };
 
@@ -155,11 +207,7 @@ function countIn(haystack: string, needle: string, wholeWord: boolean): number {
   return count;
 }
 
-export function searchTerm(
-  quran: QuranEdition,
-  term: string,
-  wholeWord: boolean,
-): SearchResult {
+export function searchTerm(quran: QuranEdition, term: string, wholeWord: boolean): SearchResult {
   const needle = normalizeArabic(term);
   const bySurah: SearchResult["bySurah"] = [];
   const occurrences: Occurrence[] = [];

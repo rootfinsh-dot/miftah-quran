@@ -1,6 +1,7 @@
 /** Configuration multi-providers pour les dons (PayPal standardisé sans restriction + RedotPay). */
 
-export type DonateProvider = "paypal" | "redotpay" | "buy-me-a-coffee" | "ko-fi" | "stripe" | "custom";
+export type DonateProvider =
+  "paypal" | "redotpay" | "buy-me-a-coffee" | "ko-fi" | "stripe" | "custom";
 
 export interface DonateConfig {
   provider: DonateProvider;
@@ -13,7 +14,12 @@ export interface DonateConfig {
 export const DEFAULT_AMOUNTS = [5, 10, 20, 50];
 
 /** Construit l'URL de paiement ou retourne les instructions. */
-export function buildDonateURL(provider: DonateProvider, account: string, amount: number, currency = "EUR"): string | null {
+export function buildDonateURL(
+  provider: DonateProvider,
+  account: string,
+  amount: number,
+  currency = "EUR",
+): string | null {
   const acc = account.trim();
   if (!acc) return null;
   const cur = currency.toUpperCase();

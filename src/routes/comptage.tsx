@@ -2,7 +2,13 @@ import { pageHead } from "@/lib/seo";
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 
-import { DataGate, PageHeader, StatCard, useArabicQuran, useFrenchQuran } from "@/components/quran-shell";
+import {
+  DataGate,
+  PageHeader,
+  StatCard,
+  useArabicQuran,
+  useFrenchQuran,
+} from "@/components/quran-shell";
 import { useT } from "@/lib/i18n";
 import {
   ARABIC_LETTERS,
@@ -11,7 +17,7 @@ import {
   searchTerm,
   type QuranEdition,
 } from "@/lib/quran";
-import { searchQuranWords } from "@/lib/quran-search";
+import { searchQuranWords, type QuranWord } from "@/lib/quran-search";
 
 export const Route = createFileRoute("/comptage")({
   head: ({ match }) => pageHead("/comptage", match.search.lang, true),
@@ -52,7 +58,7 @@ function Counter({
 
   // Conversion du format QuranEdition en tableau plat pour le moteur de recherche
   const quranWords = useMemo(() => {
-    const list: any[] = [];
+    const list: QuranWord[] = [];
     quran.surahs.forEach((s) => {
       s.ayahs.forEach((a) => {
         a.text.split(" ").forEach((w) => {
@@ -113,35 +119,54 @@ function Counter({
 
       <div className="grid gap-4 sm:grid-cols-2">
         <StatCard label="Occurrences du mot exact" value={formatNumber(result.matches.length)} />
-        <StatCard label="Occurrences des dérivés (racine)" value={formatNumber(result.rootMatches.length)} />
+        <StatCard
+          label="Occurrences des dérivés (racine)"
+          value={formatNumber(result.rootMatches.length)}
+        />
       </div>
 
       <div className="grid gap-6 lg:grid-cols-2">
-          <div className="surface-card p-6">
-            <h2 className="text-xl font-semibold text-primary-deep">{t("Occurrences exactes")}</h2>
-            <div className="mt-4 max-h-[480px] space-y-5 overflow-y-auto pr-1">
-              {result.matches.map((o) => (
-                <article key={`${o.surah}-${o.ayah}-${o.word}`} className="border-b border-border pb-4">
-                  <p className="text-xs text-gold">Sourate {o.surah}, verset {o.ayah}</p>
-                  <p className="arabic mt-2 text-xl">{o.text}</p>
-                  <p className="mt-2 text-sm text-muted-foreground">{translationFor(o.surah, o.ayah)}</p>
-                </article>
-              ))}
-            </div>
+        <div className="surface-card p-6">
+          <h2 className="text-xl font-semibold text-primary-deep">{t("Occurrences exactes")}</h2>
+          <div className="mt-4 max-h-[480px] space-y-5 overflow-y-auto pr-1">
+            {result.matches.map((o) => (
+              <article
+                key={`${o.surah}-${o.ayah}-${o.word}`}
+                className="border-b border-border pb-4"
+              >
+                <p className="text-xs text-gold">
+                  Sourate {o.surah}, verset {o.ayah}
+                </p>
+                <p className="arabic mt-2 text-xl">{o.text}</p>
+                <p className="mt-2 text-sm text-muted-foreground">
+                  {translationFor(o.surah, o.ayah)}
+                </p>
+              </article>
+            ))}
           </div>
+        </div>
 
-          <div className="surface-card p-6">
-            <h2 className="text-xl font-semibold text-primary-deep">{t("Formes dérivées de la racine")}</h2>
-            <div className="mt-4 max-h-[480px] space-y-5 overflow-y-auto pr-1">
-              {result.rootMatches.map((o) => (
-                <article key={`${o.surah}-${o.ayah}-${o.word}`} className="border-b border-border pb-4">
-                  <p className="text-xs text-emerald-600">Sourate {o.surah}, verset {o.ayah} - <span className="arabic">{o.word}</span></p>
-                  <p className="arabic mt-2 text-xl">{o.text}</p>
-                  <p className="mt-2 text-sm text-muted-foreground">{translationFor(o.surah, o.ayah)}</p>
-                </article>
-              ))}
-            </div>
+        <div className="surface-card p-6">
+          <h2 className="text-xl font-semibold text-primary-deep">
+            {t("Formes dérivées de la racine")}
+          </h2>
+          <div className="mt-4 max-h-[480px] space-y-5 overflow-y-auto pr-1">
+            {result.rootMatches.map((o) => (
+              <article
+                key={`${o.surah}-${o.ayah}-${o.word}`}
+                className="border-b border-border pb-4"
+              >
+                <p className="text-xs text-emerald-600">
+                  Sourate {o.surah}, verset {o.ayah} - <span className="arabic">{o.word}</span>
+                </p>
+                <p className="arabic mt-2 text-xl">{o.text}</p>
+                <p className="mt-2 text-sm text-muted-foreground">
+                  {translationFor(o.surah, o.ayah)}
+                </p>
+              </article>
+            ))}
           </div>
+        </div>
       </div>
     </div>
   );

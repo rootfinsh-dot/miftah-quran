@@ -89,7 +89,10 @@ function Patterns({ quran }: { quran: QuranEdition }) {
             className="field w-40 text-lg"
           />
         </label>
-        <button onClick={() => apply(Math.max(2, draft))} className="btn-emerald mt-3 px-4 py-2 text-sm font-medium">
+        <button
+          onClick={() => apply(Math.max(2, draft))}
+          className="btn-emerald mt-3 px-4 py-2 text-sm font-medium"
+        >
           {tr("Tester")}
         </button>
         <div className="mt-3 flex flex-wrap gap-2 text-sm">
@@ -106,13 +109,19 @@ function Patterns({ quran }: { quran: QuranEdition }) {
         <div className="mt-4 space-y-2">
           <QuotaBadge quota={quota} />
           {blocked && (
-            <p className="text-sm text-destructive">{tr("Limite quotidienne atteinte pour les motifs numériques.")}</p>
+            <p className="text-sm text-destructive">
+              {tr("Limite quotidienne atteinte pour les motifs numériques.")}
+            </p>
           )}
           <SaveAnalysisButton
             tool="motifs"
             title={`${tr("Motifs numériques")} — ${tr("diviseur")} ${d}`}
             params={{ divisor: d }}
-            summary={{ divisor: d, divisible: globalTests.filter((g) => g.divisible).map((g) => g.label), surahs: surahsDivisible.length }}
+            summary={{
+              divisor: d,
+              divisible: globalTests.filter((g) => g.divisible).map((g) => g.label),
+              surahs: surahsDivisible.length,
+            }}
           />
         </div>
       </div>
@@ -166,9 +175,7 @@ function Patterns({ quran }: { quran: QuranEdition }) {
 
       <div className="grid gap-6 lg:grid-cols-2">
         <div className="surface-card p-6">
-          <h2 className="text-xl font-semibold text-primary-deep">
-            Versets multiples de {d}
-          </h2>
+          <h2 className="text-xl font-semibold text-primary-deep">Versets multiples de {d}</h2>
           <div className="mt-4 max-h-80 space-y-2 overflow-y-auto pr-1 text-sm">
             {surahsDivisible.length === 0 ? (
               <p className="text-muted-foreground">Aucune sourate ne correspond.</p>
@@ -189,41 +196,41 @@ function Patterns({ quran }: { quran: QuranEdition }) {
         </div>
 
         <ProGate feature="motifs.advanced">
-        <div className="surface-card p-6">
-          <h2 className="text-xl font-semibold text-primary-deep">Symétries remarquables</h2>
-          <div className="mt-4 space-y-3 text-sm">
-            {selfMatching.map((s) => (
-              <div key={s.number} className="flex justify-between border-b border-border/60 pb-2">
-                <span>
-                  <span className="arabic text-base">{s.name}</span>
-                  <span className="ml-2 text-xs text-muted-foreground">{s.frenchName}</span>
-                </span>
-                <span>
-                  numéro {s.number} = {s.ayahCount} versets
-                </span>
+          <div className="surface-card p-6">
+            <h2 className="text-xl font-semibold text-primary-deep">Symétries remarquables</h2>
+            <div className="mt-4 space-y-3 text-sm">
+              {selfMatching.map((s) => (
+                <div key={s.number} className="flex justify-between border-b border-border/60 pb-2">
+                  <span>
+                    <span className="arabic text-base">{s.name}</span>
+                    <span className="ml-2 text-xs text-muted-foreground">{s.frenchName}</span>
+                  </span>
+                  <span>
+                    numéro {s.number} = {s.ayahCount} versets
+                  </span>
+                </div>
+              ))}
+              <div className="flex justify-between border-b border-border/60 pb-2">
+                <span>Somme des chiffres du total des versets</span>
+                <span>{digitSum(totals.ayahs)}</span>
               </div>
-            ))}
-            <div className="flex justify-between border-b border-border/60 pb-2">
-              <span>Somme des chiffres du total des versets</span>
-              <span>{digitSum(totals.ayahs)}</span>
-            </div>
-            <div className="flex justify-between border-b border-border/60 pb-2">
-              <span>Somme des chiffres du total des mots</span>
-              <span>{digitSum(totals.words)}</span>
-            </div>
-            <div className="flex justify-between">
-              <span>Somme des chiffres du total des lettres</span>
-              <span>{digitSum(totals.letters)}</span>
+              <div className="flex justify-between border-b border-border/60 pb-2">
+                <span>Somme des chiffres du total des mots</span>
+                <span>{digitSum(totals.words)}</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Somme des chiffres du total des lettres</span>
+                <span>{digitSum(totals.letters)}</span>
+              </div>
             </div>
           </div>
-        </div>
         </ProGate>
       </div>
 
       <p className="text-sm text-muted-foreground">
-        Note de méthode : les régularités numériques dépendent fortement des conventions de
-        comptage (recension du texte, inclusion des basmalas, traitement des lettres jointes).
-        Les chiffres ci-dessus sont ceux du texte Uthmani tel que normalisé par ce site.
+        Note de méthode : les régularités numériques dépendent fortement des conventions de comptage
+        (recension du texte, inclusion des basmalas, traitement des lettres jointes). Les chiffres
+        ci-dessus sont ceux du texte Uthmani tel que normalisé par ce site.
       </p>
     </div>
   );

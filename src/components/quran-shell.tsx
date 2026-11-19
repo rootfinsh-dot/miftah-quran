@@ -58,15 +58,7 @@ export function DataGate({
   return <>{children(query.data)}</>;
 }
 
-export function StatCard({
-  label,
-  value,
-  hint,
-}: {
-  label: string;
-  value: string;
-  hint?: string;
-}) {
+export function StatCard({ label, value, hint }: { label: string; value: string; hint?: string }) {
   const t = useT();
   return (
     <div className="surface-card p-5">

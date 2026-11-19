@@ -21,7 +21,11 @@ export type Dict = Record<string, Entry>;
 
 const STORAGE_KEY = "miftah-lang";
 
-type Ctx = { lang: Lang; setLang: (l: Lang) => void; t: (fr: string, vars?: Record<string, string | number>) => string };
+type Ctx = {
+  lang: Lang;
+  setLang: (l: Lang) => void;
+  t: (fr: string, vars?: Record<string, string | number>) => string;
+};
 
 const I18nContext = createContext<Ctx | null>(null);
 
@@ -45,10 +49,13 @@ export function I18nProvider({ children }: { children: ReactNode }) {
     document.documentElement.dir = info?.rtl ? "rtl" : "ltr";
   }, [lang]);
 
-  const setLang = useCallback((l: Lang) => {
-    navigate({ to: ".", search: (previous) => ({ ...previous, lang: l }), replace: true });
-    localStorage.setItem(STORAGE_KEY, l);
-  }, [navigate]);
+  const setLang = useCallback(
+    (l: Lang) => {
+      navigate({ to: ".", search: (previous) => ({ ...previous, lang: l }), replace: true });
+      localStorage.setItem(STORAGE_KEY, l);
+    },
+    [navigate],
+  );
 
   const t = useCallback(
     (fr: string, vars?: Record<string, string | number>) => {
@@ -63,7 +70,13 @@ export function I18nProvider({ children }: { children: ReactNode }) {
 
 export function useI18n() {
   const ctx = useContext(I18nContext);
-  return ctx ?? { lang: "fr" as Lang, setLang: () => {}, t: (fr: string, vars?: Record<string, string | number>) => interpolate(fr, vars) };
+  return (
+    ctx ?? {
+      lang: "fr" as Lang,
+      setLang: () => {},
+      t: (fr: string, vars?: Record<string, string | number>) => interpolate(fr, vars),
+    }
+  );
 }
 
 export function useT() {

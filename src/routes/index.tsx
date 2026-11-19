@@ -65,10 +65,16 @@ function Index() {
                 )}
               </p>
               <div className="mt-9 flex flex-wrap gap-3">
-                <Link to="/comptage" className="btn-emerald border border-gold/40 px-6 py-3 font-medium">
+                <Link
+                  to="/comptage"
+                  className="btn-emerald border border-gold/40 px-6 py-3 font-medium"
+                >
                   {t("Lancer une analyse")}
                 </Link>
-                <Link to="/soutenir" className="bg-amber-400 hover:bg-amber-500 text-primary-deep px-6 py-3 rounded-md font-bold flex items-center gap-2 animate-pulse shadow-lg">
+                <Link
+                  to="/soutenir"
+                  className="bg-amber-400 hover:bg-amber-500 text-primary-deep px-6 py-3 rounded-md font-bold flex items-center gap-2 animate-pulse shadow-lg"
+                >
                   <Heart className="w-5 h-5 fill-current" />
                   {t("Soutenir le projet")}
                 </Link>
@@ -109,7 +115,9 @@ function Index() {
 
       <section className="mx-auto max-w-6xl px-5 pb-8">
         <div className="surface-card p-8">
-          <h2 className="text-2xl font-semibold text-primary-deep">{t("Comment les comptages sont faits")}</h2>
+          <h2 className="text-2xl font-semibold text-primary-deep">
+            {t("Comment les comptages sont faits")}
+          </h2>
           <ul className="mt-5 space-y-3 text-sm leading-relaxed text-muted-foreground">
             <li>
               {t(
@@ -122,7 +130,9 @@ function Index() {
               )}
             </li>
             <li>
-              {t("Les valeurs numériques suivent la table abjad classique (ا=1, ب=2, ج=3, … غ=1000).")}
+              {t(
+                "Les valeurs numériques suivent la table abjad classique (ا=1, ب=2, ج=3, … غ=1000).",
+              )}
             </li>
           </ul>
         </div>

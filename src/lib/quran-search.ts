@@ -14,8 +14,7 @@ export function stripDiacritics(text: string): string {
 
 // Extraction de la racine trilittère (lettres de base)
 export function extractRoot(word: string): string {
-  const cleaned = stripDiacritics(word).replace(/[آ-ئبةت-خر-زكلمنهؠءﻻﻷﻵﻱﻹﻳﻻ]/g, "");
-  return cleaned;
+  return stripDiacritics(word).replace(/[^\u0621-\u064A]/g, "");
 }
 
 export interface QuranWord {
@@ -34,10 +33,7 @@ export interface SearchResult {
 /**
  * Cherche un mot et toutes ses formes dérivées dans le texte coranique.
  */
-export function searchQuranWords(
-  query: string,
-  quranText: QuranWord[]
-): SearchResult {
+export function searchQuranWords(query: string, quranText: QuranWord[]): SearchResult {
   const cleanedQuery = stripDiacritics(query).trim();
   const root = extractRoot(cleanedQuery);
 
