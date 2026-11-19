@@ -35,6 +35,11 @@ const CARDS = [
     title: "Comptage par fourchette",
     text: "Saisissez une sourate et un verset de début et de fin pour compter les versets, mots et lettres de la plage choisie.",
   },
+  {
+    to: "/sourates" as const,
+    title: "Toutes les sourates",
+    text: "Liste de toutes les 114 sourates du Coran, classées par numéro de sourate avec leur nombre de versets et leur type (Mécquaines ou Médinoises).",
+  },
 ];
 
 function Index() {

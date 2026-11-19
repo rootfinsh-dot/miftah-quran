@@ -23,12 +23,14 @@ import { Route as PaiementRouteImport } from './routes/paiement'
 import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as SouratesRouteImport } from './routes/sourates'
 import { Route as SoutenirRouteImport } from './routes/soutenir'
 import { Route as StatistiquesRouteImport } from './routes/statistiques'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedProfilRouteImport } from './routes/_authenticated/profil'
 import { Route as AuthenticatedSubscriptionRouteImport } from './routes/_authenticated/subscription'
+import { Route as SouratesIdRouteImport } from './routes/sourates/$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -99,6 +101,11 @@ const ResetPasswordRoute = ResetPasswordRouteImport.update({
   path: '/reset-password',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SouratesRoute = SouratesRouteImport.update({
+  id: '/sourates',
+  path: '/sourates',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SoutenirRoute = SoutenirRouteImport.update({
   id: '/soutenir',
   path: '/soutenir',
@@ -130,6 +137,11 @@ const AuthenticatedSubscriptionRoute =
     path: '/subscription',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const SouratesIdRoute = SouratesIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => SouratesRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -145,12 +157,14 @@ export interface FileRoutesByFullPath {
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/sourates': typeof SouratesRouteWithChildren
   '/soutenir': typeof SoutenirRoute
   '/statistiques': typeof StatistiquesRoute
   '/terms': typeof TermsRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/profil': typeof AuthenticatedProfilRoute
   '/subscription': typeof AuthenticatedSubscriptionRoute
+  '/sourates/$id': typeof SouratesIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -166,12 +180,14 @@ export interface FileRoutesByTo {
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/sourates': typeof SouratesRouteWithChildren
   '/soutenir': typeof SoutenirRoute
   '/statistiques': typeof StatistiquesRoute
   '/terms': typeof TermsRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/profil': typeof AuthenticatedProfilRoute
   '/subscription': typeof AuthenticatedSubscriptionRoute
+  '/sourates/$id': typeof SouratesIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -189,12 +205,14 @@ export interface FileRoutesById {
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/sourates': typeof SouratesRouteWithChildren
   '/soutenir': typeof SoutenirRoute
   '/statistiques': typeof StatistiquesRoute
   '/terms': typeof TermsRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/profil': typeof AuthenticatedProfilRoute
   '/_authenticated/subscription': typeof AuthenticatedSubscriptionRoute
+  '/sourates/$id': typeof SouratesIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -212,12 +230,14 @@ export interface FileRouteTypes {
     | '/pricing'
     | '/privacy'
     | '/reset-password'
+    | '/sourates'
     | '/soutenir'
     | '/statistiques'
     | '/terms'
     | '/dashboard'
     | '/profil'
     | '/subscription'
+    | '/sourates/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -233,12 +253,14 @@ export interface FileRouteTypes {
     | '/pricing'
     | '/privacy'
     | '/reset-password'
+    | '/sourates'
     | '/soutenir'
     | '/statistiques'
     | '/terms'
     | '/dashboard'
     | '/profil'
     | '/subscription'
+    | '/sourates/$id'
   id:
     | '__root__'
     | '/'
@@ -255,12 +277,14 @@ export interface FileRouteTypes {
     | '/pricing'
     | '/privacy'
     | '/reset-password'
+    | '/sourates'
     | '/soutenir'
     | '/statistiques'
     | '/terms'
     | '/_authenticated/dashboard'
     | '/_authenticated/profil'
     | '/_authenticated/subscription'
+    | '/sourates/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -278,6 +302,7 @@ export interface RootRouteChildren {
   PricingRoute: typeof PricingRoute
   PrivacyRoute: typeof PrivacyRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
+  SouratesRoute: typeof SouratesRouteWithChildren
   SoutenirRoute: typeof SoutenirRoute
   StatistiquesRoute: typeof StatistiquesRoute
   TermsRoute: typeof TermsRoute
@@ -383,6 +408,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ResetPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/sourates': {
+      id: '/sourates'
+      path: '/sourates'
+      fullPath: '/sourates'
+      preLoaderRoute: typeof SouratesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/soutenir': {
       id: '/soutenir'
       path: '/soutenir'
@@ -425,6 +457,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSubscriptionRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/sourates/$id': {
+      id: '/sourates/$id'
+      path: '/$id'
+      fullPath: '/sourates/$id'
+      preLoaderRoute: typeof SouratesIdRouteImport
+      parentRoute: typeof SouratesRoute
+    }
   }
 }
 
@@ -443,6 +482,18 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
 const AuthenticatedRouteRouteWithChildren =
   AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
 
+interface SouratesRouteChildren {
+  SouratesIdRoute: typeof SouratesIdRoute
+}
+
+const SouratesRouteChildren: SouratesRouteChildren = {
+  SouratesIdRoute: SouratesIdRoute,
+}
+
+const SouratesRouteWithChildren = SouratesRoute._addFileChildren(
+  SouratesRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
@@ -458,6 +509,7 @@ const rootRouteChildren: RootRouteChildren = {
   PricingRoute: PricingRoute,
   PrivacyRoute: PrivacyRoute,
   ResetPasswordRoute: ResetPasswordRoute,
+  SouratesRoute: SouratesRouteWithChildren,
   SoutenirRoute: SoutenirRoute,
   StatistiquesRoute: StatistiquesRoute,
   TermsRoute: TermsRoute,
