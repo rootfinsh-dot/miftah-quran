@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import { X, BookOpen, Copy, Check, Type } from "lucide-react";
+import { X, BookOpen, Copy, Check, Type, ChevronLeft } from "lucide-react";
+import { SURAH_LIST } from "@/lib/sourates";
 
 interface Ayah {
   id: number;
@@ -11,86 +12,118 @@ interface Ayah {
   text: string;
 }
 
-interface Tafsir {
-  text: string;
-  part: number;
-  page: number;
-  ayahs: string;
+interface TafsirItem {
+  author: string;
+  content: string;
 }
 
-interface SurahData {
-  surah: {
-    id: number;
-    name: string;
-    english_name: string;
-    french_name: string;
-    revelation_type: string;
-    ayahs: Ayah[];
-  };
-  tafsir: {
-    author: string;
-    content: string;
-  }[];
+interface SurahInfo {
+  name: string;
+  englishName: string;
+  frenchName: string;
+  revelationType: "Mecquoise" | "Médinoise";
+  ayahCount: number;
 }
 
-export function SourateExplorer({ surahId }: { surahId: number }) {
-  const [data, setData] = useState<SurahData | null>(null);
+export function SourateExplorer({
+  surahId,
+  onClose,
+}: {
+  surahId: number;
+  onClose: () => void;
+}) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [surahInfo, setSurahInfo] = useState<SurahInfo | null>(null);
+  const [ayahs, setAyahs] = useState<Ayah[]>([]);
+  const [tafsir, setTafsir] = useState<TafsirItem[]>([]);
 
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        setLoading(true);
-        setError(null);
+  const fetchSurahData = useCallback(async () => {
+    try {
+      setLoading(true);
+      setError(null);
 
-        // Fetch surah text from Quranpedia API
-        const textRes = await fetch(`https://api.quranpedia.net/v1/mushafs/1/${surahId}`);
-        if (!textRes.ok) throw new Error("Impossible de charger le texte");
-        const textData: any = await textRes.json();
+      const textRes = await fetch(`https://api.quranpedia.net/v1/mushafs/1/${surahId}`);
+      if (!textRes.ok) throw new Error("Impossible de charger le texte de la sourate");
 
-        // Fetch tafsir from multiple sources
-        // We'll fetch one source for now (Ibn Kathir) to keep it simple
-        const tafsirRes = await fetch(`https://api.quranpedia.net/v1/ayah/${surahId}/1/book/1`);
-        if (!tafsirRes.ok) throw new Error("Impossible de charger le tafsir");
-        const tafsirData: any = await tafsirRes.json();
+      const textData: any = await textRes.json();
+      const ayahArray = Array.isArray(textData) ? textData : textData.ayahs || [];
 
-        setData({
-          surah: textData.surahs[0],
-          tafsir: [{
-            author: tafsirData.book.ar_name,
-            content: tafsirData.content.map((c: any) => c.text).join("\n\n")
-          }]
+      const ayahList: Ayah[] = ayahArray.map((a: any) => ({
+        id: a.id,
+        number: a.number,
+        surah: a.surah,
+        text: a.text || a.text_html || a.text_unescaped,
+      }));
+
+      setAyahs(ayahList);
+
+      const sourate = SURAH_LIST[surahId - 1];
+      if (sourate) {
+        setSurahInfo({
+          name: sourate.name,
+          englishName: sourate.englishName,
+          frenchName: sourate.frenchName,
+          revelationType: sourate.revelationType,
+          ayahCount: sourate.ayahCount,
         });
-      } catch (err) {
-        setError(err instanceof Error ? err.message : "Erreur de chargement");
-      } finally {
-        setLoading(false);
       }
-    }
 
-    fetchData();
+      const tafsirSources = [1, 2, 3, 4, 5];
+      const tafsirPromises = tafsirSources.map(async (bookId) => {
+        try {
+          const tafsirRes = await fetch(`https://api.quranpedia.net/v1/ayah/${surahId}/1/book/${bookId}`);
+          if (tafsirRes.ok) {
+            const tafsirData: any = await tafsirRes.json();
+            const content = tafsirData.content || [];
+            const text = content
+              .map((c: any) => c.text || "")
+              .join("\n\n");
+            return {
+              author: tafsirData.book?.ar_name || `Source ${bookId}`,
+              content: text,
+            };
+          }
+        } catch {
+          // Skip failed sources
+        }
+        return null;
+      });
+
+      const results = (await Promise.all(tafsirPromises)).filter((r): r is TafsirItem => r !== null);
+      if (results.length > 0) {
+        setTafsir(results);
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Erreur de chargement");
+    } finally {
+      setLoading(false);
+    }
   }, [surahId]);
 
-  const [copied, setCopied] = useState(false);
+  useEffect(() => {
+    fetchSurahData();
+  }, [fetchSurahData]);
 
-  const handleCopy = () => {
-    if (data?.surah.ayahs && data.surah.ayahs.length > 0) {
-      const fullText = data.surah.ayahs.map(a => a.text).join("\n\n");
-      navigator.clipboard.writeText(fullText);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+  const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
+
+  const handleCopyAyah = (index: number) => {
+    const ayah = ayahs[index];
+    if (ayah) {
+      navigator.clipboard.writeText(ayah.text);
+      setCopiedIndex(index);
+      setTimeout(() => setCopiedIndex(null), 2000);
     }
   };
 
   if (loading) {
     return (
       <Dialog open>
-        <DialogContent className="sm:max-w-4xl">
+        <DialogContent className="sm:max-w-4xl max-h-[90vh] overflow-auto">
           <DialogHeader>
-            <DialogTitle>Chargement…</DialogTitle>
+            <DialogTitle>Chargement de la sourate {surahId}…</DialogTitle>
             <DialogDescription>
-              Chargement du texte et du tafsir de la sourate {surahId}…
+              Récupération du texte et du tafsir depuis les sources arabes…
             </DialogDescription>
           </DialogHeader>
           <div className="flex justify-center py-8">
@@ -104,91 +137,146 @@ export function SourateExplorer({ surahId }: { surahId: number }) {
   if (error) {
     return (
       <Dialog open>
-        <DialogContent className="sm:max-w-4xl">
+        <DialogContent className="sm:max-w-4xl max-h-[90vh] overflow-auto">
           <DialogHeader>
             <DialogTitle>Erreur</DialogTitle>
             <DialogDescription>{error}</DialogDescription>
           </DialogHeader>
           <div className="text-center text-destructive py-4">
-            Veuillez réessayer plus tard.
+            <button
+              onClick={fetchSurahData}
+              className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/80 transition-colors"
+            >
+              Réessayer
+            </button>
           </div>
         </DialogContent>
       </Dialog>
     );
   }
 
-  if (!data) return null;
-
-  const surah = data.surah;
-  const arabicName = surah.name || "";
-  const frenchName = surah.french_name || "";
-  const englishName = surah.english_name || "";
-  const revelationType = surah.revelation_type || "";
-  const ayahs = surah.ayahs || [];
-  const tafsirContent = data.tafsir?.[0]?.content || "";
+  const arabicName = surahInfo?.name || `سورة ${surahId}`;
+  const frenchName = surahInfo?.frenchName || `Sourate ${surahId}`;
+  const englishName = surahInfo?.englishName || `Surah ${surahId}`;
+  const revelationType = surahInfo?.revelationType || "Mecqueeze";
+  const ayahCount = ayahs.length;
 
   return (
-    <Dialog open>
-      <DialogContent className="sm:max-w-4xl max-h-[90vh] overflow-auto">
-        <DialogHeader>
-          <DialogTitle>
-            <div className="flex items-center gap-3">
-              <span dir="rtl" className="text-2xl font-bold text-primary-deep">
-                {arabicName}
-              </span>
-              <span className="text-sm text-primary-foreground/60">
-                ({revelationType})
-              </span>
+    <>
+      <Dialog open>
+        <DialogContent className="sm:max-w-4xl max-h-[90vh] overflow-auto bg-background">
+          <DialogHeader className="flex flex-row items-start justify-between gap-4">
+            <div>
+              <DialogTitle className="flex items-center gap-3 text-2xl">
+                <span dir="rtl" className="text-2xl font-bold text-primary-deep">
+                  {arabicName}
+                </span>
+                <span className="text-sm text-primary-foreground/60">
+                  ({revelationType})
+                </span>
+              </DialogTitle>
+              <DialogDescription>
+                {frenchName} — {englishName} — {ayahCount} versets
+              </DialogDescription>
             </div>
-          </DialogTitle>
-          <DialogDescription>
-            {frenchName} — {englishName} — {ayahs.length} versets
-          </DialogDescription>
-        </DialogHeader>
+            <button
+              onClick={onClose}
+              className="p-2 rounded-lg border border-border hover:bg-muted/50 transition-colors"
+              aria-label="Fermer"
+            >
+              <X className="w-5 h-5 text-primary-deep" />
+            </button>
+          </DialogHeader>
 
-        <div className="space-y-6">
-          {/* Texte arabe */}
-          <div className="surface-card rounded-2xl border bg-card p-6">
-            <h3 className="text-sm font-semibold text-primary-foreground/70 mb-4 flex items-center gap-2">
-              <Type className="w-4 h-4" />
-              Texte arabe intégral
-            </h3>
-            <div dir="rtl" className="text-2xl leading-relaxed text-primary-deep font-arabic">
-              {ayahs.map((ayah) => (
-                <p key={ayah.id} className="mb-2 last:mb-0">{ayah.text}</p>
-              ))}
-            </div>
-            <div className="mt-4 flex gap-2">
+          <div className="space-y-6">
+            <div className="flex items-center gap-2">
               <button
-                onClick={handleCopy}
-                className="flex-1 flex items-center justify-center gap-2 px-4 py-2 rounded-lg border border-border bg-card hover:bg-muted/50 transition-colors text-sm"
+                onClick={onClose}
+                className="flex items-center gap-1 px-3 py-1.5 text-sm rounded-lg border border-border hover:bg-muted/50 transition-colors"
               >
-                {copied ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4" />}
-                {copied ? "Copié !" : "Copier le texte"}
+                <ChevronLeft className="w-4 h-4" />
+                Fermer
               </button>
             </div>
-          </div>
 
-          {/* Tafsir */}
-          <div className="surface-card rounded-2xl border bg-card p-6">
-            <h3 className="text-sm font-semibold text-primary-foreground/70 mb-4 flex items-center gap-2">
-              <BookOpen className="w-4 h-4" />
-              Tafsir ({data.tafsir?.[0]?.author || "Source"})
-            </h3>
-            <div className="text-sm leading-relaxed text-primary-deep space-y-4">
-              {tafsirContent ? (
-                <div className="prose prose-sm max-w-none text-primary-foreground/80">
-                  {tafsirContent.split("\n\n").map((paragraph: string, i: number) => (
-                    <p key={i} className="mb-3 last:mb-0">{paragraph}</p>
-                  ))}
-                </div>
-              ) : (
-                <p className="text-primary-foreground/60">Aucun tafsir disponible pour cette sourate.</p>
-              )}
+            <div className="surface-card rounded-2xl border bg-card p-6">
+              <h3 className="text-sm font-semibold text-primary-foreground/70 mb-4 flex items-center gap-2">
+                <Type className="w-4 h-4" />
+                Texte arabe intégrial
+                <span className="text-xs bg-secondary/10 text-secondary-deep px-2 py-0.5 rounded-full">
+                  {ayahCount} versets
+                </span>
+              </h3>
+              <div dir="rtl" className="text-2xl leading-relaxed text-primary-deep font-arabic">
+                {ayahs.map((ayah, i) => (
+                  <button
+                    key={ayah.id}
+                    onClick={() => handleCopyAyah(i)}
+                    className={`mb-3 last:mb-0 w-full text-right transition-colors hover:bg-muted/30 ${copiedIndex === i ? 'text-emerald-600' : 'text-primary-deep'}`}
+                  >
+                    <span className="text-primary-foreground/30 font-arabic text-lg select-none">
+                      {ayah.number}
+                    </span>
+                    <span
+                      className="block font-arabic leading-relaxed"
+                      dir="rtl"
+                      dangerouslySetInnerHTML={{ __html: ayah.text }}
+                    />
+                  </button>
+                ))}
+              </div>
+              <div className="mt-4 flex gap-2">
+                <button
+                  onClick={() => {
+                    const fullText = ayahs.map((a) => a.text).join("\n\n");
+                    navigator.clipboard.writeText(fullText);
+                    setCopiedIndex(-1);
+                    setTimeout(() => setCopiedIndex(null), 2000);
+                  }}
+                  className={`flex-1 flex items-center justify-center gap-2 px-4 py-2 rounded-lg border border-border bg-card hover:bg-muted/50 transition-colors text-sm`}
+                >
+                  {copiedIndex === -1 ? (
+                    <><Check className="w-4 h-4 text-emerald-600" /> Copié !</>
+                  ) : (
+                    <><Copy className="w-4 h-4" /> Copier le texte</>
+                  )}
+                </button>
+              </div>
             </div>
+
+            {tafsir.map((item, i) => (
+              <div key={i} className="surface-card rounded-2xl border bg-card p-6">
+                <h3 className="text-sm font-semibold text-primary-foreground/70 mb-4 flex items-center gap-2">
+                  <BookOpen className="w-4 h-4" />
+                  Tafsir — {item.author}
+                </h3>
+                <div className="text-sm leading-relaxed text-primary-deep space-y-4">
+                  {item.content ? (
+                    <div
+                      className="prose prose-sm max-w-none text-primary-foreground/80"
+                      dangerouslySetInnerHTML={{ __html: item.content }}
+                    />
+                  ) : (
+                    <p className="text-primary-foreground/60">Tafsir vide pour cette source.</p>
+                  )}
+                </div>
+              </div>
+            ))}
+
+            {tafsir.length === 0 && (
+              <div className="surface-card rounded-2xl border bg-card p-6">
+                <h3 className="text-sm font-semibold text-primary-foreground/70 mb-4 flex items-center gap-2">
+                  <BookOpen className="w-4 h-4" />
+                  Tafsir
+                </h3>
+                <p className="text-primary-foreground/60">
+                  Aucun tafsir disponible pour cette sourate. Les sources arabes sont peut-être en cours de synchronisation.
+                </p>
+              </div>
+            )}
           </div>
-        </div>
-      </DialogContent>
-    </Dialog>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }
