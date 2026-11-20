@@ -161,6 +161,25 @@ export function SourateExplorer({
   const revelationType = surahInfo?.revelationType || "Mecqueeze";
   const ayahCount = ayahs.length;
 
+  if (!surahInfo || ayahs.length === 0) {
+    return (
+      <Dialog open>
+        <DialogContent className="sm:max-w-4xl max-h-[90vh] overflow-auto">
+          <DialogHeader>
+            <DialogTitle>Sourate {surahId}</DialogTitle>
+            <DialogDescription>
+              Chargement des données… ({ayahCount} versets trouvés)
+            </DialogDescription>
+          </DialogHeader>
+          <div className="text-center text-primary-foreground/60 py-8">
+            <div className="text-4xl mb-4">⏳</div>
+            <p>Chargement des textes et tafsirs…</p>
+          </div>
+        </DialogContent>
+      </Dialog>
+    );
+  }
+
   return (
     <>
       <Dialog open>
