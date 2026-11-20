@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import { X, BookOpen, Copy, Check, Type, ChevronLeft } from "lucide-react";
+import { X, BookOpen, Copy, Check, Type, ChevronLeft, Maximize, Minimize } from "lucide-react";
 import { SURAH_LIST } from "@/lib/sourates";
 
 interface Ayah {
@@ -37,6 +37,7 @@ export function SourateExplorer({
   const [surahInfo, setSurahInfo] = useState<SurahInfo | null>(null);
   const [ayahs, setAyahs] = useState<Ayah[]>([]);
   const [tafsir, setTafsir] = useState<TafsirItem[]>([]);
+  const [windowMode, setWindowMode] = useState<"normal" | "maximized">("normal");
 
   const fetchSurahData = useCallback(async () => {
     try {
@@ -183,14 +184,18 @@ export function SourateExplorer({
   return (
     <>
       <Dialog open>
-        <DialogContent className="sm:max-w-4xl max-h-[90vh] overflow-auto bg-background">
+        <DialogContent
+          className={`sm:max-w-4xl max-h-[90vh] overflow-auto bg-background transition-all duration-300 ${
+            windowMode === "maximized" ? "sm:max-w-full max-h-screen overflow-auto" : ""
+          }`}
+        >
           <DialogHeader className="flex flex-row items-start justify-between gap-4">
             <div>
               <DialogTitle className="flex items-center gap-3 text-2xl">
-                <span dir="rtl" className="text-2xl font-bold text-primary-deep">
+                <span dir="rtl" className="text-2xl font-bold text-black">
                   {arabicName}
                 </span>
-                <span className="text-sm text-primary-foreground/60">
+                <span className="text-sm text-primary-foreground/80">
                   ({revelationType})
                 </span>
               </DialogTitle>
@@ -198,13 +203,32 @@ export function SourateExplorer({
                 {frenchName} — {englishName} — {ayahCount} versets
               </DialogDescription>
             </div>
-            <button
-              onClick={onClose}
-              className="p-2 rounded-lg border border-border hover:bg-muted/50 transition-colors"
-              aria-label="Fermer"
-            >
-              <X className="w-5 h-5 text-primary-deep" />
-            </button>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={onClose}
+                className="p-2 rounded-lg border border-border hover:bg-muted/50 transition-colors"
+                aria-label="Fermer"
+              >
+                <X className="w-5 h-5 text-black" />
+              </button>
+              {windowMode === "normal" ? (
+                <button
+                  onClick={() => setWindowMode("maximized")}
+                  className="p-2 rounded-lg border border-border hover:bg-muted/50 transition-colors"
+                  aria-label="Agrandir"
+                >
+                  <Maximize className="w-5 h-5 text-black" />
+                </button>
+              ) : (
+                <button
+                  onClick={() => setWindowMode("normal")}
+                  className="p-2 rounded-lg border border-border hover:bg-muted/50 transition-colors"
+                  aria-label="Réduire"
+                >
+                  <Minimize className="w-5 h-5 text-black" />
+                </button>
+              )}
+            </div>
           </DialogHeader>
 
           <div className="space-y-6">
@@ -219,19 +243,19 @@ export function SourateExplorer({
             </div>
 
             <div className="surface-card rounded-2xl border bg-card p-6">
-              <h3 className="text-sm font-semibold text-primary-foreground/70 mb-4 flex items-center gap-2">
+              <h3 className="text-sm font-semibold text-black mb-4 flex items-center gap-2">
                 <Type className="w-4 h-4" />
                 Texte arabe intégrial
                 <span className="text-xs bg-secondary/10 text-secondary-deep px-2 py-0.5 rounded-full">
                   {ayahCount} versets
                 </span>
               </h3>
-              <div dir="rtl" className="text-2xl leading-relaxed text-primary-deep font-arabic">
+              <div dir="rtl" className="text-2xl leading-relaxed text-black font-arabic">
                 {ayahs.map((ayah, i) => (
                   <button
                     key={ayah.id}
                     onClick={() => handleCopyAyah(i)}
-                    className={`mb-3 last:mb-0 w-full text-right transition-colors hover:bg-muted/30 ${copiedIndex === i ? 'text-emerald-600' : 'text-primary-deep'}`}
+                    className={`mb-3 last:mb-0 w-full text-right transition-colors hover:bg-muted/30 ${copiedIndex === i ? 'text-emerald-600' : 'text-black'}`}
                   >
                     <span className="text-primary-foreground/30 font-arabic text-lg select-none">
                       {ayah.number}
@@ -265,14 +289,14 @@ export function SourateExplorer({
 
             {tafsir.map((item, i) => (
               <div key={i} className="surface-card rounded-2xl border bg-card p-6">
-                <h3 className="text-sm font-semibold text-primary-foreground/70 mb-4 flex items-center gap-2">
+                <h3 className="text-sm font-semibold text-black mb-4 flex items-center gap-2">
                   <BookOpen className="w-4 h-4" />
                   Tafsir — {item.author}
                 </h3>
-                <div className="text-sm leading-relaxed text-primary-deep space-y-4">
+                <div className="text-sm leading-relaxed text-black space-y-4">
                   {item.content ? (
                     <div
-                      className="prose prose-sm max-w-none text-primary-foreground/80"
+                      className="prose prose-sm max-w-none"
                       dangerouslySetInnerHTML={{ __html: item.content }}
                     />
                   ) : (
