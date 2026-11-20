@@ -89,8 +89,7 @@ function SourateIndex() {
               <span className="text-xs px-2 py-1 rounded bg-secondary/10 text-secondary-deep">
                 {sourate.ayahCount} {t("versets")}
               </span>
-              <span className={`text-xs px-2 py-1 rounded ${
-                sourate.revelationType === "Mecquoise"
+              <span className={`text-xs px-2 py-1 rounded $\n                sourate.revelationType === "Mecquoise"
                   ? "bg-gold-soft/20 text-gold-soft border border-gold/30"
                   : "bg-secondary/10 text-secondary-deep border border-secondary/30"
               }`}>
