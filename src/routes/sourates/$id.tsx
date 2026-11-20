@@ -2,6 +2,8 @@ import { createFileRoute, Link, useParams } from "@tanstack/react-router";
 import { useT } from "@/lib/i18n";
 import { pageHead } from "@/lib/seo";
 import { SURAH_LIST } from "@/lib/sourates";
+import { useQuery } from "@tanstack/react-query";
+import { fetchSurah, Ayah, QuranEdition, fetchEdition } from "@/lib/quran";
 
 export const Route = createFileRoute("/sourates/$id")({
   head: ({ match }) => pageHead("Détails de la sourate", match.search.lang),
@@ -14,6 +16,25 @@ function SourateDetail() {
   const sourateId = Number(id);
 
   const sourate = SURAH_LIST.find((s) => s.id === sourateId);
+
+  const { data: arabicQuran, isLoading: arabicLoading, isError: arabicError } = useQuery({
+    queryKey: ["quran", "surah", sourateId, "arabic"],
+    queryFn: () => fetchSurah(sourateId),
+  });
+
+  const { data: frenchQuran, isLoading: frenchLoading, isError: frenchError } = useQuery({
+    queryKey: ["quran", "hmm", sourateId, "french"],
+    queryFn: () => fetchEdition(`fr.hamidullah/${sourateId}`),
+  });
+
+  // L'API fr.hamidullah/<id> retourne soit une edition (QuranEdition) soit une sourate (Surah)
+  const surahAr = arabicQuran;
+  const ayahsAr = surahAr?.ayahs ?? [];
+  const surahFr = frenchQuran ? ("surahs" in frenchQuran ? frenchQuran.surahs?.[0] : frenchQuran) : null;
+  const ayahsFr = surahFr?.ayahs ?? [];
+
+  const isLoading = arabicLoading || frenchLoading;
+  const isError = arabicError || frenchError;
 
   if (!sourate) {
     return (
@@ -29,6 +50,38 @@ function SourateDetail() {
           className="btn-emerald inline-flex px-6 py-3 mt-4"
         >
           {t("Retour à la liste")}
+        </Link>
+      </div>
+    );
+  }
+
+  // Si la requête API est en cours, afficher un indicateur
+  if (isLoading) {
+    return (
+      <div className="surface-card mx-auto max-w-3xl p-10 text-center">
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-border border-t-primary" />
+        <p className="mt-3 text-sm text-primary-foreground/70">
+          {t("Chargement de la sourate…")}
+        </p>
+      </div>
+    );
+  }
+
+  // Si l'erreur, afficher un message
+  if (isError) {
+    return (
+      <div className="surface-card mx-auto max-w-3xl p-10 text-center">
+        <h1 className="text-2xl font-bold text-destructive">
+          {t("Erreur de chargement")}
+        </h1>
+        <p className="mt-2 text-primary-foreground/70">
+          {t("Impossible de récupérer le texte de la sourate.")}
+        </p>
+        <Link
+          to="/sourates"
+          className="btn-emerald inline-flex px-6 py-3 mt-4"
+        >
+          {t("Réessayer")}
         </Link>
       </div>
     );

@@ -45,6 +45,19 @@ const RECITERS = [
   { id: "Ghamadi_40kbps",         name: "Ghamadi" },
   { id: "Ahmed_ibn_ali_al_ajamy_128kbps", name: "Ahmed Ibn Ali Al-Ajamy" },
   { id: "Ibrahim_Akhdar_32kbps",  name: "Ibrahim Akhdar" },
+  { id: "Abdullah_Bin_AbdulAziz_192kbps", name: "Abdullah bin AbdulAziz Al-Jasser" },
+  { id: "Abdullah_Bin_Aziz_64kbps", name: "Abdullah bin Abdur-Rahman Al-Jasser (64 kbps)" },
+  { id: "Husary_Murattal_128kbps",  name: "Mahmoud Khalil Al-Husary (murattal, 128 kbps)" },
+  { id: "Husary_Murattal_64kbps",   name: "Mahmoud Khalil Al-Husary (murattal, 64 kbps)" },
+  { id: "As-Saleh_Al-Fawzan_128kbps", name: "Saleh Al-Fawzan" },
+  { id: "Mohamed_Supposedly_Tabatabaey_128kbps", name: "Mohamed Tabatabaey" },
+  { id: "AbdulBaset_Al-Aljameel_128kbps", name: "AbdulBaset Al-Aljameel" },
+  { id: "Fuad_Al-Mansour_128kbps", name: "Fuad Al-Mansour" },
+  { id: "Shaker_Al-Azami_128kbps",  name: "Shaker Al-Azami" },
+  { id: "Abdur-Rahman_Alsudais_128kbps", name: "Abdur Rahman Al-Sudais (128 kbps)" },
+  { id: "Muhammad_Metwalli_128kbps", name: "Muhammad Metwalli" },
+  { id: "Khalifah_Al-Khalifah_128kbps", name: "Khalifah Al-Khalifah" },
+  { id: "Mohammad_Al-West_128kbps",  name: "Mohammad Al West" },
 ];
 
 export function ReciterPlayer() {

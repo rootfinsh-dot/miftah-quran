@@ -3,6 +3,7 @@ import { useT } from "@/lib/i18n";
 import { ReciterPlayer } from "@/components/ReciterPlayer";
 import { Heart } from "lucide-react";
 import { pageHead } from "@/lib/seo";
+import { SURAH_LIST } from "@/lib/sourates";
 
 export const Route = createFileRoute("/")({
   head: ({ match }) => pageHead("/", match.search.lang),
@@ -140,6 +141,58 @@ function Index() {
               )}
             </li>
           </ul>
+        </div>
+      </section>
+
+      {/* Liste de toutes les sourates */}
+      <section className="mx-auto max-w-6xl px-5 pb-8">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-2xl font-semibold text-primary-deep">
+            {t("Toutes les sourates")}
+          </h2>
+          <Link
+            to="/sourates"
+            className="text-sm font-medium text-primary hover:text-gold transition-colors"
+          >
+            {t("Voir toutes →")}
+          </Link>
+        </div>
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {SURAH_LIST.map((sourate) => (
+            <Link
+              key={sourate.id}
+              to={`/sourates/${sourate.id}` as string}
+              className="surface-card rounded-2xl border bg-card hover:border-gold/40 hover:shadow-lg transition-all duration-200 p-4 text-left group"
+            >
+              <div className="flex items-center justify-between gap-2">
+                <div>
+                  <h3 className="text-sm font-bold text-primary-deep leading-tight">
+                    {sourate.frenchName}
+                  </h3>
+                  <p className="text-xs text-primary-foreground/60 mt-0.5">
+                    {sourate.name}
+                  </p>
+                </div>
+                <span className="text-lg font-bold text-primary-deep/60 bg-primary/5 px-2 py-1 rounded">
+                  {sourate.id}
+                </span>
+              </div>
+              <div className="mt-2 flex items-center gap-2 text-xs">
+                <span className="text-primary-foreground/50">
+                  {sourate.ayahCount} {t("versets")}
+                </span>
+                <span
+                  className={`px-1.5 py-0.5 rounded ${
+                    sourate.revelationType === "Mecquoise"
+                      ? "bg-gold-soft/20 text-gold-soft"
+                      : "bg-secondary/10 text-secondary-deep"
+                  }`}
+                >
+                  {t(sourate.revelationType)}
+                </span>
+              </div>
+            </Link>
+          ))}
         </div>
       </section>
     </div>

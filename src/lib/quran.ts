@@ -18,11 +18,35 @@ export type QuranEdition = {
 
 const API = "https://api.alquran.cloud/v1/quran";
 
-async function fetchEdition(id: string): Promise<QuranEdition> {
+export async function fetchEdition(id: string): Promise<QuranEdition> {
   const res = await fetch(`${API}/${id}`);
   if (!res.ok) throw new Error("Impossible de charger le texte");
   const json = (await res.json()) as { data: QuranEdition };
   return json.data;
+}
+
+export async function fetchSurah(surahId: number): Promise<Surah> {
+  const res = await fetch(`${API}/quran-uthmani/${surahId}`);
+  if (!res.ok) throw new Error("Impossible de charger la sourate");
+  const json = await res.json() as { data: QuranEdition | Surah | Surah[] };
+  const data = json.data;
+  if (Array.isArray(data)) {
+    if (data.length === 0) throw new Error("Aucune sourate trouvée");
+    const surah = data[0];
+    if (!surah) throw new Error("Aucune sourate trouvée");
+    return surah;
+  }
+  if (data && typeof data === "object" && "number" in data) {
+    return data as Surah;
+  }
+  if (data && typeof data === "object" && "surahs" in data) {
+    const edition = data as QuranEdition;
+    if (!edition.surahs || edition.surahs.length === 0) throw new Error("Aucune sourate trouvée");
+    const surah = edition.surahs[0];
+    if (!surah) throw new Error("Aucune sourate trouvée");
+    return surah;
+  }
+  throw new Error("Format de réponse inattendu");
 }
 
 export const quranArabicQuery = {
