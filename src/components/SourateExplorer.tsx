@@ -70,22 +70,38 @@ export function SourateExplorer({
         });
       }
 
-      const tafsirSources = [1, 2, 3, 4, 5];
-      const tafsirPromises = tafsirSources.map(async (bookId) => {
+      const tafsirSources = [
+        { id: 1, arabic: "الطبرى", arabicShort: "الطبرى", knownAs: "Al-Tabari", author: "الطبرى" },
+        { id: 2, arabic: "ابن الكثير (الكثير)", arabicShort: "الكثير", knownAs: "Ibn Kathir", author: "ابن الكثير" },
+        { id: 3, arabic: "ابن عباس", arabicShort: "العابد", knownAs: "Ibn Abbas", author: "ابن عباس" },
+        { id: 4, arabic: "القرطبي", arabicShort: "القرطبي", knownAs: "Al-Qurtubi", author: "القرطبي" },
+        { id: 5, arabic: "ابن كثير", arabicShort: "ابن كثير", knownAs: "Ibn Kathir", author: "ابن كثير" },
+        { id: 6, arabic: "البغي", arabicShort: "البغي", knownAs: "Al-Baghawi", author: "البغي" },
+        { id: 7, arabic: "المزيمي", arabicShort: "المزيمي", knownAs: "Al-Mizzi", author: "المزيمي" },
+        { id: 8, arabic: "نووي", arabicShort: "نووي", knownAs: "An-Nawawi", author: "نووي" },
+        { id: 9, arabic: "حزم", arabicShort: "حزم", knownAs: "Ibn Hazm", author: "حزم" },
+        { id: 10, arabic: "الدارقطني", arabicShort: "الدارقطني", knownAs: "Al-Daraqutni", author: "الدارقطني" },
+        { id: 11, arabic: "السوطي", arabicShort: "السوطي", knownAs: "Al-Suyuti", author: "السوطي" },
+        { id: 12, arabic: "العنبري", arabicShort: "العنبري", knownAs: "Al-Albani", author: "العنبري" },
+      ];
+      const tafsirSourcesDict: Record<number, { author: string; knownAs: string }> = {};
+      tafsirSources.forEach((s) => {
+        tafsirSourcesDict[s.id] = s;
+      });
+
+      const tafsirPromises = tafsirSources.map(async (source) => {
         try {
-          const tafsirRes = await fetch(`https://api.quranpedia.net/v1/ayah/${surahId}/1/book/${bookId}`);
+          const tafsirRes = await fetch(`https://api.quranpedia.net/v1/ayah/${surahId}/1/book/${source.id}`);
           if (tafsirRes.ok) {
             const tafsirData: any = await tafsirRes.json();
             const content = tafsirData.content || [];
-            const text = content
-              .map((c: any) => c.text || "")
-              .join("\n\n");
+            const text = content.map((c: any) => c.text || "").join("\n\n");
             return {
-              author: tafsirData.book?.ar_name || `Source ${bookId}`,
+              author: tafsirData.book?.ar_name || source.arabic,
               content: text,
             };
           }
-        } catch {
+        } catch (err) {
           // Skip failed sources
         }
         return null;
@@ -157,6 +173,7 @@ export function SourateExplorer({
   }
 
   const arabicName = surahInfo?.name || `سورة ${surahId}`;
+  const arabicLabel = `سورة ${surahId} : ${arabicName}`;
   const frenchName = surahInfo?.frenchName || `Sourate ${surahId}`;
   const englishName = surahInfo?.englishName || `Surah ${surahId}`;
   const revelationType = surahInfo?.revelationType || "Mecqueeze";
@@ -200,7 +217,12 @@ export function SourateExplorer({
                 </span>
               </DialogTitle>
               <DialogDescription>
-                {frenchName} — {englishName} — {ayahCount} versets
+                <span dir="rtl" className="text-black">
+                  {arabicLabel}
+                </span>
+                <span className="text-sm text-primary-foreground/80 ml-2">
+                  — {frenchName} — {englishName} — {ayahCount} versets
+                </span>
               </DialogDescription>
             </div>
             <div className="flex items-center gap-2">

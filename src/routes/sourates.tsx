@@ -20,12 +20,34 @@ function SourateIndex() {
   const t = useT();
   const [explorer, setExplorer] = useState<ExplorerState | null>(null);
 
+  // Load saved explorer state from localStorage
+  useState(() => {
+    try {
+      const saved = localStorage.getItem("explorer_state");
+      if (saved) {
+        setExplorer(JSON.parse(saved));
+      }
+    } catch {
+      // Ignore storage errors
+    }
+  });
+
   const openExplorer = (id: number) => {
     setExplorer({ isOpen: true, surahId: id });
+    try {
+      localStorage.setItem("explorer_state", JSON.stringify({ isOpen: true, surahId: id }));
+    } catch {
+      // Ignore storage errors
+    }
   };
 
   const closeExplorer = () => {
     setExplorer({ isOpen: false, surahId: 0 });
+    try {
+      localStorage.setItem("explorer_state", JSON.stringify({ isOpen: false, surahId: 0 }));
+    } catch {
+      // Ignore storage errors
+    }
   };
 
   const surates = SURAH_LIST;
